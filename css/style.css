@@ -1,0 +1,483 @@
+body{
+  font-family: sans-serif;
+ background-color:#f3dabb;
+  background-image: url("image/banbou.jpg");
+   background-repeat: no-repeat;
+   background-position: right top; 
+}
+
+/* TITRE */
+.title{
+display:block;
+ /*background-color:#FF0000;*/
+  width:350px;
+  margin-right:auto;
+  margin-left:auto; 
+  height:25px;
+}
+
+/* NAVIGATION  : navh et nav, nav reste visible si suffisement d'espace */
+.nav,
+.navh,
+.show{
+ background-color:#FEFEFE;
+ border:solid 1px;
+ display:block;
+ width:200px;
+ height:95%;
+ position:absolute;
+ top:0;
+ left:-193px;
+ -webkit-transition: left 1s; /* Safari */
+ transition: left 1s;
+ border-bottom-right-radius:1em;
+ 
+}
+
+
+.buttonNav{ 
+-webkit-transition: left 1s; /* Safari */
+ transition: left 1s;
+ position:absolute;
+ top:0;
+ left:2px;
+ border-top-right-radius:1em;
+ border-bottom-right-radius:1em;
+}
+
+.buttonNavH{
+ -webkit-transition: left 1s; /* Safari */
+ transition: left 1s;
+ position:absolute;
+ top:0;
+ left:198px;
+ border-top-right-radius:1em;
+ border-bottom-right-radius:1em;
+}
+.show{
+left:-2px;
+}
+
+.nav:hover,
+.navh:hover{
+left:-2px;
+}
+
+@media screen and (min-width: 892px) {
+ .nav{
+    left:-2px !important;
+  }
+}
+
+@media print  {
+ .nav,
+ .show,
+ .navh{
+    display:none;
+  }
+}
+
+/* NAVIGATION Liste et liens */
+.nav li,
+.show li,
+.navh li{
+  display:block;
+ list-style-type:none;
+ margin-left:10px;
+ 
+}
+
+.nav li.group,
+.show li.group,
+.navh li.group{
+  margin-top:20px;
+  margin-left:0px;
+  font-weight:bold;
+  font-size:18px;
+  text-decoration:underline;
+}
+
+.nav li a,
+.show li a,
+.navh li a{
+   padding-top:5px;
+   padding-bottom:5px;
+   padding-left:5px;
+   color:#000000;
+   text-decoration:none;
+   width:90%;
+   display:inline-block;
+   background-image: url("image/arrow.png");
+   background-repeat: no-repeat;
+   background-position: right; 
+}
+
+.nav li a:hover,
+.show li a:hover,
+.navh li a:hover{
+  background-color:#CCCCCC;
+}
+
+.navAnchor{
+  position: relative;
+  left: 19px;
+  display:block;
+  float:right;
+  font-size:11px;
+ -webkit-transform: rotate(-90deg);
+    -moz-transform: rotate(-90deg);
+    -o-transform: rotate(-90deg);
+    -ms-transform: rotate(-90deg);
+    transform: rotate(-90deg);
+}
+
+/* CONTENU PRINCIPAL */
+
+
+.st{
+  width:90%;
+  max-width:500px;
+  min-width:350px;
+  margin-right:auto;
+  margin-left:auto; 
+}
+
+.content
+{
+  background-color:#FEFEFE;
+  display:block;
+  border:solid 1px;
+  padding:10px 10px 0px 10px;
+   border-bottom-left-radius:1em;
+   border-top-right-radius:1em;
+}
+
+/* CONTENU - Titre */
+.contentTitle{
+  display:inline-block;
+  font-weight:bold;
+  font-size:18px;
+  border-bottom:solid 2px;
+  margin-bottom:1em;
+}
+
+/* Start page*/
+
+.start{
+
+ display:block;
+  
+}
+.start span{
+ display:block;
+ margin-left:20%;
+ margin-right:20%;
+ 
+}
+
+.multilinetext{
+    display:block;
+    margin-left:15px;
+    width:95%;
+    height:200px;
+}
+
+.start .group {
+margin-top:20px;
+}
+
+.start form{
+ width:80%px;
+  margin-right:auto;
+  margin-left:auto;
+  
+  border-radius:5px;
+  border:solid 1px;
+
+  text-align: center;
+  display:block; 
+  font-size:14px;
+  padding:15px 5px 15px 5px;
+  margin-top:5px;
+}
+
+.start a{
+  border-radius:5px;
+  border:solid 1px;
+  text-align: center;
+  display:block;
+  font-family: sans-serif;
+  text-decoration:none;
+  color:#000000;
+  font-size:14px;
+  padding:10px 5px 10px 5px;
+  margin-top:5px;
+  background-color:#CCCCCC;
+  font-weight:normal;
+  width:80%px;
+  margin-right:auto;
+  margin-left:auto; 
+
+}
+
+.start a:hover{
+  background-color:#BBBBBB;
+}
+
+/* Formes */
+
+.pp {
+  display:block;
+  width:120px;
+  height:160px;
+  margin: 5px auto; 
+   border:solid 3px grey;
+}
+
+.ppi {
+  display:block;
+  width:120px;
+  height:160px;
+  margin: auto;
+}
+
+
+
+.flabel{
+display:inline-block;
+  margin-right:2px;
+  
+}
+.label{
+display:inline-block;
+  margin-right:2px;
+  width:40%;
+}
+.ttLabel{
+  display:inline-block;
+  font-weight:bold;
+  margin-bottom:1em;
+  border-bottom:solid 1px;
+}
+
+.fitem{
+ display:block;
+ margin-left:10px;
+ height:1.7em;
+}
+
+.fill{
+ display:block;
+ width:100%;
+}
+
+.textes{
+ display:block;
+ width:100%;
+ margin-left:10px;
+ margin-bottom:10px;
+}
+
+.data{
+ display:block;
+ width:100%;
+ //background-color:#9A2EFE;
+}
+
+.dataImg{
+display:block;
+ width:100%;
+ height:100%;
+ padding:0;
+ marging:0;
+}
+
+.formNotice{ 
+  display:block;
+  font-size:9px;
+  padding:10px;
+}
+
+.formMessage{
+   display:block;
+   color:red;
+   margin-top:20px;
+   padding:10px;
+ }
+
+
+/* Outils en haut des grilles */
+.contentTools{
+  display:block;
+  width:100%;
+  margin-bottom:3px;
+}
+
+.toolsSearch{
+  display:inline-block;
+}
+
+/* pied de page */
+.btnBar{
+  display:inline-block;
+  margin-top:10px;
+  padding:7px 0px 5px 5px;
+  width:100%;
+}
+
+/* Liens et boutons */
+.pageBtn,
+.toolButton,
+.gridButton,
+.toolsSearch input[type=submit]{
+  font-family: sans-serif;
+  text-decoration:none;
+  color:#000000;
+  border:solid 1px;
+  font-size:14px;
+  padding:2px 5px 2px 5px;
+  margin-right:5px;
+  background-color:#CCCCCC;
+  font-weight:normal;
+}
+.pageBtn:hover,
+.toolButton:hover,
+.gridButton:hover,
+.toolsSearch input[type=submit]:hover{
+  background-color:#BBBBBB;
+}
+
+.toolButton{
+ float:right;
+}
+
+.btnBar .pageBtn{
+ float:right;
+ margin-right:10px;
+}
+
+.gridButton {
+  padding:1px 2px 1px 2px;
+
+}
+
+.fullArea{
+ display:block;
+ width:100%;
+ min-height:100px;
+}
+
+
+/* GRILLES */
+table{
+  border-collapse: collapse;
+}
+
+.wt{
+  width:100%;
+}
+
+td{
+  height:20px;
+  border:1px solid #DDDDDD;
+}
+
+/* GRILLES - ligne de titre */
+.tblHeader{
+  background-color:#DDDDDD;
+  font-weight:bold;
+  border-bottom:solid 1px;
+  text-align: center;
+}
+
+/* GRILLES - largeur, alignement et mise en evidence */
+.eleven{
+ width:9%;
+}
+
+.seven{
+ width:14%;
+}
+
+.rt{
+text-align: right;
+}
+
+.highlight:hover{
+  background-color:#CCFFCC;
+}
+
+.tblFamRow{
+  background-color:#EEEEEE;
+}
+
+.subtt{
+     background-color:#EEEEEE;
+}
+
+.gtt{
+     background-color:#DDDDDD;
+}
+.mt td{
+  padding:0px 10px 0px 10px;
+  text-align:center;
+}
+.hd,
+.hd td{
+  font-weight:bold;
+
+}
+
+/* GRILLES - Boutons et liens */
+.grader,
+.consulter,
+.cotisation{
+  width:100px;
+  float:left;
+}
+
+/* GRILLES - couleur des cellules */
+.cellOk,
+.celldisp{
+    background-color:#CCFFCC;
+}
+
+.cellpaye{
+    background-color:#00FF00;
+}
+
+.cellna{
+    background-color:#CCCCCC;
+}
+
+.cellfutur{
+    background-color:#EEEEE0;
+}
+
+.cellcurrent{
+    background-color:#FFCC00;
+}
+
+.celldu{
+    background-color:#FF0000;
+}
+
+.graphCell{
+ padding:0px !important;
+}
+
+.eoy{
+  border-right:solid 1px; 
+}
+
+.abLim{
+  border-bottom:solid 1px; 
+}
+
+.picFrmt{
+    position: relative;
+    width:800px;
+display:block;
+  margin: 5px auto 5px auto;
+}
+
