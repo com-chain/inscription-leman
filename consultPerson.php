@@ -673,11 +673,11 @@ echo '
 	 </span>
 	 <span class="fitem">
 	   <span class="label" id="lb_name">Nom*</span>
-	   <input class="inputText"  type="text" id ="name" name="name" value="'.$FirstName.'" placeholder="Nom*" required="required"/><br/>
+	   <input class="inputText"  type="text" id ="name" name="name" value="'.$LastName.'" placeholder="Nom*" required="required"/><br/>
 	 </span>
 	 <span class="fitem">
 	   <span class="label" id="lb_surname" >Prénom*</span>
-	   <input class="inputText"  type="text" id ="surname" name="surname" value="'.$LastName.'" placeholder="Prénom*" required="required"/><br/>
+	   <input class="inputText"  type="text" id ="surname" name="surname" value="'.$FirstName.'" placeholder="Prénom*" required="required"/><br/>
 	 </span>
 	
 	 <span class="fitem">
