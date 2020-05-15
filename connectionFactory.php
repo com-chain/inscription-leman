@@ -15,6 +15,38 @@ class ConnectionFactory {
 	  return $mysqli;  
     } 
 } 
+
+public function validMember($mysqli, $Code) {
+        $stmt = $this->$mysqli->prepare("
+        SELECT 
+            Reg_Code.PersonId,
+            RecordTypeId,
+            Reg_Legal.Name,
+            Reg_Legal.Contact,
+            Reg_Legal.ContactSurname,
+            Reg_Individual.FirstName, 
+            Reg_Individual.LastName, 
+            Code 
+        FROM Reg_Code 
+        INNER JOIN Reg_Person ON Reg_Person.Id=Reg_Code.PersonId
+        LEFT OUTER JOÎN Reg_Legal ON Reg_Person.Id = Reg_Legal.Id
+        LEFT OUTER JOÎN Reg_Individual ON Reg_Person.Id = Reg_Individual.Id
+        WHERE Code=?");
+        $stmt->bind_param("s", $code);
+        $stmt->bind_result($id, $type,$company,$ct_name, $ct_surname,$surname,$lastname,$res_code);
+        $stmt->execute();
+        $result = array( "Valid"=>False);
+        while ($stmt->fetch()){
+            if ($type == 1) {
+                $person = $ct_surname." ".$ct_name;
+            } else {
+                $person = $surname." ".$lastname;
+            }
+        
+            $result = array("id"=>$id,"code"=>$res_code, "Valid"=>($res_code==$Code), "Name"=>$person, "Company"=>$company, "Type"=>$type);
+        }
+        return $result;
+}
 	
 ?> 
 

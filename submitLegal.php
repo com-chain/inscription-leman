@@ -1,4 +1,5 @@
 <?php
+ob_start();
 echo'
 <!DOCTYPE html>
 <html>
@@ -268,6 +269,20 @@ include 'p_head.php';
         }
       
     }
+    
+    
+    //// Code if needed
+      if ($ok && $AccountRequest==1) {
+         $code=md5($name);
+         $query = "INSERT INTO Reg_Code (PersonId,Code) VALUES (?,?)";
+         $stmt = $mysqli->prepare($query);
+         $stmt->bind_param("is",$person_id,$code);
+         if (! $stmt->execute()) {
+             $ok=false;
+              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+         }
+         $stmt->close();
+      }
    
      
      
@@ -289,14 +304,78 @@ include 'p_head.php';
      } 
      if ($ok){
           if ($AccountRequest==1)  {
+        /*  
+          // generate pdf 
+          $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/pdf.php";
+          $data = array('code' => $code);
+          $options = array(
+            'http' => array(
+                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
+                'method'  => 'POST',
+                'content' => http_build_query($data)
+            ));
+        $context  = stream_context_create($options);
+        $result = file_get_contents($url, false, $context);
+        if ($result !== FALSE) {
+            
+        }
+        
+        // todo mail
+        
+        $file = $path.$filename;
+$content = file_get_contents( $file);
+$content = chunk_split(base64_encode($content));
+$uid = md5(uniqid(time()));
+$name = basename($file);
+
+// header
+$header = "From: ".$from_name." <".$from_mail.">\r\n";
+$header .= "Reply-To: ".$replyto."\r\n";
+$header .= "MIME-Version: 1.0\r\n";
+$header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"\r\n\r\n";
+
+// message & attachment
+$nmessage = "--".$uid."\r\n";
+$nmessage .= "Content-type:text/plain; charset=iso-8859-1\r\n";
+$nmessage .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
+$nmessage .= $message."\r\n\r\n";
+$nmessage .= "--".$uid."\r\n";
+$nmessage .= "Content-Type: application/octet-stream; name=\"".$filename."\"\r\n";
+$nmessage .= "Content-Transfer-Encoding: base64\r\n";
+$nmessage .= "Content-Disposition: attachment; filename=\"".$filename."\"\r\n\r\n";
+$nmessage .= $content."\r\n\r\n";
+$nmessage .= "--".$uid."--";
+
+if (mail($mailto, $subject, $nmessage, $header)) {
+    return true; // Or do something here
+} else {
+  return false;
+}
+        
+        
+        
+        
+        
+        
+          */
+          
+          
+          
+          
          echo ' <h3 class="center_msg"> Demande d’ouverture de compte pour ENTREPRISE 
-envoyée avec succès.';
+envoyée avec succès.</h3>
+         <form id="form" action="pdf.php" method="post">
+           <span class="labelWide">Nous vous avons envoyé un email contenant votre code d\'ouverture de compte et une marche à suivre pour l\'utiliser. Vous pouvez aussi directement télécharger ce document ci-dessous: </span>
+          <input   type="hiden"  name="code" value="'.$code.'" />
+          <input   type="submit" class="big_button" value="Code d\'ouverture de compte" /><br/>
+        </form>';
         } else {
          echo ' <h3 class="center_msg">Demande d’adhésion pour ENTREPRISE
-envoyée avec succès.';
+envoyée avec succès.<br/>
+Nous revenons vers vous au plus vite. </h3>';
         }
         echo '<br/>
-Nous revenons vers vous au plus vite.<br/>Merci de votre engagement pour une économie circulaire !
+ <h3>Merci de votre engagement pour une économie circulaire !
  </h3>
  <br/><br/>
  

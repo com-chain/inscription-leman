@@ -1,4 +1,5 @@
 <?php
+ob_start();
 echo'
 <!DOCTYPE html>
 <html>
@@ -179,6 +180,22 @@ include 'p_head.php';
          $stmt->close();
      }
      
+     
+     
+       //// Code if needed
+      if ($ok && $AccountRequest==1) {
+         $code=md5( $last_name.$first_name);
+         $query = "INSERT INTO Reg_Code (PersonId,Code) VALUES (?,?)";
+         $stmt = $mysqli->prepare($query);
+         $stmt->bind_param("is",$person_id,$code);
+         if (! $stmt->execute()) {
+             $ok=false;
+              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+         }
+         $stmt->close();
+      }
+     
+     
      // audit
      
      $query = "INSERT INTO Reg_StatusHistory (PersonId, NewStatusId, EventDate ) VALUES (?,?,now())";
@@ -196,15 +213,23 @@ include 'p_head.php';
      if ($ok){
      
         if ($AccountRequest==1)  {
+         // todo mail
+        
          echo ' <h3  class="center_msg"> Demande d’ouverture de compte pour PARTICULIER 
-envoyée avec succès.';
+envoyée avec succès. </h3>
+         <form id="form" action="pdf.php" method="post">
+           <span class="labelWide">Nous vous avons envoyé un email contenant votre code d\'ouverture de compte et une marche à suivre pour l\'utiliser. Vous pouvez aussi directement télécharger ce document ci-dessous: </span>
+          <input   type="hiden"  name="code" value="'.$code.'" />
+          <input   type="submit" class="big_button" value="Code d\'ouverture de compte" /><br/>
+        </form>
+';
         } else {
          echo ' <h3  class="center_msg">Demande d’adhésion pour PARTICULIER
-envoyée avec succès.';
+envoyée avec succès.<br/>
+Nous revenons vers vous au plus vite. </h3>';
         }
-        echo ' <br/>
-Nous revenons vers vous au plus vite. <br/>
-Merci de votre engagement pour une économie circulaire !
+        echo '  <br/>
+ <h3>Merci de votre engagement pour une économie circulaire !
  </h3>';
      }
    
