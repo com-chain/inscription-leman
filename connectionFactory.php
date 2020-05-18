@@ -16,8 +16,8 @@ class ConnectionFactory {
     } 
 } 
 
-public function validMember($mysqli, $Code) {
-        $stmt = $this->$mysqli->prepare("
+function validMember($mysqli, $Code) {
+        $stmt = $mysqli->prepare("
         SELECT 
             Reg_Code.PersonId,
             RecordTypeId,
@@ -29,10 +29,11 @@ public function validMember($mysqli, $Code) {
             Code 
         FROM Reg_Code 
         INNER JOIN Reg_Person ON Reg_Person.Id=Reg_Code.PersonId
-        LEFT OUTER JOÎN Reg_Legal ON Reg_Person.Id = Reg_Legal.Id
-        LEFT OUTER JOÎN Reg_Individual ON Reg_Person.Id = Reg_Individual.Id
+        LEFT OUTER JOIN Reg_Legal ON Reg_Person.Id = Reg_Legal.Id
+        LEFT OUTER JOIN Reg_Individual ON Reg_Person.Id = Reg_Individual.Id
         WHERE Code=?");
-        $stmt->bind_param("s", $code);
+        
+        $stmt->bind_param("s", $Code);
         $stmt->bind_result($id, $type,$company,$ct_name, $ct_surname,$surname,$lastname,$res_code);
         $stmt->execute();
         $result = array( "Valid"=>False);

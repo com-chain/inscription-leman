@@ -2,8 +2,8 @@
 require('fpdf/fpdf.php');
 include 'str.php';
 include 'connectionFactory.php';
-
-$res = $db->validMember($_Post['code']);
+$mysqli= ConnectionFactory::GetConnection();
+$res = validMember($mysqli, $_POST['code']);
 if ($res['Valid']!=True){
     echo "Hello!";
     exit;
@@ -194,16 +194,12 @@ $pdf->LigneVide();
 
 $pdf->AjoutParagraphe('La sauvegarde papier de chaque compte permet d\'y accéder depuis l\'application Biletujo sur votre téléphone. Vous pouvez télécharger l\'application Biletujo en vous servant des QR ci-dessous:');
 
-$pdf->LigneVide();
-$pdf->LigneVide();
-$pdf->LigneVide();
-$pdf->LigneVide();
+$pdf->SetY(-45);
 
-$pdf->Image('resources/Biletujo_Android.png',35,213,40);
-$pdf->Image('resources/Biletujo_Apple.png',110,213,40);
-$pdf->AjoutText("Le guide d'utilisation complet d'application Biletujo est accessible en cliquant sur l'icône        (aide/help).");
+$pdf->Image('resources/Biletujo_Android.png',45,210,40);
+$pdf->Image('resources/Biletujo_Apple.png',120,210,40);
+$pdf->AjoutText("Le guide d'utilisation complet d'application Biletujo est accessible en cliquant sur l'icône d'aide.");
 
-$pdf->Image('resources/help.png',138,254,7);
 $pdf->LigneVide();
 $pdf->AjoutText("Nous vous souhaitons d'heureuses transactions lémaniques !");
 $pdf->SautDeLigne();

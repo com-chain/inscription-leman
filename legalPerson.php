@@ -85,7 +85,7 @@ echo'
        
     foreach ($cotisation_e_ch as $etp => $value){
        echo'
-       if (etp>'.$etp.'){
+       if (etp>='.$etp.'){
           amount_ch = '.$value.';
        }
        ';
@@ -93,7 +93,7 @@ echo'
     }
     foreach ($cotisation_e_fr as $etp => $value){
        echo'
-       if (etp>'.$etp.'){
+       if (etp>='.$etp.'){
           amount_fr = '.$value.';
        }
        ';
@@ -101,7 +101,7 @@ echo'
     }
     foreach ($cotisation_e_fr_lem as $etp => $value){
        echo'
-       if (etp>'.$etp.'){
+       if (etp>='.$etp.'){
           amount_fr_lem = '.$value.';
        }
        '; 

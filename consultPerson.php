@@ -197,7 +197,26 @@ $query = 'SELECT
     $stmt->execute();
     $stmt->fetch();
     $stmt->close();	
-
+    
+    $query = 'SELECT 
+               Reg_Person.Id,
+	           count(Reg_Code.Id),
+	           min(Reg_Wallet.Validated),
+	           count(Reg_Wallet.Validated)
+	          FROM Reg_Person 
+	            LEFT OUTER JOIN Reg_Code ON Reg_Code.PersonId=Reg_Person.Id
+	            LEFT OUTER JOIN Reg_Wallet ON Reg_Wallet.PersonId=Reg_Person.Id
+              WHERE Reg_Person.Id=?
+	          GROUP BY Reg_Person.Id';
+	
+	          
+    $stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i",$id);
+    $stmt->bind_result($rpid,$code,$valid,$wall);
+    $stmt->execute();
+    
+    $stmt->fetch();
+    $stmt->close();	
 
 if (!isset($p_address)|| $p_address==''){
     $p_address=$address;
@@ -247,7 +266,7 @@ echo '
   <span class="fond"></span>
   <span class="cont">
   
-    <a class="button" href="consult.php">Retour</a>
+    <a class="button" href="todo.php">Close</a>
     <a class="button" href="export.php?id='.$id.'" style="float:right;">Exporter</a><br/>
 	<h2>  Demande d\'';
 	if (trim($membership)=='Oui'){
@@ -257,10 +276,25 @@ echo '
 	    }
 	}
 	if ($acc_req==1){
-	   echo 'ouverture de compte';
+	   echo 'ouverture de compte ';
 	}
-	echo ' <br/> '.$typeName.' - Status: '.$statusName.'  </h2>';
+	echo ' '.$typeName.' <br/>  Status: '.$statusName.'  ';
 	
+	if ($acc_req==1 && $code==0){
+	    echo '<span style="color:red"> &nbsp; Code manquant</span>';
+	}
+	
+	if ($acc_req==1 && $wall>0 && $valid==0){
+	    echo '<span style="color:red"> &nbsp; Compte a débloquer</span>';
+	}
+	
+	if (trim($membership)=='Oui' && ($status==1 || $status==2)){
+	    echo '<span style="color:red"> &nbsp; Adhésion a valider</span>';
+	}
+	
+	echo '</h2>';
+	
+	echo '<span class="half">';
 	if (canEdit() && $status==1){
 	  echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2">Mettre en attente</a> 
 	        <a class="button" href="changeStatus.php?id='.$id.'&stat=3">Accepter</a>
@@ -271,6 +305,92 @@ echo '
 	 echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=3">Accepter</a>
 	        <a class="button" href="changeStatus.php?id='.$id.'&stat=100">Refuser</a>';
 	}
+	echo'
+	<h3> Historique des status  </h3>
+	<ul>';
+	
+	$query = 'SELECT 
+	           Reg_Status.Name,
+	           Reg_SiteUser.EMail,
+	           Reg_StatusHistory.EventDate
+	          FROM Reg_StatusHistory
+	           LEFT OUTER JOIN Reg_Status ON Reg_StatusHistory.NewStatusId = Reg_Status.Id
+	           LEFT OUTER JOIN Reg_SiteUser ON Reg_StatusHistory.UserId = Reg_SiteUser.Id
+	          WHERE PersonId=? ORDER BY Reg_StatusHistory.EventDate
+	           ';
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i",$id);
+    $stmt->bind_result($hist_stat,$hist_user,$hist_date);
+    $stmt->execute();
+    while ($stmt->fetch()){ 
+        if (!isset($hist_user) || $hist_user==''){
+            $hist_user='REQUERANT';
+        }
+        echo'<li>'.$hist_stat.' / '.$hist_date.' / '.$hist_user.'</li>';
+    }
+    $stmt->close();	
+	
+	echo'
+	</ul>
+	
+	</span>
+	<span class="half">
+	<h3> Code et comptes  </h3>
+	Code: ';if (canEdit()){echo'<a href="addCode.php?id='.$id.'" class="buttonlt" >Ajouter</a>';} echo'<br>
+	<table>';
+	$query = 'SELECT Reg_Code.Code
+	          FROM Reg_Code
+	          WHERE PersonId=? 
+	           ';
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i",$id);
+    $stmt->bind_result($code_code);
+    $stmt->execute();
+    $index=1;
+    while ($stmt->fetch()){ 
+        echo'<tr><td>'.$code_code.'<form target="_blank"  id="form'.$index.'" action="pdf.php" method="post" style="display:inline;">
+          <input   type="hidden"  name="code" value="'.$code_code.'" />
+          <input class="buttonlt"  type="submit" value="PDF" />
+        </form></td></tr>';
+        $index++;
+    }
+    $stmt->close();	
+	echo'</table>
+	Comptes: ';if (canEdit()){echo'<a href="addWallet.php?id='.$id.'" class="buttonlt" >Ajouter</a>';} echo'<br>
+	<table>';
+	$query = 'SELECT address,
+	            Reg_Code.Code,
+	            Validated 
+	          FROM Reg_Wallet
+	          LEFT OUTER JOIN Reg_Code ON CodeId=Reg_Code.Id
+	          WHERE Reg_Wallet.PersonId=? 
+	           ';
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i",$id);
+    $stmt->bind_result($w_add,$w_code,$w_val);
+    $stmt->execute();
+    echo'<tr><td>Address</td><td>Code</td><td>Statut</td></tr>';
+    while ($stmt->fetch()){ 
+        echo'<tr><td>
+        <input type="text" readonly="readonly" value="'.$w_add.'"/> 
+        </td><td>'.substr ($w_code,0,5).'...</td><td>';
+        
+        if ($w_val==1){
+            echo 'validé';
+        } else {
+            echo ' <a href="unlockWallet.php?id='.$id.'&add='.$w_add.'" class="buttonlt">Débloquer</a>';
+        }
+        echo'</td></tr>';
+    }
+    $stmt->close();	
+	echo'</table>';
+	
+	
+	echo'</span>';
+	
+	
+	
+	
 	
 	
 	

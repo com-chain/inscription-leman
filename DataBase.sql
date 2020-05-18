@@ -270,16 +270,29 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON myDbName.* TO 'myDbUser';
 --------------------
 
 
-
-
 --------------------
 
 CREATE TABLE  Reg_Code (
   Id INT NOT NULL  AUTO_INCREMENT PRIMARY KEY ,
-  PersonId INT NOT NULL,
+  PersonId INT  NULL,
   Code VARCHAR( 32 ) NOT NULL,
   CONSTRAINT R_code_fk FOREIGN KEY (PersonId) REFERENCES Reg_Person(Id)
 );
+
+INSERT Reg_Status (Id,Name) 
+VALUES (4,'A valider');
+
+CREATE TABLE  Reg_Wallet (
+  Id INT NOT NULL  AUTO_INCREMENT PRIMARY KEY ,
+  address VARCHAR( 255 ) NOT NULL,
+  PersonId INT NULL,
+  CodeId INT NULL,
+  Validated INT NOT NULL DEFAULT 0,
+  CONSTRAINT R_wallet_p_fk FOREIGN KEY (PersonId) REFERENCES Reg_Person(Id),
+  CONSTRAINT R_wallet_c_fk FOREIGN KEY (CodeId) REFERENCES Reg_Code(Id)
+);
+
+--------------------
 
 
 

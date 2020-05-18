@@ -273,7 +273,7 @@ include 'p_head.php';
     
     //// Code if needed
       if ($ok && $AccountRequest==1) {
-         $code=md5($name);
+         $code=md5($person_id.$name);
          $query = "INSERT INTO Reg_Code (PersonId,Code) VALUES (?,?)";
          $stmt = $mysqli->prepare($query);
          $stmt->bind_param("is",$person_id,$code);
@@ -302,24 +302,27 @@ include 'p_head.php';
          }
          $stmt->close(); 
      } 
-     if ($ok){
-          if ($AccountRequest==1)  {
-        /*  
-          // generate pdf 
-          $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/pdf.php";
-          $data = array('code' => $code);
-          $options = array(
+     
+    if ($ok){
+        if ($AccountRequest==1)  {
+            // generate pdf 
+            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/pdf.php";
+            $data = array('code' => $code);
+            $options = array(
             'http' => array(
                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                 'method'  => 'POST',
                 'content' => http_build_query($data)
             ));
-        $context  = stream_context_create($options);
-        $result = file_get_contents($url, false, $context);
-        if ($result !== FALSE) {
-            
+            $context  = stream_context_create($options);
+            $result = file_get_contents($url, false, $context);
+            if ($result !== FALSE) {
+                
+                // todo mail
+            }
         }
-        
+    }
+        /*
         // todo mail
         
         $file = $path.$filename;
@@ -366,8 +369,8 @@ if (mail($mailto, $subject, $nmessage, $header)) {
 envoyée avec succès.</h3>
          <form id="form" action="pdf.php" method="post">
            <span class="labelWide">Nous vous avons envoyé un email contenant votre code d\'ouverture de compte et une marche à suivre pour l\'utiliser. Vous pouvez aussi directement télécharger ce document ci-dessous: </span>
-          <input   type="hiden"  name="code" value="'.$code.'" />
-          <input   type="submit" class="big_button" value="Code d\'ouverture de compte" /><br/>
+          <input   type="hidden"  name="code" value="'.$code.'" />
+         <input   type="submit" class="big_button" value="Code d\'ouverture de compte" style="width:300px;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);"/><br/>
         </form>';
         } else {
          echo ' <h3 class="center_msg">Demande d’adhésion pour ENTREPRISE
@@ -375,7 +378,7 @@ envoyée avec succès.<br/>
 Nous revenons vers vous au plus vite. </h3>';
         }
         echo '<br/>
- <h3>Merci de votre engagement pour une économie circulaire !
+ <h3 class="center_msg">Merci de votre engagement pour une économie circulaire !
  </h3>
  <br/><br/>
  
