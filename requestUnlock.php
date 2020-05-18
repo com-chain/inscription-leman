@@ -3,13 +3,11 @@ include 'connectionFactory.php';
 $mysqli= ConnectionFactory::GetConnection();
 
 if (isset($_POST['address'])){
-    $query = "INSERT INTO Reg_UnlockRequest (address, EventDate ) VALUES (?,now())";
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("s",$_POST['address']); 
-    $stmt->execute();
-    $stmt->close();	
-}  
 
+    $addr = strtolower(preg_replace("/[^a-zA-Z0-9]+/", "", $_POST['address']));
+    if (strlen($addr) != 42) {
+        exit();
+    }
 
   // Check unique
   
@@ -63,7 +61,7 @@ if (isset($_POST['address'])){
         $stmt->execute();
         $stmt->fetch();
         $stmt->close();
-        if (! $codeId>0  )
+        if (! $codeId>0  ) {
             // code unknow
             // insert code without the person
             $query = 'INSERT INTO  Reg_Code (Code) VALUES (?)';  
@@ -94,17 +92,9 @@ if (isset($_POST['address'])){
         // TODO ???
         exit();
     } 
-    
+ }   
      
     
              
 
-/* debug
-if (isset($_GET['address'])){
-    $query = "INSERT INTO Reg_UnlockRequest (address, EventDate) VALUES (?,now())";
-    $stmt = $mysqli->prepare($query);
-    $stmt->bind_param("s",$_GET['address']); 
-    $stmt->execute();
-    $stmt->close();	
-} */
 ?>
