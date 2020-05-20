@@ -378,7 +378,7 @@ echo '
         if ($w_val==1){
             echo 'validé';
         } else {
-            echo ' <a href="unlockWallet.php?id='.$id.'&add='.$w_add.'" class="buttonlt">Débloquer</a>';
+            echo ' <a href="unlockWallet.php?id='.$id.'&add='.$w_add.'" class="buttonlt">Débloqué dans le Bureau</a>';
         }
         echo'</td></tr>';
     }
