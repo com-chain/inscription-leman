@@ -52,11 +52,13 @@
     }
     
      $query = 'UPDATE Reg_Code SET PersonId=? Where Id=?';
+	 $stmt = $mysqli->prepare($query);
      $stmt->bind_param("ii",$pid,$lc);
      $stmt->execute();
      $stmt->close();
      
      $query = 'UPDATE Reg_Wallet SET PersonId=? Where CodeId=?';
+	 $stmt = $mysqli->prepare($query);
      $stmt->bind_param("ii",$pid,$lc);
      $stmt->execute();
      $stmt->close();

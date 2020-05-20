@@ -62,10 +62,21 @@ echo '
     
     
     
+    $filter=$_GET['filter'];
     
     
+    echo '<h2> Demandes à traiter </h2>
+    <form action="todo.php"  method="get">
+    <select name="filter">
+        <option value="">Toutes</option>
+        <option value="1" '; if ($filter==1){echo ' selected="selected"';} echo'>Adhésion à traiter</option>
+        <option value="2"'; if ($filter==2){echo ' selected="selected"';} echo'>Compte à débloquer</option>
+        <option value="3"'; if ($filter==3){echo ' selected="selected"';} echo'>Code Manquant</option>
+    </select><br>
+    <input class="button" type="submit" value="Rafraichir">
+    </form> <br>
+    <br>
     
-    echo '<h2> Demandes à traiter </h2><br>
     
     <table>
 	    <tr><td>Type</td><td>Nom</td><td>Date</td><td>Status</td><td>Email</td><td>Membre</td><td>Compte</td><td>Actions</td></tr>
@@ -110,8 +121,20 @@ $stmt = $mysqli->prepare($query);
 $stmt->bind_result($id,$member,$ac_req,$type,$typeName,$i_name,$e_name,$date,$statusid,$status,$mail,$code,$valid,$wall);
 $stmt->execute();
 while ($stmt->fetch()){ 
-
-    if ($code==0 || ($wall>0 && $valid==0) || ($member==1 && $statusid<2)){
+   $accept= ($ac_req==1 && $code==0) || ($wall>0 && $valid==0) || ($member=='Oui' && $statusid<2);
+   if ($filter==1) {
+      $accept =  ($member=='Oui' && $statusid<2);
+   }
+   
+   if ($filter==2) {
+      $accept = ($wall>0 && $valid==0);
+   }
+   
+   if ($filter==3) {
+      $accept =  ($ac_req==1 && $code==0);
+   }
+   
+    if ($accept){
         echo '<tr><td>'.$typeName.'</td><td>';
         if ($type==1){
             echo $e_name;

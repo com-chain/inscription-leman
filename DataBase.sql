@@ -279,8 +279,7 @@ CREATE TABLE  Reg_Code (
   CONSTRAINT R_code_fk FOREIGN KEY (PersonId) REFERENCES Reg_Person(Id)
 );
 
-INSERT Reg_Status (Id,Name) 
-VALUES (4,'A valider');
+
 
 CREATE TABLE  Reg_Wallet (
   Id INT NOT NULL  AUTO_INCREMENT PRIMARY KEY ,

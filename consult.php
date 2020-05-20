@@ -19,6 +19,8 @@ echo'
 $tp = $_POST['tp'];
 $st = $_POST['st'];
 $name = $_POST['name'];
+$code = $_POST['code'];
+$wallet = $_POST['wallet'];
 
 
 echo '
@@ -68,14 +70,25 @@ echo '
 	 </span>
 	 <span class="fitem">
 	   <span class="label" id="lb_name">Nom (personne / entreprise)</span>
-	   <input class="inputText"  type="text" id ="name" name="name" value="'.$name.'" placeholder="nom à chercher" /><br/>
+	   <input class="inputText"  type="text" id ="name" name="name" value="'.$name.'" placeholder="nom à chercher (fragment)" /><br/>
+	 </span>
+	
+	 <span class="fitem">
+	   <span class="label" id="lb_code">Code</span>
+	   <input class="inputText"  type="text" id ="code" name="code" value="'.$code.'" placeholder="code à chercher (fragment)" /><br/>
+	 </span>
+	 
+	  <span class="fitem">
+	   <span class="label" id="lb_wallet">Compte</span>
+	   <input class="inputText"  type="text" id ="wallet" name="wallet" value="'.$wallet.'" placeholder="Compte à chercher (fragment)" /><br/>
 	 </span>
 	   <input class="button"  type="submit"  value="Chercher"  /><br/>
 	</form>
 	 ';
   
   
-  if ((isset($tp) && $tp>0) || (isset($st) && $st>0) || (isset($name) && $name!='')){
+  if ((isset($tp) && $tp>0) || (isset($st) && $st>0) || (isset($name) && $name!='')
+  || (isset($code) && $code!='')|| (isset($wallet) && $wallet!='')){
   
 	echo'<h2> Demandes d\'ouverture / d\'adhésion </h2>
 	<table>
@@ -99,6 +112,8 @@ echo '
 	            LEFT OUTER JOIN Reg_Legal on Reg_Legal.Id=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Status on Reg_Status.Id=Reg_Person.StatusId
 	            LEFT OUTER JOIN Reg_StatusHistory on Reg_StatusHistory.NewStatusId=Reg_Person.StatusId AND Reg_StatusHistory.PersonId=Reg_Person.Id
+	            LEFT OUTER JOIN Reg_Code on Reg_Code.PersonId=Reg_Person.Id
+	            LEFT OUTER JOIN Reg_Wallet on Reg_Wallet.PersonId=Reg_Person.Id
 	            
 	          WHERE ';
 	          
@@ -123,9 +138,35 @@ echo '
 	    $query =$query . " (Reg_Legal.Name LIKE '%".$name."%' OR Reg_Individual.FirstName LIKE '%".$name."%' OR Reg_Individual.LastName LIKE '%".$name."%' )";
 	    
 	  }
+	  
+	  if (isset($code) && $code!=''){
+	    if (!$first){
+	       $query =$query . ' AND ';
+	    }
+	    $query =$query . " Reg_Code.Code LIKE '%".$code."%'";
+	    
+	  }
+	  
+	  if (isset($wallet) && $wallet!=''){
+	    if (!$first){
+	       $query =$query . ' AND ';
+	    }
+	    $query =$query . " Reg_Wallet.address LIKE '%".$wallet."%' ";
+	    
+	  }
 	   
-	  $query =$query .' ORDER BY Reg_StatusHistory.EventDate desc, Reg_Person.Id desc';      
-	          
+	  $query =$query .' 
+	  GROUP BY Reg_Person.Id,
+	           Reg_Person.Membership,
+	           Reg_Person.AccountRequest,
+	           Reg_RecordType.Id,
+	           Reg_RecordType.Name, 
+	           CONCAT(Reg_Individual.FirstName, " ", Reg_Individual.LastName), 
+	           Reg_Legal.Name,
+	           Reg_StatusHistory.EventDate,
+	           Reg_Status.Name,
+	           Email
+	  ORDER BY Reg_StatusHistory.EventDate desc, Reg_Person.Id desc';      
 	  $stmt = $mysqli->prepare($query);
       $stmt->bind_result($id,$member,$ac_req,$type,$typeName,$i_name,$e_name,$date,$status,$mail);
       $stmt->execute();

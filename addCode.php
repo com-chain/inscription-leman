@@ -113,7 +113,7 @@ echo '
             echo ' <option value ="'.$codeid.'">'.$code.'('.$add.')</option>';
         }
         $stmt->close();	
-        echo '</span><br/>';
+        echo '</select></span><br/>';
          
     }  
     

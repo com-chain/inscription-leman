@@ -54,10 +54,10 @@
     ));
     $context  = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
-    if ($result !== FALSE && $result!='KO' && isset($res[$addr])) {
-        
-        $res = json_decode($result);
-        $code = $res[$addr];
+    $res = json_decode($result);
+    if ($result !== FALSE && $result!='KO' && isset($res->$addr)) {
+       
+        $code = $res->$addr;
     } else {
         //// TODO insert without code ???
       /* $query = 'INSERT INTO  Reg_Wallet (address, PersonId, Validated) VALUES (?,?,?)';       
