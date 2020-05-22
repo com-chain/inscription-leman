@@ -207,7 +207,7 @@ $pdf->AjoutText("                                                               
 
 // save locally for emailing
 
-$local_file = './Data/img_'.$res['id'].'/Code.pdf';
+$local_file = './Data/img_'.$res['id'].'/Code_'.$res['code'].'.pdf';
 unlink($local_file);
 $pdf->Output($local_file,'F');
 // output
