@@ -9,7 +9,7 @@ if ($res['Valid']!=True){
     exit;
 }
 
-
+$do_output_file = isset($_POST['local']);
 
 
 class PDF extends FPDF
@@ -31,13 +31,14 @@ function Header()
     $this->SetXY (15,25);
     $this->Cell(0,10,utf8_decode('Léman électronique : Code d\'autorisation personnel'),0,0,'C');
     // Saut de ligne
-    $this->Ln(10);
+    $this->Ln(12);
     $this->AjoutBoldParagraphe('Attention ! Ce document est à conserver précieusement dans vos dossiers !');
 }
 
 // Pied de page
 function Footer()
 {
+    $this->SetMargins(15,0,15);
     $this->SetTextColor(0,111,180);
     // Positionnement à 1,5 cm du bas
     $this->SetY(-15);
@@ -76,8 +77,10 @@ function AjoutBold_2($text){
     $this->SetTextColor(0,0,0);
 }
 
+
+
 function AjoutLien($text,$liens){
-    $this->SetTextColor(0,0,255);
+    $this->SetTextColor(0,111,180);
     $this->Write(5,utf8_decode($text),$liens);
     $this->SetTextColor(0,0,0);
 }
@@ -146,70 +149,103 @@ if ($res['Type']==1){
 $pdf->LigneVide();
 $pdf->AjoutCadreParagraphe(getStr($res['code']));
 
+$pdf->AjoutText("Les personnes physiques et les personnes morales reçoivent des codes d'autorisation distincts.");
+
 $pdf->AjoutText("Ce code d'autorisation vous ");
 
 $pdf->SetFont('Helvetica','I',9);
 $pdf->Write(5,utf8_decode("autorise"));
 $pdf->SetFont('Helvetica','I',9);
 
+
+
 if ($res['Type']==1){
-    $pdf->AjoutText(" à créer au sein de l'application Biletujo autant de comptes personnels que vous le désirez (un compte perso, un compte famille, etc.). La marche à suivre pour créer votre portefeuille et le synchroniser sur vos différents appareils est décrite en détail dans la ");
-} else {
     $pdf->AjoutText(" à créer au sein de l'application Biletujo des comptes « entreprise ». La marche à suivre pour créer votre portefeuille et le synchroniser sur vos différents appareils est décrite en détail dans la ");
+
+    } else {
+
+$pdf->AjoutText(" à créer au sein de l'application Biletujo autant de comptes personnels que vous le désirez (un compte perso, un compte famille, etc.). La marche à suivre pour créer votre portefeuille et le synchroniser sur vos différents appareils est décrite en détail dans la ");
+
 }
 
 
 $pdf->SetFont('Helvetica','I',9);
-$pdf->Write(5,utf8_decode("Marche à suivre : création d'un portefeuille sur l'application Biletujo"));
+$pdf->Write(5,utf8_decode("Marche à suivre: création et synchronisation d'un compte sur l'application Biletujo"));
 $pdf->SetFont('Helvetica','I',9);
 
 $pdf->AjoutText(", que nous vous conseillons vivement de lire. En tous les cas, par prudence, il faut : ");
+$pdf->SetMargins(20,0,15);
+$pdf->LigneVide();
+$pdf->AjoutText("1.    Commencer la procédure d'autorisation sur un ordinateur à la page ");
 
-$pdf->SetMargins(20,0);
-$pdf->LigneVide();
-$pdf->AjoutText("1. Commencer la procédure d'autorisation sur un ordinateur à la page ");
-$pdf->AjoutLien('https://wallet.monnaie-leman.org/','https://wallet.monnaie-leman.org/');
-$pdf->LigneVide();
-$pdf->AjoutText('2. Suivre les instructions pour la création de votre/vos comptes.
-Votre code d’autorisation personnel ci-dessus {"Id":...} vous sera demandé par l\'application durant l\'ouverture de chaque compte.');
-$pdf->LigneVide();
-$pdf->AjoutText('3. Une fois votre compté créé, réaliser une ');
+$pdf->SetMargins(26,0);
+$pdf->AjoutLien('https://wallet.cchosting.org/','https://wallet.cchosting.org/');
+$pdf->AjoutText(" (2ème icône avec le \"+\").");
+
+$pdf->SetMargins(20,0,15);
+$pdf->SautDeLigne();
+$pdf->AjoutText('2.    Suivre les instructions pour la création de votre/vos compte/s. ');
+
+$pdf->SetMargins(26,0,15);
+$pdf->AjoutText('Votre code d\'autorisation personnel ci-dessus {"id":...} vous sera demandé par l\'application lors de l\'ouverture de chaque compte.');
+
+$pdf->SetMargins(20,0,15);
+$pdf->SautDeLigne();
+$pdf->AjoutText('3.    Une fois votre compte créé, réaliser une ');
+$pdf->SetMargins(26,0,15);
 $pdf->AjoutBold('sauvegarde numérique');
 $pdf->AjoutText(' et une ');
 $pdf->AjoutBold('sauvegarde papier');
 $pdf->AjoutText('.');
-$pdf->LigneVide();
-$pdf->AjoutText('4. Conserver les précieusement ainsi que le ');
+
+$pdf->SetMargins(20,0,15);
+$pdf->SautDeLigne();
+$pdf->AjoutText('4.    Conserver précieusement les sauvegardes ainsi que le ');
+$pdf->SetMargins(26,0,15);
 $pdf->AjoutBold('mot de passe');
 $pdf->AjoutText(' que vous aurez choisi au moment de la création de chacun de vos comptes.');
 $pdf->SautDeLigne();
-$pdf->AjoutBold('Si vous veniez à perdre vos sauvegardes ou le mot de passe il ne serait plus possible de récupérer les lémans chargés sur le compte correspondant.');
+$pdf->AjoutBold('Si vous veniez à perdre vos sauvegardes ou le mot de passe, il ne serait plus possible de récupérer les lémans chargés sur le compte correspondant.');
+
+$pdf->SetMargins(15,0,15);
 $pdf->LigneVide();
-$pdf->AjoutText('5. Veuillez prendre note que votre compte devra encore être activé avant de pouvoir recevoir et envoyer des lémans.');
+$pdf->AjoutText('Veuillez prendre note que votre compte devra encore être activé avant de pouvoir recevoir et envoyer des lémans.');
 
-$pdf->SetMargins(15,0);
 $pdf->LigneVide();
 
 
 
-$pdf->AjoutParagraphe('La sauvegarde papier de chaque compte permet d\'y accéder depuis l\'application Biletujo sur votre téléphone. Vous pouvez télécharger l\'application Biletujo en vous servant des QR ci-dessous:');
+$pdf->AjoutText('La sauvegarde papier de chaque compte permet d\'y accéder pour synchroniser votre téléphone depuis l\'application Biletujo que vous pouvez télécharger en vous servant des QR ci-dessous. L\'.apk est également disponible sur ');
+$pdf->AjoutLien('https://com-chain.org','https://com-chain.org');
+$pdf->AjoutText('.');
+$pdf->SautDeLigne();
+
+
 
 $pdf->SetY(-45);
 
 $pdf->Image('resources/Biletujo_Android.png',45,210,40);
 $pdf->Image('resources/Biletujo_Apple.png',120,210,40);
-$pdf->AjoutText("Le guide d'utilisation complet d'application Biletujo est accessible en cliquant sur l'icône d'aide.");
+$pdf->AjoutText("Le");
+$pdf->SetFont('Helvetica','I',9);
+$pdf->Write(5,utf8_decode(" Guide d'utilisation de l'application Biletujo"));
 
+$pdf->AjoutText(" est accessible, depuis l'application, en cliquant sur l'icône d'aide.");
 $pdf->LigneVide();
 $pdf->AjoutText("Nous vous souhaitons d'heureuses transactions lémaniques !");
 $pdf->SautDeLigne();
 $pdf->AjoutText("                                                                                     Monnaie Léman, Equipe administration / IT");
 
-// save locally for emailing
 
-$local_file = './Data/img_'.$res['id'].'/Code_'.$res['code'].'.pdf';
-unlink($local_file);
-$pdf->Output($local_file,'F');
-// output
-$pdf->Output();
+if ($do_output_file) {
+    // save locally for emailing
+    $local_file = './Data/img_'.$res['id'].'/Code_'.$res['code'].'.pdf';
+    if (file_exists($local_file)){
+        unlink($local_file);
+    }
+    $pdf->Output($local_file,'F');
+} else {
+    // output
+    $pdf->Output();
+}
 ?>
