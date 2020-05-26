@@ -338,21 +338,47 @@ echo '
 	<h3> Code et comptes  </h3>
 	Code: ';if (canEdit()){echo'<a href="addCode.php?id='.$id.'" class="buttonlt" >Ajouter</a>';} echo'<br>
 	<table>';
-	$query = 'SELECT Reg_Code.Code
+	$query = 'SELECT Reg_Code.Id,
+	            Reg_Code.Code,
+	            count(Reg_Wallet.CodeId)
 	          FROM Reg_Code
-	          WHERE PersonId=? 
+	           LEFT OUTER JOIN Reg_Wallet ON Reg_Wallet.CodeId=Reg_Code.Id
+	          WHERE Reg_Code.PersonId=? 
+	          GROUP BY Reg_Code.Code
 	           ';
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
-    $stmt->bind_result($code_code);
+    $stmt->bind_result($cid, $code_code, $number_w);
     $stmt->execute();
-    $index=1;
     while ($stmt->fetch()){ 
-        echo'<tr><td>'.$code_code.'<form target="_blank"  id="form'.$index.'" action="pdf.php" method="post" style="display:inline;">
+        echo'<tr><td>'.$code_code.'<form target="_blank"  id="form'.$cid.'" action="pdf.php" method="post" style="display:inline;">
           <input   type="hidden"  name="code" value="'.$code_code.'" />
           <input class="buttonlt"  type="submit" value="PDF" />
-        </form></td></tr>';
-        $index++;
+        </form></td>';
+          if ($number_w==0){
+            echo '<td><a class="buttonlt" onClick="document.getElementById(\'pop'.$cid.'\').classList.toggle(\'pop_hidden\');">X</a></td>
+            
+            <span id="pop'.$cid.'" class="glass pop_hidden">
+                <span class="popup">
+                    <span class="pop_title">
+                        Confirmation
+                    </span>
+                    <span class="pop_content">
+                        Voulez-vous vraiement supprimer le code '.$code_code.'?
+                    </span>
+                    <form  action="saveCode.php" method="post" >
+                        <input   type="hidden"  name="id" value="'.$id.'" />
+                        <input   type="hidden"  name="cid" value="'.$cid.'" />                       <span class="pop_btn_bar">
+                        <input class="button"  type="submit" value="Supprimer" />
+                        <a class="button" onClick="document.getElementById(\'pop'.$cid.'\').classList.toggle(\'pop_hidden\');">Conserver</a>
+                        </span>
+                    </form>
+                </span>
+            </span>
+            
+            ';
+          }
+          echo'</tr>';
     }
     $stmt->close();	
 	echo'</table>

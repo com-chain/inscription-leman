@@ -14,8 +14,15 @@
   $code=$_POST['code'];
   $lc=$_POST['lc'];
   $gen=$_POST['gen'];
+  $cid=$_POST['cid'];
   
-  if ($ct!='Link'){
+   if (isset($cid) && $cid>0){
+     $query = 'DELETE FROM Reg_Code WHERE PersonId=? AND Id=?';
+	 $stmt = $mysqli->prepare($query);
+     $stmt->bind_param("ii",$pid,$cid);
+     $stmt->execute();
+     $stmt->close();
+  } else if ($ct!='Link'){
     if ($ct=='Gen'){
        $code=$gen;
     } 
@@ -45,7 +52,7 @@
     $stmt->execute();
     $stmt->close();	
   
-  } else {
+  }  else {
     if ($lc<0){
         header('Location: ./addCode.php?id='.$pid.'&code='.$lc);
         exit();
