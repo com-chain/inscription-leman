@@ -198,6 +198,11 @@ $query = 'SELECT
     $stmt->fetch();
     $stmt->close();	
     
+    
+    if (!isset($type)){
+       header('Location: ./todo.php');
+    }
+    
     $query = 'SELECT 
                Reg_Person.Id,
 	           count(Reg_Code.Id),
@@ -266,7 +271,7 @@ echo '
   <span class="fond"></span>
   <span class="cont">
   
-    <a class="button" href="todo.php">Close</a>
+    <a class="button" href="todo.php">Fermer</a>
     <a class="button" href="export.php?id='.$id.'" style="float:right;">Exporter</a><br/>
 	<h2>  Demande d\'';
 	if (trim($membership)=='Oui'){
@@ -304,6 +309,30 @@ echo '
 	if (canEdit() && $status==2){
 	 echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=3">Accepter</a>
 	        <a class="button" href="changeStatus.php?id='.$id.'&stat=100">Refuser</a>';
+	}
+	
+	if (canEdit() && $status==100){
+	 echo '
+	    <a class="button" onClick="document.getElementById(\'popDel\').classList.toggle(\'pop_hidden\');">Supprimer</a></td>
+            
+            <span id="popDel" class="glass pop_hidden">
+                <span class="popup">
+                    <span class="pop_title">
+                        Confirmation
+                    </span>
+                    <span class="pop_content">
+                        Voulez-vous vraiement supprimer cette demande? <br/>Toutes les informations et images qu\'elle contient seront perdues.
+                    </span>
+                    <span class="pop_btn_bar">
+                        <a class="button" href="changeStatus.php?id='.$id.'&stat=1000">Supprimer</a>
+                        <a class="button" onClick="document.getElementById(\'popDel\').classList.toggle(\'pop_hidden\');">Conserver</a>
+                    </span>
+                </span>
+            </span>';
+	 
+	 
+	 
+	
 	}
 	echo'
 	<h3> Historique des status  </h3>

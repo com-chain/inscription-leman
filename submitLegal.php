@@ -307,7 +307,7 @@ include 'p_head.php';
         if ($AccountRequest==1)  {
             // generate pdf 
             $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/pdf.php";
-            $data = array('code' => $code);
+            $data = array('code' => $code,'local'=>1);
             $options = array(
             'http' => array(
                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",

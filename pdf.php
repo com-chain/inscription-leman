@@ -149,7 +149,7 @@ if ($res['Type']==1){
 $pdf->LigneVide();
 $pdf->AjoutCadreParagraphe(getStr($res['code']));
 
-$pdf->AjoutText("Les personnes physiques et les personnes morales reçoivent des codes d'autorisation distincts.");
+$pdf->AjoutText("Les personnes physiques et les personnes morales reçoivent des codes d'autorisation distincts. ");
 
 $pdf->AjoutText("Ce code d'autorisation vous ");
 
