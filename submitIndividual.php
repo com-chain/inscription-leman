@@ -5,6 +5,7 @@ echo'
 <html>
   <head>';
 include 'p_head.php';
+include 'p_mail.php';
 
   
   
@@ -212,15 +213,20 @@ include 'p_head.php';
      } 
      if ($ok){
      
-        if ($AccountRequest==1)  {
-         // todo mail
+         if ($AccountRequest==1)  {
+            // generate pdf 
+            include 'pdf_builder.php';
+            getPDF($code, $mysqli, true);
+            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $last_name.' '.$first_name , 1);
+
         
-         echo ' <h3  class="center_msg"> Demande d’ouverture de compte pour PARTICULIER 
+            echo ' <h3  class="center_msg"> Demande d’ouverture de compte pour PARTICULIER 
 envoyée avec succès. </h3>
-         <form id="form" action="pdf.php" method="post">
+         <form id="form" action="pdf.php" method="post" target="_blank">
            <span class="labelWide">Nous vous avons envoyé un email contenant votre code d\'ouverture de compte et une marche à suivre pour l\'utiliser. Vous pouvez aussi directement télécharger ce document ci-dessous: </span>
           <input   type="hidden"  name="code" value="'.$code.'" />
-          <input   type="submit" class="big_button" value="Code d\'ouverture de compte" style="width:300px;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);"/><br/>
+             <input   type="submit"  class="big_button" value="Code d\'ouverture de compte" style="width:300px;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);"/><br/> 
+         <a   target="_blank" class="big_button" href="'.$how_to_file.'" style="width:260px !important;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);">Marche à suivre</a><br/>
         </form>
 ';
         } else {

@@ -5,6 +5,7 @@ echo'
 <html>
   <head>';
 include 'p_head.php';
+include 'p_mail.php';
 
 
 // Handle the post
@@ -306,71 +307,18 @@ include 'p_head.php';
     if ($ok){
         if ($AccountRequest==1)  {
             // generate pdf 
-            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]/pdf.php";
-            $data = array('code' => $code,'local'=>1);
-            $options = array(
-            'http' => array(
-                'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
-                'method'  => 'POST',
-                'content' => http_build_query($data)
-            ));
-            $context  = stream_context_create($options);
-            $result = file_get_contents($url, false, $context);
-            if ($result !== FALSE) {
-                
-                // todo mail
-            }
-        }
-    }
-        /*
-        // todo mail
-        
-        $file = $path.$filename;
-$content = file_get_contents( $file);
-$content = chunk_split(base64_encode($content));
-$uid = md5(uniqid(time()));
-$name = basename($file);
+            include 'pdf_builder.php';
+            getPDF($code, $mysqli, true);
+            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $last_name.' '.$first_name , 1);
 
-// header
-$header = "From: ".$from_name." <".$from_mail.">\r\n";
-$header .= "Reply-To: ".$replyto."\r\n";
-$header .= "MIME-Version: 1.0\r\n";
-$header .= "Content-Type: multipart/mixed; boundary=\"".$uid."\"\r\n\r\n";
-
-// message & attachment
-$nmessage = "--".$uid."\r\n";
-$nmessage .= "Content-type:text/plain; charset=iso-8859-1\r\n";
-$nmessage .= "Content-Transfer-Encoding: 7bit\r\n\r\n";
-$nmessage .= $message."\r\n\r\n";
-$nmessage .= "--".$uid."\r\n";
-$nmessage .= "Content-Type: application/octet-stream; name=\"".$filename."\"\r\n";
-$nmessage .= "Content-Transfer-Encoding: base64\r\n";
-$nmessage .= "Content-Disposition: attachment; filename=\"".$filename."\"\r\n\r\n";
-$nmessage .= $content."\r\n\r\n";
-$nmessage .= "--".$uid."--";
-
-if (mail($mailto, $subject, $nmessage, $header)) {
-    return true; // Or do something here
-} else {
-  return false;
-}
         
-        
-        
-        
-        
-        
-          */
-          
-          
-          
-          
-         echo ' <h3 class="center_msg"> Demande d’ouverture de compte pour ENTREPRISE 
+            echo ' <h3 class="center_msg"> Demande d’ouverture de compte pour ENTREPRISE 
 envoyée avec succès.</h3>
-         <form id="form" action="pdf.php" method="post">
+         <form id="form" action="pdf.php" method="post" target="_blank">
            <span class="labelWide">Nous vous avons envoyé un email contenant votre code d\'ouverture de compte et une marche à suivre pour l\'utiliser. Vous pouvez aussi directement télécharger ce document ci-dessous: </span>
           <input   type="hidden"  name="code" value="'.$code.'" />
-         <input   type="submit" class="big_button" value="Code d\'ouverture de compte" style="width:300px;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);"/><br/>
+         <input   type="submit" target="_blank" class="big_button" value="Code d\'ouverture de compte" style="width:300px;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);"/><br/> 
+         <a   target="_blank" class="big_button" href="'.$how_to_file.'" style="width:260px !important;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);">Marche à suivre</a><br/>
         </form>';
         } else {
          echo ' <h3 class="center_msg">Demande d’adhésion pour ENTREPRISE
@@ -384,8 +332,8 @@ Nous revenons vers vous au plus vite. </h3>';
  
  Pour mes dépenses personnelles ou pour recevoir un salaire, j’ouvre un compte <a class="" href="./individual.php">PARTICULIER</a> également.';
      }
-   
- }
+ }  
+ 
 
 
     
