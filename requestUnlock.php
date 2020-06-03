@@ -1,6 +1,7 @@
 <?php
 include 'connectionFactory.php';
 $mysqli= ConnectionFactory::GetConnection();
+header('Access-Control-Allow-Origin: *');
 
 if (isset($_POST['address'])){
 
@@ -21,6 +22,7 @@ if (isset($_POST['address'])){
     $stmt->execute();
     $stmt->fetch();
     $stmt->close();
+    
     if ($number>0){
         $query = 'UPDATE TABLE Reg_Wallet
                   SET Validated=0
@@ -46,10 +48,11 @@ if (isset($_POST['address'])){
     ));
     $context  = stream_context_create($options);
     $result = file_get_contents($url, false, $context);
-    if ($result !== FALSE && $result!='KO' && isset($res[$addr])) {
+
+    $res = json_decode($result);
+    if ($result !== FALSE && $result!='KO' && isset($res->$addr)) {
         
-        $res = json_decode($result);
-        $code = $res[$addr];
+        $code = $res->$addr;
         
         $query = 'SELECT Id, PersonId
 	              FROM Reg_Code
@@ -61,19 +64,19 @@ if (isset($_POST['address'])){
         $stmt->execute();
         $stmt->fetch();
         $stmt->close();
-        if (! $codeId>0  ) {
+        if (!isset($codeId ) ) {
             // code unknow
             // insert code without the person
             $query = 'INSERT INTO  Reg_Code (Code) VALUES (?)';  
 	        $stmt = $mysqli->prepare($query);
-	        $stmt->bind_param("is",$code);
+	        $stmt->bind_param("s",$code);
             $stmt->execute();
             $codeId = $stmt->insert_id;
             $stmt->close();	
             
             $query = 'INSERT INTO  Reg_Wallet (address, CodeId, Validated) VALUES (?,?,0)';       
 	        $stmt = $mysqli->prepare($query);
-	        $stmt->bind_param("sii",$addr,$codeId);
+	        $stmt->bind_param("si",$addr,$codeId);
             $stmt->execute();
             $stmt->close();	
         } else {
@@ -89,7 +92,7 @@ if (isset($_POST['address'])){
         
     } else {
         // No code available
-        // TODO ???
+        http_response_code(404);
         exit();
     } 
  }   
