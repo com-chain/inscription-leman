@@ -33,7 +33,7 @@ echo'
              document.getElementById("adh_next").style.display="None";
              document.getElementById("adh_sub").style.display="inline-block";
              document.getElementById("fld_cr_acc").style.display="inline-block";
-             document.getElementById("fld_ce").style.display="inline-block";
+             document.getElementById("fld_ce").style.display="block";
              document.getElementById("fld_att").style.display="inline-block";
              document.getElementById("att").checked = false;
              document.getElementById("lb_ad_ass").innerHTML="Confirmation de votre demande d’adhésion?*";
@@ -414,6 +414,47 @@ IBAN: FR76 1382 5002 0008 0092 2674 657 - BIC: CEPAFRPP382<br/>
 Vous pouvez régler votre cotisation en lémans électroniques (e-LEM) sur le compte de l’association (clé publique 0x15a18329381cdf1919d51d05834920585066646f): <span class="strong">e-LEM <span id="cot_amount_2">50(taux moyen du jour)</span></span>.
 
 </span>
+
+';
+
+if ($type_form==0) {
+echo '
+    <span class="labelWide" id="lb_ad_ass" style="display:none;"></span>
+	<input  type="hidden"  id="ad_ass" name="ad_ass" value="Oui" />
+	   
+	 
+	 <span class="fitem">
+	   <input class="inputCb" style="margin-left: 20px !important;" type="checkbox"  id="data" name="data" value="1" />
+	   <span class="labelCb" style="width: calc(100% - 80px);" id="lb_data">En remplissant ce formulaire, vous acceptez que l\'on utilise vos données pour vous contacter, ou pour toutes autres utilisations permettant de développer le Léman de façon anonyme sans les communiquer à des tiers.*</span><br/>
+	 </span>
+	 
+	 <span class="fitem">
+	   <input class="inputCb" style="margin-left: 20px !important;" type="checkbox" id="news" name="news" value="1" />
+	   <span  class="labelCb" style="width: calc(100% - 80px);">En cochant cette case, je consens à recevoir la newsletter de l’association. </span><br/>
+	 </span>
+	 
+	 <span class="fitem" id="fld_ce" style="display:None;">
+	     <input class="inputCb" style="margin-left: 20px !important;" type="checkbox" name="ce_0"  value="1" />
+	     <span  class="labelCb" style="width: calc(100% - 80px);" id="lb_ce_0">J\'adhère à la "<a target="_blank" href="'.$url_charte.'" class="it ait">Charte éthique du Léman</a>.* </span><br/>
+     </span>
+	 
+	<span class="fitem" id="fld_att" style="display:None;">
+	 <input class="inputCb" style="margin-left: 20px !important;" type="checkbox" name="att_0"  value="1" />
+	 <span  class="labelCb" style="width: calc(100% - 80px);" id="lb_att_0">
+    J’atteste que toutes les informations fournies ci-dessus sont, à ma connaissance, authentiques et exactes, et je m’engage à vous informer sans délai de tout changement.* </span><br/>
+    </span> 
+	 
+	 <span class="fitem" id="fld_cr_acc" style="display:None;">
+	   <span class="labelWide" id="lb_cr_acc">Voulez vous aussi ouvrir un compte en Léman électronique?*</span>
+	   <select  class="inputText" name="cr_acc" id ="cr_acc" onchange="changeType();" >
+	    <option value =""></option>
+	    <option value ="1">Oui</option>
+	    <option value ="0">Non</option>
+	   </select><br/>
+	 </span>';
+} else {
+echo '
+
 	 
 	  <span class="fitem">
 	   <span class="labelWide" id="lb_ad_ass">Voulez vous adhérer à l\'association Monnaie-Léman?*</span>
@@ -437,7 +478,7 @@ Vous pouvez régler votre cotisation en lémans électroniques (e-LEM) sur le co
 	 
 	 <span class="fitem" id="fld_ce" style="display:None;">
 	     <input class="inputCb" type="checkbox" name="ce_0"  value="1" />
-	     <span  class="labelCb" id="lb_ce_0">J\'adhère à la "<a target="_blank" href="'.$url_charte.'" class="it">Charte éthique du Léman</a>.* </span><br/>
+	     <span  class="labelCb" id="lb_ce_0">J\'adhère à la "<a target="_blank" href="'.$url_charte.'" class="it ait">Charte éthique du Léman</a>.* </span><br/>
      </span>
 	 
 	<span class="fitem" id="fld_att" style="display:None;">
@@ -453,7 +494,12 @@ Vous pouvez régler votre cotisation en lémans électroniques (e-LEM) sur le co
 	    <option value ="1">Oui</option>
 	    <option value ="0">Non</option>
 	   </select><br/>
-	 </span>
+	 </span>';
+}
+
+
+	 
+echo'
 	 
      <a  class="button" onclick="showSection(\'sect_ip\');">Précédent</a>
 	 <a class="button" id="adh_next" onclick="if (validateSectionAdd()){showSection(\'sect_fin\');}">Suivant</a>
@@ -463,7 +509,7 @@ Vous pouvez régler votre cotisation en lémans électroniques (e-LEM) sur le co
  <h3> Conformité / compliance FINMA  </h3>
 
 <span class="fitem">
-	   <span class="labelWide" id="lb_pep">La/les personne/s ayant droit économique (ADE) est-elle / sont-elles une/des personne/s politiquement exposée/s (<a class="tooltip" >PEP<span class="tooltiptext">Les personnes politiquement exposées (PEP) sont des personnes physiques qui exercent une haute fonction publique ou politique ou des personnes connues pour leur être étroitement associées.</span></a>)?* </span>
+	   <span class="labelWide" id="lb_pep">La/les personne/s ayant droit économique (ADE) est-elle / sont-elles une/des personne/s politiquement exposée/s (<a class="tooltip ait" >PEP<span class="tooltiptext">Les personnes politiquement exposées (PEP) sont des personnes physiques qui exercent une haute fonction publique ou politique ou des personnes connues pour leur être étroitement associées.</span></a>)?* </span>
 	   <select  class="inputText" id="pep" name="pep">
 	    <option value =""></option>
 	    <option value ="1">Oui</option>
@@ -472,7 +518,7 @@ Vous pouvez régler votre cotisation en lémans électroniques (e-LEM) sur le co
 	 </span>
 
 <span class="fitem">
-	   <span class="labelWide"  id="lb_peprel">La/les personne/s ADE est-elle / sont-elles liée/s à une/des <a class="tooltip" >PEP<span class="tooltiptext">Les personnes politiquement exposées (PEP) sont des personnes physiques qui exercent une haute fonction publique ou politique ou des personnes connues pour leur être étroitement associées.</span></a> (famille, ami-e-s proches, etc.)?*</span>
+	   <span class="labelWide"  id="lb_peprel">La/les personne/s ADE est-elle / sont-elles liée/s à une/des <a class="tooltip ait" >PEP<span class="tooltiptext">Les personnes politiquement exposées (PEP) sont des personnes physiques qui exercent une haute fonction publique ou politique ou des personnes connues pour leur être étroitement associées.</span></a> (famille, ami-e-s proches, etc.)?*</span>
 	   <select  class="inputText" id="peprel" name="peprel">
 	    <option value =""></option>
 	    <option value ="1">Oui</option>
@@ -510,11 +556,11 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
 	 
 	 <span id="aed_other"  style="display:none" >
 	    Personnes ADE: 
-	       <a onClick="showAed(1)" id="btn_aed1" class="selected">(1)</a> 
-	       <a onClick="showAed(2)" id="btn_aed2" style="display:none">(2)</a>  
-	       <a onClick="showAed(3)" id="btn_aed3" style="display:none">(3)</a>  
-	       <a onClick="showAed(4)" id="btn_aed4" style="display:none">(4)</a>  
-	       <a id="btn_aedadd" onClick="addAed()">Ajouter</a><br/>
+	       <a onClick="showAed(1)" id="btn_aed1" class="selected ait">(1)</a> 
+	       <a onClick="showAed(2)" id="btn_aed2"  class="ait" style="display:none">(2)</a>  
+	       <a onClick="showAed(3)" id="btn_aed3"  class="ait" style="display:none">(3)</a>  
+	       <a onClick="showAed(4)" id="btn_aed4"  class="ait" style="display:none">(4)</a>  
+	       <a id="btn_aedadd" onClick="addAed()" class="ait" >Ajouter</a><br/>
 	 <span class="aed" id="aed_1_other" style="display:block">
 	    ADE 1
 	    <span class="fitem">
@@ -739,11 +785,11 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
  
   <span class="fitem">
 	 <input class="inputCb"  type="checkbox" name="cgu" id="cgu" value="1" />
-	 <span  class="labelCb" id="lb_cgu">J’atteste avoir pris connaissance et accepté les <a class="it" target="_blank" href="'.$url_cgu.'">Conditions générales d’utilisation</a>.* </span><br/>
+	 <span  class="labelCb" id="lb_cgu">J’atteste avoir pris connaissance et accepté les <a class="it ait" target="_blank" href="'.$url_cgu.'">Conditions générales d’utilisation</a>.* </span><br/>
   </span>
   <span class="fitem">
 	 <input class="inputCb" type="checkbox" name="ce" id="ce" value="1" />
-	 <span  class="labelCb" id="lb_ce">J\'adhère à la <a target="_blank" href="'.$url_charte.'" class="it">Charte éthique du Léman</a>.* </span><br/>
+	 <span  class="labelCb" id="lb_ce">J\'adhère à la <a target="_blank" href="'.$url_charte.'" class="it ait">Charte éthique du Léman</a>.* </span><br/>
   </span>
   
   <span class="fitem">

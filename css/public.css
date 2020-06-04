@@ -127,6 +127,13 @@ a:hover, a:active, .button:active, .button:hover,
     background-color: #ed8125;
 }
 
+
+
+.ait:hover, .ait:active{
+  background-color: white;
+  color:#ed8125;
+}
+
 .logo:hover, .logo:active{
     background-color: white;
 
@@ -245,6 +252,8 @@ textarea {
 .it {
   font-style: italic;
 }
+
+
 
 .strong {
   font-weight: 400;
