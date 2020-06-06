@@ -53,6 +53,4 @@ function validMember($mysqli, $Code) {
         return $result;
 }
 	
-?> 
-
-
+?>
