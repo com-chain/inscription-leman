@@ -40,11 +40,15 @@ function validMember($mysqli, $Code) {
         while ($stmt->fetch()){
             if ($type == 1) {
                 $person = $ct_surname." ".$ct_name;
+                $first = $ct_surname;
+                $last = $ct_name;
             } else {
                 $person = $surname." ".$lastname;
+                $first = $surname;
+                $last = $lastname;
             }
         
-            $result = array("id"=>$id,"code"=>$res_code, "Valid"=>($res_code==$Code), "Name"=>$person, "Company"=>$company, "Type"=>$type);
+            $result = array("id"=>$id,"code"=>$res_code, "Valid"=>($res_code==$Code), "Name"=>$person, "FirstName"=>$first, "LastName"=>$last, "Company"=>$company, "Type"=>$type);
         }
         return $result;
 }

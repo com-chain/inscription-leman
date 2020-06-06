@@ -81,6 +81,7 @@ function getPDF($code, $mysqli, $local) {
 
     function AjoutLien($text,$liens){
         $this->SetTextColor(0,111,180);
+        $this->SetFont('Helvetica','U',9);
         $this->Write(5,utf8_decode($text),$liens);
         $this->SetTextColor(0,0,0);
     }
@@ -126,60 +127,57 @@ function getPDF($code, $mysqli, $local) {
 
 
 
-    $pdf->AjoutText("Bonjour ".$res['Name'].",");
-    $pdf->LigneVide();
+   
 
     if ($res['Type']==1){
-        $pdf->AjoutText("Ce document contient le Code d'");
-        $pdf->SetFont('Helvetica','I',9);
-        $pdf->Write(5,utf8_decode("autorisation"));
-        $pdf->SetFont('Helvetica','I',9);
-        $pdf->AjoutText(" pour l'entreprise ".$res['Company'].". Il consiste en une suite de chiffres et de lettres :");
+        $pdf->AjoutText("Bonjour ".$res['Company'].",");
     } else {
-        $pdf->AjoutText("Ce document contient votre Code d'");
-        $pdf->SetFont('Helvetica','I',9);
-        $pdf->Write(5,utf8_decode("autorisation"));
-        $pdf->SetFont('Helvetica','I',9);
-        $pdf->AjoutText(" personnel. Il consiste en une suite de chiffres et de lettres :");
+        $pdf->AjoutText("Bonjour ".$res['FirstName'].",");
     }
 
+    $pdf->LigneVide();
+    $pdf->AjoutText("Ce document contient votre Code d'");
+    $pdf->SetFont('Helvetica','I',9);
+    $pdf->SetTextColor(0,111,180);
+    $pdf->Write(5,utf8_decode("autorisation personnel"));
+    $pdf->SetFont('Helvetica','',9);
+    $pdf->SetTextColor(0,0,0);
+    $pdf->AjoutText(". Il consiste en une suite de chiffres et de lettres :");
 
 
 
     $pdf->LigneVide();
     $pdf->AjoutCadreParagraphe(getStr($res['code']));
 
-    $pdf->AjoutText("Les personnes physiques et les personnes morales reçoivent des codes d'autorisation distincts. ");
-
+    $pdf->AjoutText("Les personnes physiques (particuliers) et les personnes morales (entreprises, associations y c. raisons individuelles)
+reçoivent des codes d'autorisation distincts. ");
+    $pdf->SautDeLigne();
     $pdf->AjoutText("Ce code d'autorisation vous ");
-
     $pdf->SetFont('Helvetica','I',9);
     $pdf->Write(5,utf8_decode("autorise"));
-    $pdf->SetFont('Helvetica','I',9);
+    $pdf->SetFont('Helvetica','',9);
 
 
 
     if ($res['Type']==1){
-        $pdf->AjoutText(" à créer au sein de l'application Biletujo des comptes « entreprise ». La marche à suivre pour créer votre portefeuille et le synchroniser sur vos différents appareils est décrite en détail dans la ");
-
-        } else {
-
-    $pdf->AjoutText(" à créer au sein de l'application Biletujo autant de comptes personnels que vous le désirez (un compte perso, un compte famille, etc.). La marche à suivre pour créer votre portefeuille et le synchroniser sur vos différents appareils est décrite en détail dans la ");
-
+        $pdf->AjoutText(" à créer au sein de l'application Biletujo un ou des comptes pour votre entreprise. La marche à suivre pour créer votre compte et le synchroniser sur vos différents appareils est décrite en détail dans la ");
+     } else {
+        $pdf->AjoutText(" à créer au sein de l'application Biletujo autant de comptes personnels que vous le désirez (compte personnel, compte famille, etc.). La marche à suivre pour créer votre compte et le synchroniser sur
+vos différents appareils est décrite en détail dans la ");
     }
 
-
     $pdf->SetFont('Helvetica','I',9);
+    $pdf->SetTextColor(0,111,180);
     $pdf->Write(5,utf8_decode("Marche à suivre: création et synchronisation d'un compte sur l'application Biletujo"));
-    $pdf->SetFont('Helvetica','I',9);
-
-    $pdf->AjoutText(", que nous vous conseillons vivement de lire. En tous les cas, par prudence, il faut : ");
+    $pdf->SetFont('Helvetica','',9);
+    $pdf->SetTextColor(0,0,0);
+    $pdf->AjoutText(", que nous vous demandons vivement de bien lire. En tous les cas, par prudence, il faut:");
     $pdf->SetMargins(20,0,15);
     $pdf->LigneVide();
     $pdf->AjoutText("1.    Commencer la procédure d'autorisation sur un ordinateur à la page ");
 
     $pdf->SetMargins(26,0);
-    $pdf->AjoutLien('https://wallet.cchosting.org/','https://wallet.cchosting.org/');
+    $pdf->AjoutLien('https://wallet.monnaie-leman.org/','https://wallet.monnaie-leman.org/');
     $pdf->AjoutText(" (2ème icône avec le \"+\").");
 
     $pdf->SetMargins(20,0,15);
@@ -228,13 +226,16 @@ function getPDF($code, $mysqli, $local) {
     $pdf->Image('resources/Biletujo_Apple.png',120,210,40);
     $pdf->AjoutText("Le");
     $pdf->SetFont('Helvetica','I',9);
+    $pdf->SetTextColor(0,111,180);
     $pdf->Write(5,utf8_decode(" Guide d'utilisation de l'application Biletujo"));
-
+    $pdf->SetFont('Helvetica','',9);
+    $pdf->SetTextColor(0,0,0);
     $pdf->AjoutText(" est accessible, depuis l'application, en cliquant sur l'icône d'aide.");
     $pdf->LigneVide();
     $pdf->AjoutText("Nous vous souhaitons d'heureuses transactions lémaniques !");
+    $pdf->SetMargins(110,0,0);
     $pdf->SautDeLigne();
-    $pdf->AjoutText("                                                                                     Monnaie Léman, Equipe administration / IT");
+    $pdf-> AjoutText("Monnaie Léman, Equipe administration / IT");
 
 
     if ($do_output_file) {
