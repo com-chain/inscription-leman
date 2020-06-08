@@ -29,7 +29,7 @@ function getPDF($code, $mysqli, $local) {
        // $this->Cell(73);
         // Titre
         $this->SetXY (15,25);
-        $this->Cell(0,10,utf8_decode('Léman électronique : Code d\'autorisation personnel'),0,0,'C');
+        $this->Cell(0,10,utf8_decode('Léman électronique: code d\'autorisation personnel'),0,0,'C');
         // Saut de ligne
         $this->Ln(12);
         $this->AjoutBoldParagraphe('Attention ! Ce document est à conserver précieusement dans vos dossiers !');
@@ -45,7 +45,7 @@ function getPDF($code, $mysqli, $local) {
         $this->SetFont('Helvetica','',8);
         // Numéro de page
         // bleu
-        $this->Cell(0,10,utf8_decode('Monnaie Léman | http://www.monnaie-leman.org | info@monnaie-leman.org'),0,0,'C');
+        $this->Cell(0,10,utf8_decode('Monnaie Léman | https://www.monnaie-leman.org | info@monnaie-leman.org'),0,0,'C',false,'https://monnaie-leman.org/');
     }
 
 
@@ -136,10 +136,10 @@ function getPDF($code, $mysqli, $local) {
     }
 
     $pdf->LigneVide();
-    $pdf->AjoutText("Ce document contient votre Code d'");
+    $pdf->AjoutText("Ce document contient votre ");
     $pdf->SetFont('Helvetica','I',9);
     $pdf->SetTextColor(0,111,180);
-    $pdf->Write(5,utf8_decode("autorisation personnel"));
+    $pdf->Write(5,utf8_decode("Code d'autorisation personnel"));
     $pdf->SetFont('Helvetica','',9);
     $pdf->SetTextColor(0,0,0);
     $pdf->AjoutText(". Il consiste en une suite de chiffres et de lettres :");
@@ -150,9 +150,7 @@ function getPDF($code, $mysqli, $local) {
     $pdf->AjoutCadreParagraphe(getStr($res['code']));
 
     $pdf->AjoutText("Les personnes physiques (particuliers) et les personnes morales (entreprises, associations y c. raisons individuelles)
-reçoivent des codes d'autorisation distincts. ");
-    $pdf->SautDeLigne();
-    $pdf->AjoutText("Ce code d'autorisation vous ");
+reçoivent des codes d'autorisation distincts. Ce code d'autorisation vous ");
     $pdf->SetFont('Helvetica','I',9);
     $pdf->Write(5,utf8_decode("autorise"));
     $pdf->SetFont('Helvetica','',9);
@@ -162,13 +160,12 @@ reçoivent des codes d'autorisation distincts. ");
     if ($res['Type']==1){
         $pdf->AjoutText(" à créer au sein de l'application Biletujo un ou des comptes pour votre entreprise. La marche à suivre pour créer votre compte et le synchroniser sur vos différents appareils est décrite en détail dans la ");
      } else {
-        $pdf->AjoutText(" à créer au sein de l'application Biletujo autant de comptes personnels que vous le désirez (compte personnel, compte famille, etc.). La marche à suivre pour créer votre compte et le synchroniser sur
-vos différents appareils est décrite en détail dans la ");
+        $pdf->AjoutText(" à créer au sein de l'application Biletujo autant de comptes personnels que vous le désirez (compte personnel, compte famille, etc.). La marche à suivre pour créer votre compte et le synchroniser sur vos différents appareils est décrite en détail dans la ");
     }
 
     $pdf->SetFont('Helvetica','I',9);
     $pdf->SetTextColor(0,111,180);
-    $pdf->Write(5,utf8_decode("Marche à suivre: création et synchronisation d'un compte sur l'application Biletujo"));
+    $pdf->Write(5,utf8_decode("Marche à suivre: création et synchronisation d'un compte sur l'application Biletujo"),'https://monnaie-leman.org/inscription/resources/Biletujo_Marche_a_suivre_creation_compte.pdf');
     $pdf->SetFont('Helvetica','',9);
     $pdf->SetTextColor(0,0,0);
     $pdf->AjoutText(", que nous vous demandons vivement de bien lire. En tous les cas, par prudence, il faut:");
@@ -207,27 +204,31 @@ vos différents appareils est décrite en détail dans la ");
 
     $pdf->SetMargins(15,0,15);
     $pdf->LigneVide();
-    $pdf->AjoutText('Veuillez prendre note que votre compte devra encore être activé avant de pouvoir recevoir et envoyer des lémans.');
+    $pdf->AjoutText('Veuillez prendre note que votre compte devra encore être débloqué avant de pouvoir recevoir et envoyer des lémans.');
 
     $pdf->LigneVide();
 
 
 
-    $pdf->AjoutText('La sauvegarde papier de chaque compte permet d\'y accéder pour synchroniser votre téléphone depuis l\'application Biletujo que vous pouvez télécharger en vous servant des QR ci-dessous. L\'.apk est également disponible sur ');
+    $pdf->AjoutText('La sauvegarde papier de chaque compte permet d\'y accéder pour synchroniser votre ');
+    $pdf->SetFont('Helvetica','I',9);
+    $pdf->Write(5,utf8_decode("smartphone"));
+    $pdf->SetFont('Helvetica','',9);
+    $pdf->AjoutText(' ou votre tablette depuis l\'application Biletujo que vous pouvez télécharger en vous servant des QR ci-dessous. L\'.apk est également disponible sur ');
     $pdf->AjoutLien('https://com-chain.org','https://com-chain.org');
     $pdf->AjoutText('.');
     $pdf->SautDeLigne();
 
 
 
-    $pdf->SetY(-45);
+    $pdf->SetY(-46);
 
-    $pdf->Image('resources/Biletujo_Android.png',45,210,40);
-    $pdf->Image('resources/Biletujo_Apple.png',120,210,40);
+    $pdf->Image('resources/Biletujo_Android.png',45,208,40);
+    $pdf->Image('resources/Biletujo_Apple.png',120,208,40);
     $pdf->AjoutText("Le");
     $pdf->SetFont('Helvetica','I',9);
     $pdf->SetTextColor(0,111,180);
-    $pdf->Write(5,utf8_decode(" Guide d'utilisation de l'application Biletujo"));
+    $pdf->Write(5,utf8_decode(" Guide d'utilisation de l'application Biletujo"),'https://wallet.monnaie-leman.org/files/help.pdf');
     $pdf->SetFont('Helvetica','',9);
     $pdf->SetTextColor(0,0,0);
     $pdf->AjoutText(" est accessible, depuis l'application, en cliquant sur l'icône d'aide.");
@@ -235,7 +236,9 @@ vos différents appareils est décrite en détail dans la ");
     $pdf->AjoutText("Nous vous souhaitons d'heureuses transactions lémaniques !");
     $pdf->SetMargins(110,0,0);
     $pdf->SautDeLigne();
-    $pdf-> AjoutText("Monnaie Léman, Equipe administration / IT");
+    $pdf-> AjoutText("Monnaie Léman");
+    $pdf->SautDeLigne();
+    $pdf-> AjoutText("Equipe Administration / IT");
 
 
     if ($do_output_file) {
