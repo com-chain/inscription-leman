@@ -262,7 +262,7 @@ $host_login = $from_address;
 $host_password = "myMailPassword";
 
 $code_file_name ="Leman_electronique_Code_autorisation.pdf";
-$how_to_file ="./resources/2020_Biletujo_Marche_a_suivre_creation_compte.pdf";
+$how_to_file ="./resources/Biletujo_Marche_a_suivre_creation_compte.pdf";
 $how_to_file_name ="Marche_a_suivre_creation_compte.pdf";
 
 
@@ -283,8 +283,8 @@ $how_to_file_name ="Marche_a_suivre_creation_compte.pdf";
         $mail->setFrom($from_address, $from_name);
         $mail->addAddress($to_address);               // Name is optional
         // $mail->addReplyTo('reply@example.com', 'Name');
-        //$mail->addCC('cc@example.com');
-        //$mail->addBCC('bcc@example.com');
+        // $mail->addCC('cc@example.com');
+        $mail->addBCC($from_address);
 
         // Attachments
         $mail->addAttachment($code_file, $code_file_name, 'base64', 'application/pdf');         
@@ -298,9 +298,9 @@ $how_to_file_name ="Marche_a_suivre_creation_compte.pdf";
         $mail->AltBody = getAltBody($name, $type);
 
         $mail->send();
-    } catch (Exception $e) {
-        throw new Exception('Mail Error :'.$mail->ErrorInfo);
-    }
+   } catch (Exception $e) {
+       throw new Exception('Mail Error :'.$mail->ErrorInfo);
+   }
 
 }
 

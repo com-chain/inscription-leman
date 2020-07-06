@@ -32,7 +32,7 @@ function getPDF($code, $mysqli, $local) {
         $this->Cell(0,10,utf8_decode('Léman électronique: code d\'autorisation personnel'),0,0,'C');
         // Saut de ligne
         $this->Ln(12);
-        $this->AjoutBoldParagraphe('Attention ! Ce document est à conserver précieusement dans vos dossiers !');
+        $this->AjoutBoldParagraphe('Attention, ce document est à conserver précieusement dans vos dossiers !');
     }
 
     // Pied de page
@@ -45,7 +45,7 @@ function getPDF($code, $mysqli, $local) {
         $this->SetFont('Helvetica','',8);
         // Numéro de page
         // bleu
-        $this->Cell(0,10,utf8_decode('Monnaie Léman | https://www.monnaie-leman.org | info@monnaie-leman.org'),0,0,'C',false,'https://monnaie-leman.org/');
+        $this->Cell(0,10,utf8_decode('Monnaie Léman | monnaie-leman.org | info@monnaie-leman.org'),0,0,'C',false,'https://monnaie-leman.org/');
     }
 
 
@@ -142,7 +142,7 @@ function getPDF($code, $mysqli, $local) {
     $pdf->Write(5,utf8_decode("Code d'autorisation personnel"));
     $pdf->SetFont('Helvetica','',9);
     $pdf->SetTextColor(0,0,0);
-    $pdf->AjoutText(". Il consiste en une suite de chiffres et de lettres :");
+    $pdf->AjoutText(". Il consiste en une suite de chiffres et de lettres:");
 
 
 
@@ -228,7 +228,7 @@ reçoivent des codes d'autorisation distincts. Ce code d'autorisation vous ");
     $pdf->AjoutText("Le");
     $pdf->SetFont('Helvetica','I',9);
     $pdf->SetTextColor(0,111,180);
-    $pdf->Write(5,utf8_decode(" Guide d'utilisation de l'application Biletujo"),'https://wallet.monnaie-leman.org/files/help.pdf');
+    $pdf->Write(5,utf8_decode(" AIDE du Léman électronique (App & Web App Biletujo)"),'https://wallet.monnaie-leman.org/files/help.pdf');
     $pdf->SetFont('Helvetica','',9);
     $pdf->SetTextColor(0,0,0);
     $pdf->AjoutText(" est accessible, depuis l'application, en cliquant sur l'icône d'aide.");

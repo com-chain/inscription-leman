@@ -217,7 +217,7 @@ include 'p_mail.php';
             // generate pdf 
             include 'pdf_builder.php';
             getPDF($code, $mysqli, true);
-            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $first_name , 1);
+            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $first_name , 2);
 
         
             echo ' <h3  class="center_msg"> Demande d’ouverture de compte pour PARTICULIER 
