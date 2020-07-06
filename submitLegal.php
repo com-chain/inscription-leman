@@ -1,9 +1,11 @@
 <?php
+ob_start();
 echo'
 <!DOCTYPE html>
 <html>
   <head>';
 include 'p_head.php';
+include 'p_mail.php';
 
 
 // Handle the post
@@ -268,6 +270,20 @@ include 'p_head.php';
         }
       
     }
+    
+    
+    //// Code if needed
+      if ($ok && $AccountRequest==1) {
+         $code=md5($person_id.$name);
+         $query = "INSERT INTO Reg_Code (PersonId,Code) VALUES (?,?)";
+         $stmt = $mysqli->prepare($query);
+         $stmt->bind_param("is",$person_id,$code);
+         if (! $stmt->execute()) {
+             $ok=false;
+              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+         }
+         $stmt->close();
+      }
    
      
      
@@ -287,23 +303,37 @@ include 'p_head.php';
          }
          $stmt->close(); 
      } 
-     if ($ok){
-          if ($AccountRequest==1)  {
-         echo ' <h3 class="center_msg"> Demande d’ouverture de compte pour ENTREPRISE 
-envoyée avec succès.';
+     
+    if ($ok){
+        if ($AccountRequest==1)  {
+            // generate pdf 
+            include 'pdf_builder.php';
+            getPDF($code, $mysqli, true);
+            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $name , 1);
+
+        
+            echo ' <h3 class="center_msg"> Demande d’ouverture de compte pour ENTREPRISE 
+envoyée avec succès.</h3>
+         <form id="form" action="pdf.php" method="post" target="_blank">
+           <span class="labelWide">Nous vous avons envoyé un email contenant votre code d\'ouverture de compte et une marche à suivre pour l\'utiliser. Vous pouvez aussi directement télécharger ce document ci-dessous: </span>
+          <input   type="hidden"  name="code" value="'.$code.'" />
+         <input   type="submit" target="_blank" class="big_button" value="Code d\'ouverture de compte" style="width:300px;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);"/><br/> 
+         <a   target="_blank" class="big_button" href="'.$how_to_file.'" style="width:260px !important;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);">Marche à suivre</a><br/>
+        </form>';
         } else {
          echo ' <h3 class="center_msg">Demande d’adhésion pour ENTREPRISE
-envoyée avec succès.';
+envoyée avec succès.<br/>
+Nous revenons vers vous au plus vite. </h3>';
         }
         echo '<br/>
-Nous revenons vers vous au plus vite.<br/>Merci de votre engagement pour une économie circulaire !
+ <h3 class="center_msg">Merci de votre engagement pour une économie circulaire !
  </h3>
  <br/><br/>
  
  Pour mes dépenses personnelles ou pour recevoir un salaire, j’ouvre un compte <a class="" href="./individual.php">PARTICULIER</a> également.';
      }
-   
- }
+ }  
+ 
 
 
     

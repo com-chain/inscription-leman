@@ -38,7 +38,7 @@
 	   $stmt->execute();
  	   $stmt->close();
 
-	   	header('Location: ./consult.php');
+	   	header('Location: ./todo.php');
 	   
 	 } else {
 	   header('Location: login.php');	 

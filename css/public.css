@@ -87,6 +87,7 @@ h2 {
 
 
 .button, .big_button {
+    border: none;
     display: inline-block;
     text-decoration: none; 
     margin-top: 10px;
@@ -101,13 +102,36 @@ h2 {
 text-transform: uppercase;
 font-size: 13px;}
 
+
+.buttonlt {
+    border: none;
+    display: inline-block;
+    text-decoration: none; 
+    font-weight: 400;
+    color: white !important;
+    background-color: #006EA9;
+    border-radius: 0px;
+    padding: 5px;
+    
+text-transform: uppercase;
+font-size: 13px;}
+
 a{
   color:#006EA9;
   text-decoration:none;
 }
 
-a:hover, a:active {
+a:hover, a:active, .button:active, .button:hover,
+ .buttonlt:active, .buttonlt:hover,
+ .big_button:active, .big_button:hover {
     background-color: #ed8125;
+}
+
+
+
+.ait:hover, .ait:active{
+  background-color: white;
+  color:#ed8125;
 }
 
 .logo:hover, .logo:active{
@@ -229,6 +253,8 @@ textarea {
   font-style: italic;
 }
 
+
+
 .strong {
   font-weight: 400;
   color:#006EA9;
@@ -346,5 +372,47 @@ textarea {
   visibility: visible;
   opacity: 1;
 }
+
+.pop_hidden{
+    display:none;
+}
+
+.glass {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    background-color: RGBA(1,1,1,0.5);
+    text-align:center
+}
+
+.popup{
+    position: relative;
+    display: inline-block;
+    background-color: white;
+    padding: 30px 30px 10px 30px;
+    margin-top: 20%;
+    
+    text-align: left;
+}
+
+.pop_title{
+    display:block;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #006ea9;
+    letter-spacing: -0.5px;
+    font-size: 16px;
+    margin-bottom:10px;
+}
+
+.pop_btn_bar{
+    text-align:right;
+    display: inline-block;
+    width: 100%;
+
+}
+
 
 

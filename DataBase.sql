@@ -254,6 +254,13 @@ CREATE TABLE Reg_StatusHistory (
    CONSTRAINT R_hist_user_fk FOREIGN KEY (UserId) REFERENCES Reg_SiteUser(Id)
 );
 
+
+CREATE TABLE Reg_UnlockRequest (
+   Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+   address VARCHAR( 255 ) NOT NULL,
+   EventDate DATE NOT NULL
+);
+
 --------------------
 CREATE USER 'myDbUser';
         set password for 'myDbUser'=password('myDbPassword');
@@ -263,13 +270,28 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON myDbName.* TO 'myDbUser';
 --------------------
 
 
+--------------------
 
-
-CREATE TABLE Reg_UnlockRequest (
-   Id INT NOT NULL AUTO_INCREMENT PRIMARY KEY ,
-   address VARCHAR( 255 ) NOT NULL,
-   EventDate DATE NOT NULL
+CREATE TABLE  Reg_Code (
+  Id INT NOT NULL  AUTO_INCREMENT PRIMARY KEY ,
+  PersonId INT  NULL,
+  Code VARCHAR( 32 ) NOT NULL,
+  CONSTRAINT R_code_fk FOREIGN KEY (PersonId) REFERENCES Reg_Person(Id)
 );
+
+
+
+CREATE TABLE  Reg_Wallet (
+  Id INT NOT NULL  AUTO_INCREMENT PRIMARY KEY ,
+  address VARCHAR( 255 ) NOT NULL,
+  PersonId INT NULL,
+  CodeId INT NULL,
+  Validated INT NOT NULL DEFAULT 0,
+  CONSTRAINT R_wallet_p_fk FOREIGN KEY (PersonId) REFERENCES Reg_Person(Id),
+  CONSTRAINT R_wallet_c_fk FOREIGN KEY (CodeId) REFERENCES Reg_Code(Id)
+);
+
+--------------------
 
 
 
