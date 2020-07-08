@@ -127,12 +127,12 @@ echo '
     $stmt = $mysqli->prepare($query);
 	$stmt->bind_param("s",$newcode);     
     $stmt = $mysqli->prepare($query);
-    $stmt->bind_result($nb);
+    $stmt->bind_result($nb2);
     $stmt->execute();
     $stmt->fetch();
     $stmt->close();	
     
-    if ($nb==0) {
+    if ($nb2==0) {
     echo' <input type="radio" id="code_m" name="ct" value="Gen">Générer le code
     <input   type="hidden"  name="gen" value="'.$newcode.'" />
     </br>';
