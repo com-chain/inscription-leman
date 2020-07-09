@@ -12,7 +12,7 @@
     $add=$_GET['add'];
   
     // insert address
-    $query = 'UPDATE  Reg_Wallet SET Validated=1 WHERE  address=? and PersonId=?';       
+    $query = 'UPDATE  Reg_Wallet SET Validated=1, valid_date=now() WHERE  address=? and PersonId=? ';       
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("si",$add,$pid);
     $stmt->execute();
