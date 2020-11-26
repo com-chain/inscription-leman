@@ -95,7 +95,7 @@ echo '
 	           Reg_Status.Name,
 	           Email,
 	           count(Reg_Code.Id),
-	           min(Reg_Wallet.Validated),
+	           min(ABS(Reg_Wallet.Validated)),
 	           count(Reg_Wallet.Validated)
 	          FROM Reg_Person 
 	            LEFT OUTER JOIN Reg_RecordType on Reg_RecordType.Id=Reg_Person.RecordTypeId
