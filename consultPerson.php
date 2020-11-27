@@ -455,11 +455,11 @@ echo '
                         <option value="3">Categorie 3 - [-10000, 30000]LEM</option>
                         <option value="4">Categorie 4 - [-20000, 60000]LEM</option>
                        </select><br/>
-                       cette action va débloquer le compte, définir les limites Lemanex <span style="text-decoration: line-through;">et envoyer le mail de confirmation</span>';
+                       cette action va débloquer le compte, définir les limites Lemanex et envoyer le mail de confirmation';
               
               }  else {
                  echo' Pour un compte de type INDIVIDUEL <br/>cette action va débloquer le compte, mettre les limites Lemanex à  <select id="limit_type'.$index_cmpt.'" >
-                        <option value="0">[0,3000]LEM</option> </select> <span style="text-decoration: line-through;">et envoyer le mail de confirmation</span>';
+                        <option value="0">[0,3000]LEM</option> </select> et envoyer le mail de confirmation';
               }       
                     
               echo '</span>
