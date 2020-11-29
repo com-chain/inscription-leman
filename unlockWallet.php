@@ -41,9 +41,9 @@
     $stmt->fetch();
     $stmt->close();	
     
-    $full_name = "".$ind_first." ".$ind_last;
+    $full_name = "".$ind_first;
     if ($type == 1) {
-        $full_name = "".$leg_c_first." ".$leg_c_last." - ".$leg_name;
+        $full_name = "".$leg_name;
     }
     
     
