@@ -287,7 +287,7 @@ Pour <span style="color:#2f6aa6">obtenir des e-lémans</span>, prière d\'effect
 Vous trouverez les <span style="color:#2f6aa6">commerces et entreprises</span> qui pourront vous accueillir et accepter vos lémans électroniques sur la <a target="_blank" href="https://monnaie-leman.org/comment-ca-marche-carte-reseau" style="color:#2f6aa6">Carte du réseau</a> de notre <a target="_blank" href="https://monnaie-leman.org" style="color:#2f6aa6">site Internet</a> (voir rubrique MOYEN DE PAIEMENT).
 <br/><br/>
 Savez-vous que vous pouvez demander de recevoir une partie de votre salaire en lémans ?<br/>
-(Nous avons préparé une lettre type si besoin.)
+(Nous avons préparé une <a href="https://wallet.monnaie-leman.org/files/Lettre_Salaire.docx" target="_blank" style="color:#2f6aa6">lettre type</a> si besoin.)
 <br/><br/>
 Nous restons bien volontiers à votre disposition pour tout complément d\'information.
 <br/><br/>
@@ -334,7 +334,7 @@ Pour obtenir des e-lémans, prière d'effectuer un versement sur le compte de 
 Vous trouverez les commerces et entreprises qui pourront vous accueillir et accepter vos lémans électroniques sur la Carte du réseau de notre site Internet (https://monnaie-leman.org voir rubrique MOYEN DE PAIEMENT).
 
 Savez-vous que vous pouvez demander de recevoir une partie de votre salaire en lémans ?
-(Nous avons préparé une lettre type si besoin.)
+(Nous avons préparé une lettre type si besoin: https://wallet.monnaie-leman.org/files/Lettre_Salaire.docx)
 
 Nous restons bien volontiers à votre disposition pour tout complément d'information.".gatAltFoolter();
     }}
