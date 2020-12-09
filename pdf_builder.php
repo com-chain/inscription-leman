@@ -174,7 +174,7 @@ reçoivent des codes d'autorisation distincts. Ce code d'autorisation vous ");
     $pdf->AjoutText("1.    Commencer la procédure d'autorisation sur un ordinateur à la page ");
 
     $pdf->SetMargins(26,0);
-    $pdf->AjoutLien('https://wallet.monnaie-leman.org/','https://wallet.monnaie-leman.org/');
+    $pdf->AjoutLien('https://wallet.monnaie-leman.org/','https://wallet.monnaie-leman.org/index.html?code='.getStr($res['code']));
     $pdf->AjoutText(" (2ème icône avec le \"+\").");
 
     $pdf->SetMargins(20,0,15);
@@ -225,10 +225,10 @@ reçoivent des codes d'autorisation distincts. Ce code d'autorisation vous ");
 
     $pdf->Image('resources/Biletujo_Android.png',45,208,40);
     $pdf->Image('resources/Biletujo_Apple.png',120,208,40);
-    $pdf->AjoutText("Le");
+    $pdf->AjoutText("L'");
     $pdf->SetFont('Helvetica','I',9);
     $pdf->SetTextColor(0,111,180);
-    $pdf->Write(5,utf8_decode(" AIDE du Léman électronique (App & Web App Biletujo)"),'https://wallet.monnaie-leman.org/files/help.pdf');
+    $pdf->Write(5,utf8_decode("AIDE du Léman électronique (App & Web App Biletujo)"),'https://wallet.monnaie-leman.org/files/help.pdf');
     $pdf->SetFont('Helvetica','',9);
     $pdf->SetTextColor(0,0,0);
     $pdf->AjoutText(" est accessible, depuis l'application, en cliquant sur l'icône d'aide.");

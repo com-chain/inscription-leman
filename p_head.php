@@ -3,9 +3,8 @@
 $uploal_limit_MB=3.5;
 
 
-$url_charte ="https://drive.leman-en-transition.org/s/fR3SYaFQQo6GCqH#pdfviewer";
-
-$url_cgu = "https://drive.leman-en-transition.org/s/FKNBCipArfE9gTE#pdfviewer";
+$url_charte ="https://wallet.monnaie-leman.org/files/chart.pdf";
+$url_cgu = "https://wallet.monnaie-leman.org/files/cgu.pdf";
 
 
 $cotisation_i_ch=50;

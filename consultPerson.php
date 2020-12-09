@@ -425,17 +425,67 @@ echo '
     $stmt->bind_result($w_add,$w_code,$w_val);
     $stmt->execute();
     echo'<tr><td>Address</td><td>Code</td><td>Statut</td></tr>';
+    $index_cmpt=0;
     while ($stmt->fetch()){ 
         echo'<tr><td>
         <input type="text" readonly="readonly" value="'.$w_add.'"/> 
         </td><td>'.substr ($w_code,0,5).'...</td><td>';
         
-        if ($w_val==1){
+        if ($w_val==-1){
+            echo 'rejeté';
+        } else if ($w_val==1){
             echo 'validé';
         } else {
-            echo ' <a href="unlockWallet.php?id='.$id.'&add='.$w_add.'" class="buttonlt">Débloqué dans le Bureau</a>';
+            echo ' 
+             <span id="popAct'.$index_cmpt.'" class="glass pop_hidden">
+                <span class="popup">
+                    <span class="pop_title">
+                        Demande de débloquage d\'un compte <br/>'.$w_add.'
+                    </span>
+                    <span class="pop_content">
+                        Accepter la demande: <br/>';
+                  
+              if($type==1) {
+                 echo'Pour un compte de type PROFESSIONEL <br/>
+                 Choix des limite Lemanex: 
+                       <select id="limit_type'.$index_cmpt.'">
+                        <option value="0">Compte additionel: [0,3000]LEM</option>
+                        <option value="1">Categorie 1 - [-1000, 3000]LEM</option>
+                        <option value="2">Categorie 2 - [-5000, 15000]LEM</option>
+                        <option value="3">Categorie 3 - [-10000, 30000]LEM</option>
+                        <option value="4">Categorie 4 - [-20000, 60000]LEM</option>
+                       </select><br/>
+                       cette action va débloquer le compte, définir les limites Lemanex et envoyer le mail de confirmation';
+              
+              }  else {
+                 echo' Pour un compte de type INDIVIDUEL <br/>cette action va débloquer le compte, mettre les limites Lemanex à  <select id="limit_type'.$index_cmpt.'" >
+                        <option value="0">[0,3000]LEM</option> </select> et envoyer le mail de confirmation';
+              }       
+                    
+              echo '</span>
+                    <span class="pop_btn_bar">
+                        <a onClick="window.open(\'unlock.php?id='.$id.'&type='.$type.'&add='.$w_add.'&cat=\'+document.getElementById(\'limit_type'.$index_cmpt.'\').value); document.getElementById(\'btnAct'.$index_cmpt.'\').style.display=\'None\';document.getElementById(\'popAct'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">Débloquer dans le Bureau</a>
+                   
+                    </span>
+                    <span class="pop_content" >
+                        Refuser la demande de débloquage<br/>
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a href="lockWallet.php?id='.$id.'&add='.$w_add.'" class="buttonlt">Rejeter</a>
+                    </span>
+                    <span class="pop_content">
+                       &nbsp;<br/>
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a onclick="document.getElementById(\'popAct'.$index_cmpt.'\').classList.toggle(\'pop_hidden\')" class="buttonlt">Annuler</a>
+                    </span>
+                </span>
+            </span>
+            
+            <a id="btnAct'.$index_cmpt.'" onclick="document.getElementById(\'popAct'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">Action</a>';
         }
         echo'</td></tr>';
+        $index_cmpt++;
     }
     $stmt->close();	
 	echo'</table>';

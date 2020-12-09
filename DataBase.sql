@@ -294,5 +294,7 @@ CREATE TABLE  Reg_Wallet (
 --------------------
 
 
+ALTER TABLE Reg_Wallet ADD COLUMN link_date timestamp DEFAULT current_timestamp; 
 
+ALTER TABLE Reg_Wallet ADD COLUMN valid_date DATE; 
 
