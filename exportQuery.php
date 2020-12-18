@@ -256,7 +256,7 @@ $query = 'SELECT
     
     // CSV header
     $csv_data = array (
-        array("Internal Id", "Reg_RecordType.Name", "Reg_Status.Name", "Email", "Phone", "Address", "AddressComplement", "NPA", "City", "Country", "PostalAddress", "PostalAddressComplement", "PostalNPA", "PostalCity", "PostalCountry", "Membership", "AccountRequest", "Newsletter", "PEP", "PEPRelated", "AED", "AED_1_FirstName", "AED_1_LastName", "AED_1_Address", "AED_1_AddressComplement", "AED_1_NPA", "AED_1_City", "AED_1_Country", "AED_1_Citizenship", "AED_1_BirthDate", "AED_2_FirstName", "AED_2_LastName", "AED_2_Address", "AED_2_AddressComplement", "AED_2_NPA", "AED_2_City", "AED_2_Country", "AED_2_Citizenship", "AED_2_BirthDate", "AED_3_FirstName", "AED_3_LastName", "AED_3_Address", "AED_3_AddressComplement", "AED_3_NPA", "AED_3_City", "AED_3_Country", "AED_3_Citizenship", "AED_3_BirthDate", "AED_4_FirstName", "AED_4_LastName", "AED_4_Address", "AED_4_AddressComplement", "AED_4_NPA", "AED_4_City", "AED_4_Country", "AED_4_Citizenship", "AED_4_BirthDate", "Reg_Individual.FirstName", "Reg_Individual.LastName", "Reg_Individual.Gender", "Reg_Individual.Citizenship", "Reg_Individual.BirthDate", "Reg_Legal.Name", "Reg_Legal.RefName", "Reg_Legal.Contact", "Reg_Legal.ContactSurname", "Reg_Legal.ContactGender", "Reg_Legal.LegalForm", "Reg_Legal.CreationDate", "Reg_Legal.ActivityField", "Reg_Legal.ActivityFieldSeg", "Reg_Legal.ActivityDescription", "Reg_Legal.EFT", "Reg_Legal.Website", "ST_1_FirstName", "ST_1_LastName", "ST_1_Address", "ST_1_AddressComplement", "ST_1_NPA", "ST_1_City", "ST_1_Country", "ST_1_Citizenship", "ST_1_BirthDate", "ST_2_FirstName", "ST_2_LastName", "ST_2_Address", "ST_2_AddressComplement", "ST_2_NPA", "ST_2_City", "ST_2_Country", "ST_2_Citizenship", "ST_2_BirthDate", "ST_3_FirstName", "ST_3_LastName", "ST_3_Address", "ST_3_AddressComplement", "ST_3_NPA", "ST_3_City", "ST_3_Country", "ST_3_Citizenship", "ST_3_BirthDate", "ST_4_FirstName", "ST_4_LastName", "ST_4_Address", "ST_4_AddressComplement", "ST_4_NPA", "ST_4_City", "ST_4_Country", "ST_4_Citizenship", "ST_4_BirthDate","Compte(code)"));
+        array("Internal Id", "Reg_RecordType.Name", "Reg_Status.Name", "Email", "Phone", "Address", "AddressComplement", "NPA", "City", "Country", "PostalAddress", "PostalAddressComplement", "PostalNPA", "PostalCity", "PostalCountry", "Membership", "AccountRequest", "Newsletter", "PEP", "PEPRelated", "AED", "AED_1_FirstName", "AED_1_LastName", "AED_1_Address", "AED_1_AddressComplement", "AED_1_NPA", "AED_1_City", "AED_1_Country", "AED_1_Citizenship", "AED_1_BirthDate", "AED_2_FirstName", "AED_2_LastName", "AED_2_Address", "AED_2_AddressComplement", "AED_2_NPA", "AED_2_City", "AED_2_Country", "AED_2_Citizenship", "AED_2_BirthDate", "AED_3_FirstName", "AED_3_LastName", "AED_3_Address", "AED_3_AddressComplement", "AED_3_NPA", "AED_3_City", "AED_3_Country", "AED_3_Citizenship", "AED_3_BirthDate", "AED_4_FirstName", "AED_4_LastName", "AED_4_Address", "AED_4_AddressComplement", "AED_4_NPA", "AED_4_City", "AED_4_Country", "AED_4_Citizenship", "AED_4_BirthDate", "Reg_Individual.FirstName", "Reg_Individual.LastName", "Reg_Individual.Gender", "Reg_Individual.Citizenship", "Reg_Individual.BirthDate", "Reg_Legal.Name", "Reg_Legal.RefName", "Reg_Legal.Contact", "Reg_Legal.ContactSurname", "Reg_Legal.ContactGender", "Reg_Legal.LegalForm", "Reg_Legal.CreationDate", "Reg_Legal.ActivityField", "Reg_Legal.ActivityFieldSeg", "Reg_Legal.ActivityDescription", "Reg_Legal.EFT", "Reg_Legal.Website", "ST_1_FirstName", "ST_1_LastName", "ST_1_Address", "ST_1_AddressComplement", "ST_1_NPA", "ST_1_City", "ST_1_Country", "ST_1_Citizenship", "ST_1_BirthDate", "ST_2_FirstName", "ST_2_LastName", "ST_2_Address", "ST_2_AddressComplement", "ST_2_NPA", "ST_2_City", "ST_2_Country", "ST_2_Citizenship", "ST_2_BirthDate", "ST_3_FirstName", "ST_3_LastName", "ST_3_Address", "ST_3_AddressComplement", "ST_3_NPA", "ST_3_City", "ST_3_Country", "ST_3_Citizenship", "ST_3_BirthDate", "ST_4_FirstName", "ST_4_LastName", "ST_4_Address", "ST_4_AddressComplement", "ST_4_NPA", "ST_4_City", "ST_4_Country", "ST_4_Citizenship", "ST_4_BirthDate","Compte(code)","Status", "Status changed by","Status changed on"));
     
     
     
@@ -283,7 +283,7 @@ $query = 'SELECT
      }
      $stmt->close();
      
-     // Add wallet and code
+     // Add wallet, code and history
      for ($index=1; $index<count($csv_data); $index++) {
           $pid=$csv_data[$index][0];
           $query_2 = 'SELECT Code, address fROM Reg_Wallet LEFT OUTER JOIN Reg_Code ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Wallet.PersonId=?';
@@ -313,6 +313,31 @@ $query = 'SELECT
           }
           $stmt_3->close();
           $csv_data[$index][]=$wallets;
+          
+          
+          
+          $query_4 = 'SELECT Reg_Status.Name, Reg_SiteUser.EMail, Reg_StatusHistory.EventDate
+	          FROM Reg_StatusHistory
+	           LEFT OUTER JOIN Reg_Status ON Reg_StatusHistory.NewStatusId = Reg_Status.Id
+	           LEFT OUTER JOIN Reg_SiteUser ON Reg_StatusHistory.UserId = Reg_SiteUser.Id
+	          WHERE PersonId=? ORDER BY Reg_StatusHistory.EventDate DESC LIMIT 1
+	           ';
+	      $stmt_4 = $mysqli->prepare($query_4);
+	      $stmt_4->bind_param("i",$pid);
+          $stmt_4->bind_result($hist_stat,$hist_user,$hist_date);
+          $stmt_4->execute();
+          $stmt_4->fetch();
+          $csv_data[$index][]=$hist_stat;
+          $csv_data[$index][]=$hist_user;
+          $csv_data[$index][]=$hist_date;
+          
+    
+          $stmt_4->close();	
+    
+    
+          
+          
+          
           
      }
      
