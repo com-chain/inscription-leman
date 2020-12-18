@@ -286,17 +286,17 @@ $query = 'SELECT
      // Add wallet, code and history
      for ($index=1; $index<count($csv_data); $index++) {
           $pid=$csv_data[$index][0];
-          $query_2 = 'SELECT Code, address fROM Reg_Wallet LEFT OUTER JOIN Reg_Code ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Wallet.PersonId=?';
+          $query_2 = 'SELECT Code, address, valid_date fROM Reg_Wallet LEFT OUTER JOIN Reg_Code ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Wallet.PersonId=?';
 	      $stmt_2 = $mysqli->prepare($query_2);
 	      $stmt_2->bind_param("i",$pid);
-          $stmt_2->bind_result($code,$add);
+          $stmt_2->bind_result($code,$add, $date_valid);
           $stmt_2->execute();
           $wallets='';
           while($stmt_2->fetch()){
                     if ($wallets!=''){
                      $wallets=$wallets.', ';
                     }
-                    $wallets=$wallets.$add.'('.$code.')';
+                    $wallets=$wallets.$add.'('.$date_valid.' - '.$code.')';
           }
           $stmt_2->close();
           
