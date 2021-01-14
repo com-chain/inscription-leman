@@ -27,6 +27,13 @@
             exit();	
           }
           $password_md5 = md5($_POST['mdp'].$Salt);
+          
+    /* if ($email=='Sylvia') {
+       $stmt = $mysqli->prepare("Update  Reg_SiteUser set Password=? WHERE Id =?");
+       $stmt->bind_param("si", $password_md5, $UserId );
+	   $stmt->execute();
+ 	   $stmt->close();
+     }  */
      // echo $password_md5; exit();
 	 if(similar_text($password_md5, $Password, $percent)==32){
 	   $_SESSION['_UserId'] = $UserId;

@@ -38,7 +38,7 @@ echo'
              
              
         } else {
-             document.getElementById("title").innerHTML="Ouverture de compte électronique";
+             document.getElementById("title").innerHTML="VOS DONNÉES PERSONELLES";
              document.getElementById("tot_step").innerHTML=4;
              document.getElementById("adh_next").style.display="inline-block";
              document.getElementById("adh_sub").style.display="None";
@@ -436,7 +436,7 @@ echo '
   
  <a class="logo" href="http://monnaie-leman.org/"><img src="css/image/logo.png" width="160px"/></a> 
  
-	<h2><span id="title">Léman électronique: ouverture de compte</span> - Entreprise (étape <span id="step">1</span>/<span id="tot_step">5</span>)</h2>';
+	<h2><span id="title">Léman électronique: VOS DONNÉES PERSONELLES</span> - Entreprise (étape <span id="step">1</span>/<span id="tot_step">5</span>)</h2>';
 
 echo '
     <span class="cont_d" >
@@ -1286,6 +1286,7 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
   
   
   
+  <h3>EN VALIDANT CETTE DEMANDE, VOUS PASSEZ À LA PHASE 2: L\'OUVERTURE DE VOTRE COMPTE </h3>
   
  <a  class="button" onclick="showSection(\'sect_fin\');">Précédent</a>
  <a class="button" onclick="if (validateSectionDoc()){document.forms[\'form\'].submit();}">Valider ma demande</a>

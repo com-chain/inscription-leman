@@ -16,11 +16,13 @@ echo '
  <a class="logo" href="http://monnaie-leman.org/"><img src="css/image/logo.png" width="160px"/></a> <br/> 
  <a href="http://monnaie-leman.org/"  class="ariane">< Retour</a> 
   
-	<h2> Ouverture de compte électronique </h2>';
+	<h2> OUVERTURE D\'UN COMPTE ÉLECTRONIQUE</h2>';
 
 echo '
 
-En 4 courtes étapes (10 min. environ), j’ouvre un compte en Léman électronique et je soutiens une économie locale, durable et solidaire !
+J\'ouvre mon compte en 2 phases courtes (10 min. environ):<br/> 
+ 1. Renseignement de mes données personelles<br/>
+ 2. Création de mon compte
     <h3> Je suis:  </h3>
     
     <span class="half">

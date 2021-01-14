@@ -35,7 +35,7 @@ include 'p_mail.php';
     if ($AccountRequest==0) {
         echo '<h2> Association Monnaie Léman: adhésion - Particulier </h2><br/>';
     } else {
-        echo '<h2> Ouverture de compte en Léman électronique - Particulier </h2><br/>';
+      //  echo '<h2> Ouverture de compte en Léman électronique - Particulier </h2><br/>';
    }
 
    // Table Person:
@@ -219,7 +219,10 @@ include 'p_mail.php';
             getPDF($code, $mysqli, true);
             sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $first_name , 2);
 
-        
+            echo '<h3  class="center_msg"> BRAVO! VOUS AVEZ TERMINÉ LA PREMIÈRE PHASE AVEC SUCCÈS. </h3>';
+            echo '<h3  class="center_msg"> DEUXIÈME PHASE: CRÉER VOTRE COMPTE </h3>';
+            echo '<h3  class="center_msg"> VOUS VENEZ DE RECEVOIR PAR E-MAIL VOTRE "CODE D\'AUTORISATION". </h3>';
+        /*
             echo ' <h3  class="center_msg"> Demande d’ouverture de compte pour PARTICULIER 
 envoyée avec succès. </h3>
          <form id="form" action="pdf.php" method="post" target="_blank">
@@ -228,15 +231,14 @@ envoyée avec succès. </h3>
              <input   type="submit"  class="big_button" value="Code d\'ouverture de compte" style="width:300px;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);"/><br/> 
          <a   target="_blank" class="big_button" href="'.$how_to_file.'" style="width:260px !important;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);">Marche à suivre</a><br/>
         </form>
-';
+';*/
         } else {
          echo ' <h3  class="center_msg">Demande d’adhésion pour PARTICULIER
 envoyée avec succès.<br/>
 Nous revenons vers vous au plus vite. </h3>';
         }
-        echo '  <br/>
- <h3 class="center_msg">Merci de votre engagement pour une économie circulaire !
- </h3>';
+       
+ 
      }
    
  }
