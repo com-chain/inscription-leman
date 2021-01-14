@@ -40,7 +40,7 @@ echo'
              
              
         } else {
-             document.getElementById("title").innerHTML="VOS DONNÉES PERSONELLES";
+             document.getElementById("title").innerHTML="VOS DONNÉES";
              document.getElementById("tot_step").innerHTML=4;
              document.getElementById("adh_next").style.display="inline-block";
              document.getElementById("adh_sub").style.display="None";
@@ -315,7 +315,7 @@ echo '
   
  <a class="logo" href="http://monnaie-leman.org/"><img src="css/image/logo.png" width="160px"/></a> 
  
-	<h2> <span id="title">Léman électronique: VOS DONNÉES PERSONELLES</span> - Particulier (<span id="step">1</span>/<span id="tot_step">5</span>) </h2>';
+	<h2> <span id="title">Léman électronique: VOS DONNÉES</span> - Particulier (<span id="step">1</span>/<span id="tot_step">5</span>) </h2>';
 
 echo '
     <span class="cont_d" >
