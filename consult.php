@@ -90,7 +90,42 @@ echo '
   if ((isset($tp) && $tp>0) || (isset($st) && $st>0) || (isset($name) && $name!='')
   || (isset($code) && $code!='')|| (isset($wallet) && $wallet!='')){
   
-	echo'<h2> Demandes d\'ouverture / d\'adhésion </h2>
+  
+  $exportQS = '';
+  if (isset($tp) && $tp>0) {
+     $exportQS= $exportQS. 'tp='.$tp;
+  }
+  
+   if (isset($st) && $st>0) {
+       if (strlen($exportQS)>0){
+            $exportQS=$exportQS.'&';
+       }
+       $exportQS = $exportQS .'st='.$st;
+  }
+  
+  if (isset($name) && $name!='') {
+       if (strlen($exportQS)>0){
+            $exportQS=$exportQS.'&';
+       }
+       $exportQS = $exportQS .'name='.$name;
+  }
+  
+  if (isset($code) && $code!='') {
+       if (strlen($exportQS)>0){
+            $exportQS=$exportQS.'&';
+       }
+       $exportQS = $exportQS .'code='.$code;
+  }
+  
+    if (isset($wallet) && $wallet!='') {
+       if (strlen($exportQS)>0){
+            $exportQS=$exportQS.'&';
+       }
+       $exportQS = $exportQS .'wallet='.$wallet;
+  }
+  
+  
+	echo'<h2> Demandes d\'ouverture / d\'adhésion <a class="button" href="exportQuery.php?'.$exportQS.'">CSV</a></h2>
 	<table>
 	    <tr><td>Type</td><td>Nom</td><td>Date</td><td>Status</td><td>Email</td><td>Membre</td><td>Compte</td><td>Actions</td></tr>
 	';

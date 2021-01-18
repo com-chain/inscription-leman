@@ -32,7 +32,7 @@ include 'p_mail.php';
     if ($AccountRequest==0) {
         echo '<h2> Association Monnaie Léman: adhésion - Entreprise </h2><br/>';
     } else {
-        echo '<h2> Ouverture de compte en Léman électronique - Entreprise </h2><br/>';
+        //echo '<h2> Ouverture de compte en Léman électronique - Entreprise </h2><br/>';
    }
 
    // Table Person:
@@ -311,23 +311,25 @@ include 'p_mail.php';
             getPDF($code, $mysqli, true);
             sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $name , 1);
 
-        
-            echo ' <h3 class="center_msg"> Demande d’ouverture de compte pour ENTREPRISE 
+            
+            echo '<h3  class="center_msg"> BRAVO! VOUS AVEZ TERMINÉ LA PREMIÈRE PHASE AVEC SUCCÈS. </h3>';
+            echo '<h3  class="center_msg"> DEUXIÈME PHASE: CRÉER VOTRE COMPTE </h3>';
+            echo '<h3  class="center_msg"> VOUS VENEZ DE RECEVOIR PAR E-MAIL VOTRE "CODE D\'AUTORISATION". </h3>';
+            
+           /* echo ' <h3 class="center_msg"> Demande d’ouverture de compte pour ENTREPRISE 
 envoyée avec succès.</h3>
          <form id="form" action="pdf.php" method="post" target="_blank">
            <span class="labelWide">Nous vous avons envoyé un email contenant votre code d\'ouverture de compte et une marche à suivre pour l\'utiliser. Vous pouvez aussi directement télécharger ce document ci-dessous: </span>
           <input   type="hidden"  name="code" value="'.$code.'" />
          <input   type="submit" target="_blank" class="big_button" value="Code d\'ouverture de compte" style="width:300px;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);"/><br/> 
          <a   target="_blank" class="big_button" href="'.$how_to_file.'" style="width:260px !important;margin-right:calc( 50% - 160px);margin-left:calc( 50% - 160px);">Marche à suivre</a><br/>
-        </form>';
+        </form>';*/
         } else {
          echo ' <h3 class="center_msg">Demande d’adhésion pour ENTREPRISE
 envoyée avec succès.<br/>
 Nous revenons vers vous au plus vite. </h3>';
         }
         echo '<br/>
- <h3 class="center_msg">Merci de votre engagement pour une économie circulaire !
- </h3>
  <br/><br/>
  
  Pour mes dépenses personnelles ou pour recevoir un salaire, j’ouvre un compte <a class="" href="./individual.php">PARTICULIER</a> également.';

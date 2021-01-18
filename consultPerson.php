@@ -433,6 +433,37 @@ echo '
         
         if ($w_val==-1){
             echo 'rejeté';
+             echo'
+            
+              <span id="popAct_rej'.$index_cmpt.'" class="glass pop_hidden">
+                <span class="popup">
+                    <span class="pop_title">
+                        Remettre en attente <br/>'.$w_add.'
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a href="resetlockWallet.php?id='.$id.'&add='.$w_add.'" class="buttonlt">Reset</a>
+                    </span>
+                    <span class="pop_content">
+                       &nbsp;<br/>
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a onclick="document.getElementById(\'popAct_rej'.$index_cmpt.'\').classList.toggle(\'pop_hidden\')" class="buttonlt">Annuler</a>
+                    </span>
+                </span>
+            </span>
+            
+            <a  onclick="document.getElementById(\'popAct_rej'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">&#x21B6;</a>';
+       
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
         } else if ($w_val==1){
             echo 'validé';
         } else {
