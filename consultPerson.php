@@ -415,21 +415,22 @@ echo '
 	<table>';
 	$query = 'SELECT address,
 	            Reg_Code.Code,
-	            Validated 
+	            Validated,
+	            valid_date 
 	          FROM Reg_Wallet
 	          LEFT OUTER JOIN Reg_Code ON CodeId=Reg_Code.Id
 	          WHERE Reg_Wallet.PersonId=? 
 	           ';
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
-    $stmt->bind_result($w_add,$w_code,$w_val);
+    $stmt->bind_result($w_add,$w_code,$w_val, $w_date);
     $stmt->execute();
-    echo'<tr><td>Address</td><td>Code</td><td>Statut</td></tr>';
+    echo'<tr><td>Address</td><td>Code</td><td>Statut</td><td>Date</td></tr>';
     $index_cmpt=0;
     while ($stmt->fetch()){ 
         echo'<tr><td>
         <input type="text" readonly="readonly" value="'.$w_add.'"/> 
-        </td><td>'.substr ($w_code,0,5).'...</td><td>';
+        </td><td>'.substr ($w_code,0,5).'...</td><td>'.$w_date.'</td><td>';
         
         if ($w_val==-1){
             echo 'rejeté';

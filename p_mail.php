@@ -61,6 +61,8 @@ L’équipe du Léman'.getHtmlFooter().'</font>';
 
 <span style="color:#2f6aa6" >Bonjour '.$name.'</span>,
 <br/><br/>
+Merci pour votre inscription !
+<br/><br/>
 Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span>, en pièce jointe. Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 <br/><br/>
 N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.<br/>
@@ -127,7 +129,7 @@ $host_password = "myMailPassword";
 
 $code_file_name ="Leman_electronique_Code_autorisation.pdf";
 $how_to_file_name ="Marche_a_suivre_creation_compte.pdf";
-$how_to_file ="./resources/Biletujo_Marche_a_suivre_creation_compte.pdf";
+#$how_to_file ="./resources/Biletujo_Marche_a_suivre_creation_compte.pdf";
 
 
     $mail = new PHPMailer(true);
@@ -152,7 +154,7 @@ $how_to_file ="./resources/Biletujo_Marche_a_suivre_creation_compte.pdf";
 
         // Attachments
         $mail->addAttachment($code_file, $code_file_name, 'base64', 'application/pdf');         
-        $mail->addAttachment($how_to_file, $how_to_file_name, 'base64', 'application/pdf');    
+        #$mail->addAttachment($how_to_file, $how_to_file_name, 'base64', 'application/pdf');    
 
         // Content
         $mail->isHTML(true);                                  // Set email format to HTML

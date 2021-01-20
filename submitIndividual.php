@@ -220,7 +220,7 @@ include 'p_mail.php';
             sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $first_name , 2);
 
             echo '<h3  class="center_msg"> BRAVO! VOUS AVEZ TERMINÉ LA PREMIÈRE PHASE AVEC SUCCÈS. </h3>';
-            echo '<h3  class="center_msg"> DEUXIÈME PHASE: CRÉER VOTRE COMPTE </h3>';
+            echo '<h3  class="center_msg"> DEUXIÈME PHASE: CRÉEZ VOTRE COMPTE! </h3>';
             echo '<h3  class="center_msg"> VOUS VENEZ DE RECEVOIR PAR E-MAIL VOTRE "CODE D\'AUTORISATION". </h3>';
         /*
             echo ' <h3  class="center_msg"> Demande d’ouverture de compte pour PARTICULIER 
