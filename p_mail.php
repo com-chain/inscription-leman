@@ -46,13 +46,12 @@ function getBody($name, $type) {
 <br/><br/>
 Merci pour votre inscription !
 <br/><br/>
-Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span>, en pièce jointe. Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span> (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 <br/><br/>
-N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.<br/>
 <span style="color:#2f6aa6;font-weight: bold;">Depuis votre ordinateur, sur votre navigateur Web, créez votre compte:</span><br/>
 <a target="_blank" href="https://wallet.monnaie-leman.org/" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
-<br/><br/>
-Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser</span> avec votre smartphone.
+<br/>(N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)<br/><br/>
+Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser (importer)</span> avec votre smartphone.
 <br/><br/>
 Lémaniquement vôtres.<br/>
 L’équipe du Léman'.getHtmlFooter().'</font>';
@@ -63,13 +62,12 @@ L’équipe du Léman'.getHtmlFooter().'</font>';
 <br/><br/>
 Merci pour votre inscription !
 <br/><br/>
-Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span>, en pièce jointe. Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span> (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 <br/><br/>
-N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.<br/>
 <span style="color:#2f6aa6;font-weight: bold;">Depuis votre ordinateur, sur votre navigateur Web, créez votre compte:</span><br/>
 <a target="_blank" href="https://wallet.monnaie-leman.org/" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
-<br/><br/>
-Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser</span> avec votre smartphone.
+<br/>N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.<br/><br/>
+Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser (importer)</span> avec votre smartphone.
 <br/><br/>
 Lémaniquement vôtres.<br/>
 L’équipe du Léman'.getHtmlFooter().'</font>';
@@ -82,12 +80,12 @@ function getAltBody($name, $type) {
 
 Merci pour votre inscription !
 
-Conservez en lieu sûr le document Code d’autorisation personnel, en pièce jointe. Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+Conservez en lieu sûr le document Code d’autorisation personnel (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 
-N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
 Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: https://wallet.monnaie-leman.org/index.html#generate
+(N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)
 
-Une fois votre compte créé, vous pourrez le synchroniser avec votre smartphone.
+Une fois votre compte créé, vous pourrez le synchroniser (importer) avec votre smartphone.
 
 Lémaniquement vôtres.
 L’équipe du Léman".gatAltFoolter();
@@ -96,12 +94,12 @@ L’équipe du Léman".gatAltFoolter();
 
 Merci pour votre inscription !
 
-Conservez en lieu sûr le document Code d’autorisation personnel, en pièce jointe. Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+Conservez en lieu sûr le document Code d’autorisation personnel (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 
-N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
 Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: https://wallet.monnaie-leman.org/index.html#generate
+(N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)
 
-Une fois votre compte créé, vous pourrez le synchroniser avec votre smartphone.
+Une fois votre compte créé, vous pourrez le synchroniser (importer) avec votre smartphone.
 
 Lémaniquement vôtres.
 L’équipe du Léman".gatAltFoolter();
