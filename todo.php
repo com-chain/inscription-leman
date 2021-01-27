@@ -63,15 +63,19 @@ echo '
     
     
     $filter=$_GET['filter'];
+    if (!isset($filter)) {
+        $filter=1;
+    }
     
     
     echo '<h2> Demandes à traiter </h2>
     <form action="todo.php"  method="get">
     <select name="filter">
-        <option value="">Toutes</option>
-        <option value="1" '; if ($filter==1){echo ' selected="selected"';} echo'>Adhésion à traiter</option>
-        <option value="2"'; if ($filter==2){echo ' selected="selected"';} echo'>Compte à débloquer</option>
-        <option value="3"'; if ($filter==3){echo ' selected="selected"';} echo'>Code Manquant</option>
+        <option value="1" '; if ($filter==1){echo ' selected="selected"';} echo'>Compte demandé</option>
+        <option value="2" '; if ($filter==2){echo ' selected="selected"';} echo'>Adhésion simple</option>
+        <option value="3"'; if ($filter==3){echo ' selected="selected"';} echo'>Compte à débloquer</option>
+        <option value="4"'; if ($filter==4){echo ' selected="selected"';} echo'>Code Manquant</option>
+        <option value="0">Tout</option>
     </select><br>
     <input class="button" type="submit" value="Rafraichir">
     </form> <br>
@@ -121,18 +125,23 @@ $stmt = $mysqli->prepare($query);
 $stmt->bind_result($id,$member,$ac_req,$type,$typeName,$i_name,$e_name,$date,$statusid,$status,$mail,$code,$valid,$wall);
 $stmt->execute();
 while ($stmt->fetch()){ 
-   $accept= ($ac_req==1 && $code==0) || ($wall>0 && $valid==0) || ($member=='Oui' && $statusid<2);
+   $accept= true;// ($ac_req==1 && $code==0) || ($wall>0 && $valid==0) || ($member=='Oui' && $statusid<2);
    if ($filter==1) {
-      $accept =  ($member=='Oui' && $statusid<2);
+      $accept =  $ac_req==1 ;
    }
    
    if ($filter==2) {
-      $accept = ($wall>0 && $valid==0);
+      $accept =  ($member=='Oui' && $statusid<2 && $ac_req==0);
    }
    
    if ($filter==3) {
+      $accept = ($wall>0 && $valid==0);
+   }
+   
+   if ($filter==4) {
       $accept =  ($ac_req==1 && $code==0);
    }
+   
    
     if ($accept){
         echo '<tr><td>'.$typeName.'</td><td>';
