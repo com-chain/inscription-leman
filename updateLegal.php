@@ -120,10 +120,14 @@ $mysqli= ConnectionFactory::GetConnection();
  }
  $stmt->close();
  
- 
+   
   //Add ST
+     $ok = true;
      for ($st_id=1; $st_id<5; $st_id++){
         if ($ok && isset($_POST['st_'.$st_id.'_name']) && $_POST['st_'.$st_id.'_name']!=''){
+        
+        
+           
             $st_name = $_POST['st_'.$st_id.'_surname'];
             $st_lastname = $_POST['st_'.$st_id.'_name'];
             $st_address = $_POST['st_'.$st_id.'_add'];
@@ -134,7 +138,12 @@ $mysqli= ConnectionFactory::GetConnection();
             $st_cit = $_POST['st_'.$st_id.'_cit'];
             $st_birth = $_POST['st_'.$st_id.'_born'];
             
-            $query = "UPDATE Reg_Person SET ST_".$st_id."_FirstName=?  ,
+            
+            if (!isset($st_birth) || $st_birth==''){
+                $st_birth = NULL;
+            }
+
+            $query = "UPDATE Reg_Legal SET ST_".$st_id."_FirstName=?  ,
                                         ST_".$st_id."_LastName=?  ,
                                         ST_".$st_id."_Address=?  ,
                                         ST_".$st_id."_AddressComplement=?  ,
@@ -143,18 +152,19 @@ $mysqli= ConnectionFactory::GetConnection();
                                         ST_".$st_id."_Country=?  ,
                                         ST_".$st_id."_Citizenship=? ,
                                         ST_".$st_id."_BirthDate=? 
+                     
                       WHERE Id=?";
           
              $stmt = $mysqli->prepare($query);
-             $stmt->bind_param("sssssssssi",$st_name,$st_lastname,$st_address,$st_compl,$st_zip,$st_city,$st_country,$st_cit,$st_birth,$person_id);
+             $stmt->bind_param("sssssssssi",$st_name,$st_lastname,$st_address,$st_compl,$st_zip,$st_city,$st_country,$st_cit,$st_birth,$id);
              if (! $stmt->execute()) {
                  $ok=false;
                   echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
                   // DEBUG:
                   echo("Error description: " . $mysqli -> error);
+  
              }
              $stmt->close();
-          
      
         }
       
