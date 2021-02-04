@@ -713,7 +713,7 @@ echo '
 	     
 	     <span class="fitem">
 	       <span class="label" id="lb_st_1_zip">Code postal*</span>
-	       <input class="inputText"  type="text" id="st_1_zip" name="st_1_zip" value='.$ST_1_ZIP.'"" placeholder="Code postal*" /><br/>
+	       <input class="inputText"  type="text" id="st_1_zip" name="st_1_zip" value="'.$ST_1_ZIP.'" placeholder="Code postal*" /><br/>
 	     </span>
 	     
 	     <span class="fitem">

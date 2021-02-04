@@ -309,7 +309,7 @@ include 'p_mail.php';
             // generate pdf 
             include 'pdf_builder.php';
             getPDF($code, $mysqli, true);
-            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $name , 1);
+            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $name , 'https://wallet.monnaie-leman.org/index.html?code='.getStr($res['code']), 1);
 
             
             echo '<h3  class="center_msg"> BRAVO! VOUS AVEZ TERMINÉ LA PREMIÈRE PHASE AVEC SUCCÈS. </h3>';

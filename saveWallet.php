@@ -59,13 +59,14 @@
        
         $code = $res->$addr;
     } else {
-        //// TODO insert without code ???
-      /* $query = 'INSERT INTO  Reg_Wallet (address, PersonId, Validated) VALUES (?,?,?)';       
-	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("sii",$addr,$pid,$validated);
-    $stmt->execute();
-    $stmt->close();	*/
-        header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=3');
+        ////  insert without code 
+        $query = 'INSERT INTO  Reg_Wallet (address, PersonId, Validated) VALUES (?,?,?)';       
+	    $stmt = $mysqli->prepare($query);
+	    $stmt->bind_param("sii",$addr,$pid,$validated);
+        $stmt->execute();
+        $stmt->close();	
+        header('Location: ./consultPerson.php?id='.$pid);
+        //header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=3');
         exit();
     }
     

@@ -37,7 +37,7 @@ Rue des Savoises 15 | 1205 Genève |  monnaie-leman.org
 Découvrez les professionnels qui acceptent les lémans !";
 }
 
-function getBody($name, $type) {
+function getBody($name, $url_gen, $type) {
      if ($type==1) {
        
         return '<font face="HelveticaNeue-Light">
@@ -49,7 +49,7 @@ Merci pour votre inscription !
 Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span> (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 <br/><br/>
 <span style="color:#2f6aa6;font-weight: bold;">Depuis votre ordinateur, sur votre navigateur Web, créez votre compte:</span><br/>
-<a target="_blank" href="https://wallet.monnaie-leman.org/" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
+<a target="_blank" href="'.$url_gen.'" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
 <br/>(N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)<br/><br/>
 Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser (importer)</span> avec votre smartphone.
 <br/><br/>
@@ -65,7 +65,7 @@ Merci pour votre inscription !
 Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span> (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 <br/><br/>
 <span style="color:#2f6aa6;font-weight: bold;">Depuis votre ordinateur, sur votre navigateur Web, créez votre compte:</span><br/>
-<a target="_blank" href="https://wallet.monnaie-leman.org/" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
+<a target="_blank" href="'.$url_gen.'" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
 <br/>N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.<br/><br/>
 Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser (importer)</span> avec votre smartphone.
 <br/><br/>
@@ -74,7 +74,7 @@ L’équipe du Léman'.getHtmlFooter().'</font>';
   }
 }
 
-function getAltBody($name, $type) {
+function getAltBody($name, $url_gen, $type) {
     if ($type==1) {
       return "Bonjour ".$name.",
 
@@ -82,7 +82,7 @@ Merci pour votre inscription !
 
 Conservez en lieu sûr le document Code d’autorisation personnel (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 
-Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: https://wallet.monnaie-leman.org/index.html#generate
+Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: ".$url_gen."
 (N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)
 
 Une fois votre compte créé, vous pourrez le synchroniser (importer) avec votre smartphone.
@@ -96,7 +96,7 @@ Merci pour votre inscription !
 
 Conservez en lieu sûr le document Code d’autorisation personnel (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 
-Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: https://wallet.monnaie-leman.org/index.html#generate
+Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: ".$url_gen."
 (N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)
 
 Une fois votre compte créé, vous pourrez le synchroniser (importer) avec votre smartphone.
@@ -117,7 +117,9 @@ function getSubject($type) {
 }
 
 
-function sendConfirmationMail($to_address, $code_file, $name, $type) {
+function sendConfirmationMail($to_address, $code_file, $name, $url_gen, $type) {
+$url_gen = str_replace('"','&quot;',$url_gen);
+
 $from_address = 'ne-pas-repondre@monnaie-leman.org'; 
 $from_name = 'Ne pas repondre - Monnaie Leman';  
 
@@ -158,8 +160,8 @@ $how_to_file_name ="Marche_a_suivre_creation_compte.pdf";
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->CharSet = 'UTF-8';
         $mail->Subject = getSubject($type);
-        $mail->Body    = getBody($name, $type);
-        $mail->AltBody = getAltBody($name, $type);
+        $mail->Body    = getBody($name, $url_gen, $type);
+        $mail->AltBody = getAltBody($name, $url_gen, $type);
 
         $mail->send();
    } catch (Exception $e) {
