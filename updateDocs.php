@@ -78,7 +78,7 @@ if (isset($_GET['id']) && isset($_GET['tp']) && isset($_GET['ind'])){
             $file_to_delete=$rs[$_GET['ind']-1];
         }
         if ($file_to_delete!=''){
-            $query = 'UPDATE Legal set '.$field.'="" WHERE Id=?';
+            $query = 'UPDATE Reg_Legal set '.$field.'="" WHERE Id=?';
             $stmt = $mysqli->prepare($query);
 	        $stmt->bind_param("i",$id); 
 	        $stmt->execute();
