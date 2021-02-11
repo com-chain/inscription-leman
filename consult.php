@@ -170,7 +170,7 @@ echo '
 	    if (!$first){
 	       $query =$query . ' AND ';
 	    }
-	    $query =$query . " (Reg_Legal.Name LIKE '%".$name."%' OR Reg_Individual.FirstName LIKE '%".$name."%' OR Reg_Individual.LastName LIKE '%".$name."%' )";
+	    $query =$query . " (Reg_Legal.Name LIKE '%".$name."%' OR Reg_Legal.RefName LIKE '%".$name."%' OR Reg_Legal.Contact LIKE '%".$name."%' OR Reg_Legal.ContactSurname LIKE '%".$name."%' OR Reg_Individual.FirstName LIKE '%".$name."%' OR Reg_Individual.LastName LIKE '%".$name."%' )";
 	    
 	  }
 	  
