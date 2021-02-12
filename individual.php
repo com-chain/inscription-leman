@@ -793,8 +793,9 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
   </span>
   
   <span class="fitem">
-   <span class="label" id="lb_img">Copie d’une pièce d’identité valide*</span>
+   <span class="label" id="lb_img">Copie d’une pièce d’identité valide Recto/verso*</span>
   <input class="inputText" type="file" id="img" name="img" accept="application/pdf,image/*" >
+  <input class="inputText" type="file" id="img2" name="img2" accept="application/pdf,image/*" >
     </span>
     
     
@@ -838,10 +839,28 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
         
         }
     }
+    
+    function handleFileDialog2(changed) {
+       
+        if (changed){
+            var file = document.getElementById("img2").files[0];
+
+            if(file && file.size < 1048576*'.$uploal_limit_MB.') { // 1 MB (this size is in bytes)
+                 // ok
+            } else {
+                alert("Ce fichier est trop volumineux! il fait "+Math.round(file.size/10485.76)/100+"MB, la limite est de '.$uploal_limit_MB.'MB.");
+                document.getElementById("img2").value="";
+            }
+        
+        }
+    }
 
     var fileSelected = null;
     document.getElementById("img").onchange = function(e) { // will trigger each time
         handleFileDialog(document.getElementById("img").value !== fileSelected);
+    };
+    document.getElementById("img2").onchange = function(e) { // will trigger each time
+        handleFileDialog2(document.getElementById("img2").value !== fileSelected);
     };
     
     setTypeForm('.$type_form.');';

@@ -19,6 +19,7 @@ if(isset($_GET['id'])){
 $query = 'SELECT 
 	          RecordTypeId,
               Reg_Individual.IdCard,
+              Reg_Individual.IdCard2,
 	          
               Reg_Legal.IdCard_1,
               Reg_Legal.IdCard_2,
@@ -49,7 +50,7 @@ $query = 'SELECT
 	          
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
-    $stmt->bind_result($type, $IdCard,
+    $stmt->bind_result($type, $IdCard,$IdCard2,
                        $IdCard_1,$IdCard_2,$IdCard_3,$IdCard_4,$IdCard_5,$IdCard_6,
                        $IdCard_7,$IdCard_8,$IdCard_9,$IdCard_10,$IdCard_11,$IdCard_12, $FinState_1,$FinState_2,$FinState_3,$Registration_1,$Registration_2,$Registration_3);
     $stmt->execute();
@@ -87,7 +88,15 @@ if (isset($_GET['id']) && isset($_GET['tp']) && isset($_GET['ind'])){
             unlink($folder.$file_to_delete);
         }
     } else {
-      // not permitted  
+      if ($IdCard2!=''){
+            $query = 'UPDATE Reg_Individual set IdCard2="" WHERE Id=?';
+            $stmt = $mysqli->prepare($query);
+	        $stmt->bind_param("i",$id); 
+	        $stmt->execute();
+            $stmt->close();	
+            
+            unlink($folder.$IdCard2);
+        }  
     }
     
 }
@@ -117,14 +126,27 @@ if (isset($_POST['id']) && isset($_POST['tp']) && isset($_POST['ind'])){
         $stmt->execute();
         $stmt->close();	
     } else {
-      if ($IdCard!=''){
-          unlink($folder.$IdCard);
-      }
-      $query = 'UPDATE Reg_Individual set IdCard=? WHERE Id=?';
-      $stmt = $mysqli->prepare($query);
-      $stmt->bind_param("si",$new_file_name,$id); 
-      $stmt->execute();
-      $stmt->close();	
+     if ($_POST['ind']==1) {
+          if ($IdCard!=''){
+            unlink($folder.$IdCard);
+          }
+          $query = 'UPDATE Reg_Individual set IdCard=? WHERE Id=?';
+          $stmt = $mysqli->prepare($query);
+          $stmt->bind_param("si",$new_file_name,$id); 
+          $stmt->execute();
+          $stmt->close();
+     } else {
+          if ($IdCard2!=''){
+            unlink($folder.$IdCard2);
+          }
+          $query = 'UPDATE Reg_Individual set IdCard2=? WHERE Id=?';
+          $stmt = $mysqli->prepare($query);
+          $stmt->bind_param("si",$new_file_name,$id); 
+          $stmt->execute();
+          $stmt->close();
+     
+     }
+      	
     }             
 }
 header('Location: ./docs.php?id='.$id);

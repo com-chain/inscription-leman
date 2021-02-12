@@ -160,6 +160,18 @@ include 'p_mail.php';
               echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
           }
      }
+     
+     $new_file_name_2='';
+     if ($ok && $AccountRequest==1 && isset($_FILES['img2']) && isset($_FILES['img2']['name'])&& $_FILES['img2']['name']!=''){
+          $ext = pathinfo($_FILES['img2']['name'], PATHINFO_EXTENSION);
+          $new_file_name_2 = uniqid('img_').'.'.$ext;
+          $new_file =  $new_path.'/'.$new_file_name_2;
+          if(!move_uploaded_file($_FILES['img2']['tmp_name'], $new_file)){
+              $ok=false;
+              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+          }
+     }
+     
      // Extention table for private individual
      $first_name = $_POST['surname'];
      $last_name = $_POST['name'];
@@ -167,11 +179,11 @@ include 'p_mail.php';
      $cit = $_POST['cit'];
      $born = $_POST['born'];
       
-     $query = "INSERT INTO Reg_Individual (Id, FirstName, LastName, Gender, Citizenship, BirthDate, IdCard) VALUES (?,?,?,?,?,?,?)";
+     $query = "INSERT INTO Reg_Individual (Id, FirstName, LastName, Gender, Citizenship, BirthDate, IdCard, IdCard2) VALUES (?,?,?,?,?,?,?,?)";
      
      if ($ok){
          $stmt = $mysqli->prepare($query);
-         $stmt->bind_param("issssss",$person_id,$first_name,$last_name,$gender,$cit,$born,$new_file_name);
+         $stmt->bind_param("isssssss",$person_id,$first_name,$last_name,$gender,$cit,$born,$new_file_name,$new_file_name_2);
          if (! $stmt->execute()) {
              $ok=false;
               echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';

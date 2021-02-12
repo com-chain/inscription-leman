@@ -26,6 +26,7 @@ $query = 'SELECT
               Reg_Individual.Citizenship,
               Reg_Individual.BirthDate,
               Reg_Individual.IdCard,
+              Reg_Individual.IdCard2,
 	          
 	          Reg_Legal.Name,
 	          Reg_Legal.Contact,
@@ -68,7 +69,7 @@ $query = 'SELECT
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
     $stmt->bind_result($type,$typeName,$status,$statusName,
-                       $FirstName,$LastName,$Gender,$Citizenship,$BirthDate,$IdCard,
+                       $FirstName,$LastName,$Gender,$Citizenship,$BirthDate,$IdCard,$IdCard2,
                        $Name,$Contact,$LegalForm,$CreationDate,$ActivityField,$ActivityDescription,$EFT,
                        $IdCard_1,$IdCard_2,$IdCard_3,$IdCard_4,$IdCard_5,$IdCard_6,
                        $IdCard_7,$IdCard_8,$IdCard_9,$IdCard_10,$IdCard_11,$IdCard_12,
@@ -158,7 +159,7 @@ echo '
 	echo'
 	 <h3> Documents </h3>';
 	 
-	 $doc=['Carte d\'Identité'=>[$IdCard]];
+	 $doc=['Carte d\'Identité'=>[$IdCard,$IdCard2]];
 	 if($type==1) {
 	    $doc=['Carte d\'Identité'=>[$IdCard_1,$IdCard_2,$IdCard_3,$IdCard_4,$IdCard_5,$IdCard_6,
                        $IdCard_7,$IdCard_8,$IdCard_9,$IdCard_10,$IdCard_11,$IdCard_12],

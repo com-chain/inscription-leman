@@ -84,6 +84,7 @@ $query = 'SELECT
               Reg_Individual.Citizenship,
               Reg_Individual.BirthDate,
               Reg_Individual.IdCard,
+              Reg_Individual.IdCard2,
 	          
 	          Reg_Legal.Name,
 	          Reg_Legal.RefName,
@@ -180,7 +181,7 @@ $query = 'SELECT
                        $AED_2_FirstName,$AED_2_LastName,$AED_2_Address,$AED_2_ComplAddress, $AED_2_ZIP, $AED_2_City, $AED_2_Country, $AED_2_Citizenship,$AED_2_BirthDate,
                        $AED_3_FirstName,$AED_3_LastName,$AED_3_Address,$AED_3_ComplAddress, $AED_3_ZIP, $AED_3_City, $AED_3_Country, $AED_3_Citizenship,$AED_3_BirthDate,
                        $AED_4_FirstName,$AED_4_LastName,$AED_4_Address,$AED_4_ComplAddress, $AED_4_ZIP, $AED_4_City, $AED_4_Country, $AED_4_Citizenship,$AED_4_BirthDate,
-                       $FirstName,$LastName,$Gender,$Citizenship,$BirthDate,$IdCard,
+                       $FirstName,$LastName,$Gender,$Citizenship,$BirthDate,$IdCard,$IdCard2,
                        $Name,$RefName, $Contact, $ContactSurname, $ContactGender,$LegalForm,$CreationDate,$ActivityField,$ActivityFieldSeg,$ActivityDescription,$EFT,$site,
                        
                        
@@ -1316,7 +1317,7 @@ echo '
 	  echo '<a class="button" href="docs.php?id='.$id.'">Modifier les documents</a>';
     } 
   
-	 $doc=['Carte d\'Identité'=>[$IdCard]];
+	 $doc=['Carte d\'Identité'=>[$IdCard,$IdCard2]];
 	 if($type==1) {
 	    $doc=['Carte d\'Identité'=>[$IdCard_1,$IdCard_2,$IdCard_3,$IdCard_4,$IdCard_5,$IdCard_6,
 	           $IdCard_7,$IdCard_8,$IdCard_9,$IdCard_10,$IdCard_11,$IdCard_12],
