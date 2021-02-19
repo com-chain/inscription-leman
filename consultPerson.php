@@ -313,8 +313,13 @@ echo '
 	        <a class="button" href="changeStatus.php?id='.$id.'&stat=100">Refuser</a>';
 	}
 	
+	if (canEdit() && $status==3){
+	 echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2">Remettre en attente</a> ';
+	}
+	
 	if (canEdit() && $status==100){
 	 echo '
+	    <a class="button" href="changeStatus.php?id='.$id.'&stat=2">Remettre en attente</a> 
 	    <a class="button" onClick="document.getElementById(\'popDel\').classList.toggle(\'pop_hidden\');">Supprimer</a></td>
             
             <span id="popDel" class="glass pop_hidden">
@@ -431,7 +436,7 @@ echo '
     $index_cmpt=0;
     while ($stmt->fetch()){ 
         echo'<tr><td>
-        <input type="text" readonly="readonly" value="'.$w_add.'"/> 
+        <input type="text" readonly="readonly" value="'.$w_add.'" style="width:100px"/> 
         </td><td>'.substr ($w_code,0,5).'...</td><td>'.$w_date.'</td><td>';
         
         if ($w_val==-1){
@@ -456,19 +461,32 @@ echo '
             </span>
             
             <a  onclick="document.getElementById(\'popAct_rej'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">&#x21B6;</a>';
-       
-            
-            
-            
-            
-            
-            
-            
-            
-            
             
         } else if ($w_val==1){
             echo 'validé';
+             echo'
+            
+              <span id="popAct_acc'.$index_cmpt.'" class="glass pop_hidden">
+                <span class="popup">
+                    <span class="pop_title">
+                       Bloquer le compte <br/>'.$w_add.'
+                    </span>
+                    <span class="pop_btn_bar">
+                    <a onClick="window.open(\'lock.php?id='.$id.'&add='.$w_add.'\'); document.getElementById(\'popAct_acc'.$index_cmpt.'\').style.display=\'None\';document.getElementById(\'popAct_acc'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">Bloquer dans le Bureau</a>
+             
+                    </span>
+                    <span class="pop_content">
+                       &nbsp;<br/>
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a onclick="document.getElementById(\'popAct_acc'.$index_cmpt.'\').classList.toggle(\'pop_hidden\')" class="buttonlt">Annuler</a>
+                    </span>
+                </span>
+            </span>
+            
+           <a  onclick="document.getElementById(\'popAct_acc'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">&#x21B6;</a>';
+       
+            
         } else {
             echo ' 
              <span id="popAct'.$index_cmpt.'" class="glass pop_hidden">

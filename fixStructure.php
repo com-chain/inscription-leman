@@ -70,7 +70,7 @@ if ($read_id!=$id) {
        }
     }
     if ($read_type == 2) {
-        if ($read_ind_id==$id) {
+        if ($read_ind_id!=$id) {
             echo "La table Personne individuelle est manquante... ";
             $query = "INSERT INTO Reg_Individual (Id) VALUES (?)";
             $stmt = $mysqli->prepare($query);
