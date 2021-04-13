@@ -10,6 +10,7 @@ include 'connectionFactory.php';
 $mysqli= ConnectionFactory::GetConnection();
 
 $id=$_GET['id'];
+$origin=$_GET['o'];
 
 $query = 'SELECT 
 	          Reg_RecordType.Id,
@@ -26,6 +27,7 @@ $query = 'SELECT
               Reg_Individual.Citizenship,
               Reg_Individual.BirthDate,
               Reg_Individual.IdCard,
+              Reg_Individual.IdCard2,
 	          
 	          Reg_Legal.Name,
 	          Reg_Legal.Contact,
@@ -68,7 +70,7 @@ $query = 'SELECT
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
     $stmt->bind_result($type,$typeName,$status,$statusName,
-                       $FirstName,$LastName,$Gender,$Citizenship,$BirthDate,$IdCard,
+                       $FirstName,$LastName,$Gender,$Citizenship,$BirthDate,$IdCard,$IdCard2,
                        $Name,$Contact,$LegalForm,$CreationDate,$ActivityField,$ActivityDescription,$EFT,
                        $IdCard_1,$IdCard_2,$IdCard_3,$IdCard_4,$IdCard_5,$IdCard_6,
                        $IdCard_7,$IdCard_8,$IdCard_9,$IdCard_10,$IdCard_11,$IdCard_12,
@@ -124,10 +126,11 @@ echo '
   <span class="fond"></span>
   <span class="cont">
   
-    <a class="button" href="consultPerson.php?id='.$id.'">Retour</a><br/>
+    <a class="button" href="consultPerson.php?id='.$id.'&o='.$origin.'">Retour</a><br/>
 	<h2> Modification des documents pour un compte '.$typeName.'  Status: '.$statusName.'  </h2>
 	<form id="form" enctype="multipart/form-data" action="./updateDocs.php" method="post">
 	    <input   type="hidden"  name="id" value="'.$id.'"/>
+        <input   type="hidden"  name="o" value="'.$origin.'" />
 	    <input   type="hidden" id="tp"  name="tp" value=""/>
 	    <input   type="hidden" id="ind" name="ind" value=""/>
         <h3> Informations personnelles  </h3>';
@@ -158,7 +161,7 @@ echo '
 	echo'
 	 <h3> Documents </h3>';
 	 
-	 $doc=['Carte d\'Identité'=>[$IdCard]];
+	 $doc=['Carte d\'Identité'=>[$IdCard,$IdCard2]];
 	 if($type==1) {
 	    $doc=['Carte d\'Identité'=>[$IdCard_1,$IdCard_2,$IdCard_3,$IdCard_4,$IdCard_5,$IdCard_6,
                        $IdCard_7,$IdCard_8,$IdCard_9,$IdCard_10,$IdCard_11,$IdCard_12],
@@ -201,7 +204,7 @@ echo '
 	        }
 	        
 	         if ($counter>1){
-	            echo '<a class="button" href="updateDocs.php?id='.$id.'&tp='. $type_dict[$doc_name].'&ind='.$counter.'">Supprimer</a>';
+	            echo '<a class="button" href="updateDocs.php?id='.$id.'&tp='. $type_dict[$doc_name].'&ind='.$counter.'&o='.$origin.'">Supprimer</a>';
 	        } 
 	        
 	        echo'</td></tr>';

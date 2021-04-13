@@ -21,6 +21,7 @@ echo'
 
 
 $id=$_GET['id'];
+$origin=$_GET['o'];
 $wallet ='';
 if (isset($_GET['wallet'])){
     $wallet = $_GET['wallet'];
@@ -58,7 +59,7 @@ echo '
   <span class="cont">
   
   
-    <a class="button" href="consultPerson.php?id='.$id.'">Annuler</a><br/>
+    <a class="button" href="consultPerson.php?id='.$id.'&o='.$origin.'">Annuler</a><br/>
   
     <h2> Ajouter manuelement un compte </h2>';
     
@@ -110,6 +111,7 @@ echo '
     
     echo '<form  action="saveWallet.php" method="post" >
           <input   type="hidden"  name="id" value="'.$id.'" />
+          <input   type="hidden"  name="o" value="'.$origin.'" />
           <span class="label" >Address du compte à ajouter:</span>
           <input   type="text"  name="wallet" value="'.$wallet.'" placeholder="0x123456...."/></br>
           <span class="label" >Ce compte est déjà validé</span>

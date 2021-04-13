@@ -10,6 +10,7 @@ $mysqli= ConnectionFactory::GetConnection();
 
 $new_status=$_GET['stat'];
 $id=$_GET['id'];
+$origin=$_GET['o'];
 
 $uid=getUserId();
 
@@ -28,7 +29,7 @@ if ($new_status<1000) {
     $stmt->close();
 
 
-    header('Location: ./consultPerson.php?id='.$id);
+    header('Location: ./consultPerson.php?id='.$id.'&o='.$origin);
 } else if ($new_status==1000) {
     $query = "DELETE FROM Reg_Wallet WHERE PersonId=?";
     $stmt = $mysqli->prepare($query);
@@ -70,7 +71,8 @@ if ($new_status<1000) {
     array_map('unlink', glob("$folder/*.*"));
     rmdir($folder);
     
-    header('Location: ./consult.php');
+    
+    header('Location: ./consult.php?o='.$origin);
 }
 
 ?>

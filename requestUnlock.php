@@ -91,9 +91,12 @@ if (isset($_POST['address'])){
         
         
     } else {
-        // No code available
-        http_response_code(404);
-        exit();
+        // No code available store as it
+        $query = 'INSERT INTO  Reg_Wallet (address, Validated) VALUES (?,0)';       
+        $stmt = $mysqli->prepare($query);
+        $stmt->bind_param("s",$addr);
+        $stmt->execute();
+        $stmt->close();	
     } 
  }   
      

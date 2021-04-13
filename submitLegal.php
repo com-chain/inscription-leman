@@ -93,7 +93,7 @@ include 'p_mail.php';
               $aed,$cgu, $charte, $engagment, $attestation);
      if (! $stmt->execute()) {
       $ok=false;
-      echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+      echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE001) </h3>';
       // DEBUG:
       echo("Error description: " . $mysqli -> error);
 
@@ -130,7 +130,7 @@ include 'p_mail.php';
              $stmt->bind_param("sssssssssi",$aed_name,$aed_lastname,$aed_address,$aed_compl,$aed_zip,$aed_city,$aed_country,$aed_cit,$aed_birth,$person_id);
              if (! $stmt->execute()) {
                  $ok=false;
-                  echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+                  echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE002)</h3>';
                   // DEBUG:
                   echo("Error description: " . $mysqli -> error);
              }
@@ -160,7 +160,7 @@ include 'p_mail.php';
               $new_file =  $new_path.'/'.$new_file_name;
               if(!move_uploaded_file($_FILES['img_c'.$img_id]['tmp_name'], $new_file)){
                   $ok=false;
-                  echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+                  echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE003)</h3>';
               }
               $img_c[$img_id-1]=$new_file_name;
          }
@@ -174,7 +174,7 @@ include 'p_mail.php';
               $new_file =  $new_path.'/'.$new_file_name;
               if(!move_uploaded_file($_FILES['img_ef'.$img_id]['tmp_name'], $new_file)){
                   $ok=false;
-                  echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+                  echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE004)</h3>';
               }
               $img_ef[$img_id-1]=$new_file_name;
          }
@@ -188,7 +188,7 @@ include 'p_mail.php';
               $new_file =  $new_path.'/'.$new_file_name;
               if(!move_uploaded_file($_FILES['img_r'.$img_id]['tmp_name'], $new_file)){
                   $ok=false;
-                  echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+                  echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE005)</h3>';
               }
               $img_r[$img_id-1]=$new_file_name;
          }
@@ -225,7 +225,7 @@ include 'p_mail.php';
                             );
          if (! $stmt->execute()) {
              $ok=false;
-              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE006)</h3>';
               // DEBUG:
               echo("Error description: " . $mysqli -> error);
          }
@@ -262,7 +262,7 @@ include 'p_mail.php';
              $stmt->bind_param("sssssssssi",$st_name,$st_lastname,$st_address,$st_compl,$st_zip,$st_city,$st_country,$st_cit,$st_birth,$person_id);
              if (! $stmt->execute()) {
                  $ok=false;
-                  echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+                  echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE007)</h3>';
              }
              $stmt->close();
           
@@ -280,7 +280,7 @@ include 'p_mail.php';
          $stmt->bind_param("is",$person_id,$code);
          if (! $stmt->execute()) {
              $ok=false;
-              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE008)</h3>';
          }
          $stmt->close();
       }
@@ -297,7 +297,7 @@ include 'p_mail.php';
          $stmt->bind_param("ii",$person_id, $statusId);
           if (! $stmt->execute()) {
              $ok=false;
-              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE009)</h3>';
               // DEBUG:
               echo("Error description: " . $mysqli -> error);
          }
@@ -309,11 +309,11 @@ include 'p_mail.php';
             // generate pdf 
             include 'pdf_builder.php';
             getPDF($code, $mysqli, true);
-            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $name , 1);
+            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $name , 'https://wallet.monnaie-leman.org/index.html?code='.getStr($code), 1);
 
             
             echo '<h3  class="center_msg"> BRAVO! VOUS AVEZ TERMINÉ LA PREMIÈRE PHASE AVEC SUCCÈS. </h3>';
-            echo '<h3  class="center_msg"> DEUXIÈME PHASE: CRÉER VOTRE COMPTE </h3>';
+            echo '<h3  class="center_msg"> DEUXIÈME PHASE: CRÉEZ VOTRE COMPTE! </h3>';
             echo '<h3  class="center_msg"> VOUS VENEZ DE RECEVOIR PAR E-MAIL VOTRE "CODE D\'AUTORISATION". </h3>';
             
            /* echo ' <h3 class="center_msg"> Demande d’ouverture de compte pour ENTREPRISE 

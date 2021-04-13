@@ -5,10 +5,10 @@
   include 'downloadFile.php';
   $mysqli= ConnectionFactory::GetConnection();
   
-   if(!isAdmin()){ 
+   /*if(!isAdmin()){ 
     header('Location: ./consult.php');
     exit();
-  }
+  }*/
 $tp = $_GET['tp'];
 $st = $_GET['st'];
 $name = $_GET['name'];

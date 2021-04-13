@@ -298,3 +298,9 @@ ALTER TABLE Reg_Wallet ADD COLUMN link_date timestamp DEFAULT current_timestamp;
 
 ALTER TABLE Reg_Wallet ADD COLUMN valid_date DATE; 
 
+--------------------
+ALTER TABLE Reg_Wallet ADD COLUMN MainWallet INT DEFAULT 0; 
+
+--------------------
+ALTER TABLE Reg_Individual ADD COLUMN IdCard2 VARCHAR( 255 )  NULL;
+

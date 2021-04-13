@@ -21,7 +21,7 @@ echo '
 echo '
 
 J\'ouvre mon compte en 2 phases courtes (10 min. environ):<br/> 
- 1. Renseignement de mes données personelles<br/>
+ 1. Renseignement de mes données personnelles<br/>
  2. Création de mon compte
     <h3> Je suis:  </h3>
     

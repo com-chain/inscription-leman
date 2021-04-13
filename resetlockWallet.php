@@ -9,6 +9,7 @@
     $mysqli= ConnectionFactory::GetConnection();
         
     $pid=$_GET['id'];
+    $origin=$_GET['o'];
     $add=$_GET['add'];
   
     // insert address
@@ -18,6 +19,6 @@
     $stmt->execute();
     $stmt->close();	
 
-    header('Location: ./consultPerson.php?id='.$pid);
+    header('Location: ./consultPerson.php?id='.$pid.'&o='.$origin);
   exit();
 ?>

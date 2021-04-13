@@ -84,6 +84,7 @@ $query = 'SELECT
               Reg_Individual.Citizenship,
               Reg_Individual.BirthDate,
               Reg_Individual.IdCard,
+              Reg_Individual.IdCard2,
 	          
 	          Reg_Legal.Name,
 	          Reg_Legal.RefName,
@@ -180,7 +181,7 @@ $query = 'SELECT
                        $AED_2_FirstName,$AED_2_LastName,$AED_2_Address,$AED_2_ComplAddress, $AED_2_ZIP, $AED_2_City, $AED_2_Country, $AED_2_Citizenship,$AED_2_BirthDate,
                        $AED_3_FirstName,$AED_3_LastName,$AED_3_Address,$AED_3_ComplAddress, $AED_3_ZIP, $AED_3_City, $AED_3_Country, $AED_3_Citizenship,$AED_3_BirthDate,
                        $AED_4_FirstName,$AED_4_LastName,$AED_4_Address,$AED_4_ComplAddress, $AED_4_ZIP, $AED_4_City, $AED_4_Country, $AED_4_Citizenship,$AED_4_BirthDate,
-                       $FirstName,$LastName,$Gender,$Citizenship,$BirthDate,$IdCard,
+                       $FirstName,$LastName,$Gender,$Citizenship,$BirthDate,$IdCard,$IdCard2,
                        $Name,$RefName, $Contact, $ContactSurname, $ContactGender,$LegalForm,$CreationDate,$ActivityField,$ActivityFieldSeg,$ActivityDescription,$EFT,$site,
                        
                        
@@ -269,9 +270,30 @@ echo'
 
 echo '
   <span class="fond"></span>
-  <span class="cont">
+  <span class="cont">';
   
-    <a class="button" href="todo.php">Fermer</a>
+  $origin = $_GET['o'];
+  $pieces = explode("_", $origin);
+  if ($pieces[0]==0 && sizeof($pieces)==2) {
+   echo '<a class="button" href="todo.php?filter='.$pieces[1].'">Fermer</a>';
+  } else if ($pieces[0]==1 && sizeof($pieces)==6) {
+    
+    echo '<form  id="formNav" action="consult.php" method="post" >
+          <input   type="hidden"  name="tp" value="'.$pieces[1].'" />
+          <input   type="hidden"  name="st" value="'.$pieces[2].'" />
+          <input   type="hidden"  name="name" value="'.$pieces[3].'" />
+          <input   type="hidden"  name="code" value="'.$pieces[4].'" />
+          <input   type="hidden"  name="wallet" value="'.$pieces[5].'" />
+          <input class="button"  type="submit" value="Fermer" />
+        </form>';
+        
+        
+  }
+  
+    
+    
+    
+    echo'<a class="button" href="fixStructure.php?id='.$id.'" style="float:right;">SOS</a>
     <a class="button" href="export.php?id='.$id.'" style="float:right;">Exporter</a><br/>
 	<h2>  Demande d\'';
 	if (trim($membership)=='Oui'){
@@ -301,18 +323,23 @@ echo '
 	
 	echo '<span class="half">';
 	if (canEdit() && $status==1){
-	  echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2">Mettre en attente</a> 
-	        <a class="button" href="changeStatus.php?id='.$id.'&stat=3">Accepter</a>
-	        <a class="button" href="changeStatus.php?id='.$id.'&stat=100">Refuser</a>';
+	  echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2&o='.$origin.'">Mettre en attente</a> 
+	        <a class="button" href="changeStatus.php?id='.$id.'&stat=3&o='.$origin.'">Accepter</a>
+	        <a class="button" href="changeStatus.php?id='.$id.'&stat=100&o='.$origin.'">Refuser</a>';
 	}
 	
 	if (canEdit() && $status==2){
-	 echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=3">Accepter</a>
-	        <a class="button" href="changeStatus.php?id='.$id.'&stat=100">Refuser</a>';
+	 echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=3&o='.$origin.'">Accepter</a>
+	        <a class="button" href="changeStatus.php?id='.$id.'&stat=100&o='.$origin.'">Refuser</a>';
+	}
+	
+	if (canEdit() && $status==3){
+	 echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2&o='.$origin.'">Remettre en attente</a> ';
 	}
 	
 	if (canEdit() && $status==100){
 	 echo '
+	    <a class="button" href="changeStatus.php?id='.$id.'&stat=2&o='.$origin.'">Remettre en attente</a> 
 	    <a class="button" onClick="document.getElementById(\'popDel\').classList.toggle(\'pop_hidden\');">Supprimer</a></td>
             
             <span id="popDel" class="glass pop_hidden">
@@ -324,7 +351,7 @@ echo '
                         Voulez-vous vraiement supprimer cette demande? <br/>Toutes les informations et images qu\'elle contient seront perdues.
                     </span>
                     <span class="pop_btn_bar">
-                        <a class="button" href="changeStatus.php?id='.$id.'&stat=1000">Supprimer</a>
+                        <a class="button" href="changeStatus.php?id='.$id.'&stat=1000&o='.$origin.'">Supprimer</a>
                         <a class="button" onClick="document.getElementById(\'popDel\').classList.toggle(\'pop_hidden\');">Conserver</a>
                     </span>
                 </span>
@@ -365,7 +392,7 @@ echo '
 	</span>
 	<span class="half">
 	<h3> Code et comptes  </h3>
-	Code: ';if (canEdit()){echo'<a href="addCode.php?id='.$id.'" class="buttonlt" >Ajouter</a>';} echo'<br>
+	Code: ';if (canEdit()){echo'<a href="addCode.php?id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
 	<table>';
 	$query = 'SELECT Reg_Code.Id,
 	            Reg_Code.Code,
@@ -396,6 +423,7 @@ echo '
                         Voulez-vous vraiement supprimer le code '.$code_code.'?
                     </span>
                     <form  action="saveCode.php" method="post" >
+                        <input   type="hidden"  name="o" value="'.$origin.'" />
                         <input   type="hidden"  name="id" value="'.$id.'" />
                         <input   type="hidden"  name="cid" value="'.$cid.'" />                       <span class="pop_btn_bar">
                         <input class="button"  type="submit" value="Supprimer" />
@@ -411,25 +439,26 @@ echo '
     }
     $stmt->close();	
 	echo'</table>
-	Comptes: ';if (canEdit()){echo'<a href="addWallet.php?id='.$id.'" class="buttonlt" >Ajouter</a>';} echo'<br>
+	Comptes: ';if (canEdit()){echo'<a href="addWallet.php?id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
 	<table>';
 	$query = 'SELECT address,
 	            Reg_Code.Code,
-	            Validated 
+	            Validated,
+	            valid_date 
 	          FROM Reg_Wallet
 	          LEFT OUTER JOIN Reg_Code ON CodeId=Reg_Code.Id
 	          WHERE Reg_Wallet.PersonId=? 
 	           ';
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
-    $stmt->bind_result($w_add,$w_code,$w_val);
+    $stmt->bind_result($w_add,$w_code,$w_val, $w_date);
     $stmt->execute();
-    echo'<tr><td>Address</td><td>Code</td><td>Statut</td></tr>';
+    echo'<tr><td>Address</td><td>Code</td><td>Statut</td><td>Date</td></tr>';
     $index_cmpt=0;
     while ($stmt->fetch()){ 
         echo'<tr><td>
-        <input type="text" readonly="readonly" value="'.$w_add.'"/> 
-        </td><td>'.substr ($w_code,0,5).'...</td><td>';
+        <input type="text" readonly="readonly" value="'.$w_add.'" style="width:100px"/> 
+        </td><td>'.substr ($w_code,0,5).'...</td><td>'.$w_date.'</td><td>';
         
         if ($w_val==-1){
             echo 'rejeté';
@@ -441,7 +470,7 @@ echo '
                         Remettre en attente <br/>'.$w_add.'
                     </span>
                     <span class="pop_btn_bar">
-                       <a href="resetlockWallet.php?id='.$id.'&add='.$w_add.'" class="buttonlt">Reset</a>
+                       <a href="resetlockWallet.php?id='.$id.'&add='.$w_add.'&o='.$origin.'" class="buttonlt">Reset</a>
                     </span>
                     <span class="pop_content">
                        &nbsp;<br/>
@@ -453,19 +482,32 @@ echo '
             </span>
             
             <a  onclick="document.getElementById(\'popAct_rej'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">&#x21B6;</a>';
-       
-            
-            
-            
-            
-            
-            
-            
-            
-            
             
         } else if ($w_val==1){
             echo 'validé';
+             echo'
+            
+              <span id="popAct_acc'.$index_cmpt.'" class="glass pop_hidden">
+                <span class="popup">
+                    <span class="pop_title">
+                       Bloquer le compte <br/>'.$w_add.'
+                    </span>
+                    <span class="pop_btn_bar">
+                    <a onClick="window.open(\'lock.php?id='.$id.'&add='.$w_add.'\'); document.getElementById(\'popAct_acc'.$index_cmpt.'\').style.display=\'None\';document.getElementById(\'popAct_acc'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">Bloquer dans le Bureau</a>
+             
+                    </span>
+                    <span class="pop_content">
+                       &nbsp;<br/>
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a onclick="document.getElementById(\'popAct_acc'.$index_cmpt.'\').classList.toggle(\'pop_hidden\')" class="buttonlt">Annuler</a>
+                    </span>
+                </span>
+            </span>
+            
+           <a  onclick="document.getElementById(\'popAct_acc'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">&#x21B6;</a>';
+       
+            
         } else {
             echo ' 
              <span id="popAct'.$index_cmpt.'" class="glass pop_hidden">
@@ -502,7 +544,7 @@ echo '
                         Refuser la demande de débloquage<br/>
                     </span>
                     <span class="pop_btn_bar">
-                       <a href="lockWallet.php?id='.$id.'&add='.$w_add.'" class="buttonlt">Rejeter</a>
+                       <a href="lockWallet.php?id='.$id.'&add='.$w_add.'&o='.$origin.'" class="buttonlt">Rejeter</a>
                     </span>
                     <span class="pop_content">
                        &nbsp;<br/>
@@ -533,6 +575,7 @@ echo '
 	if($type==1) {
 	    echo '<form id="form" enctype="multipart/form-data" action="./updateLegal.php" method="post">
 	    <input   type="hidden"  name="id" value="'.$id.'"/>
+        <input   type="hidden"  name="o" value="'.$origin.'" />
         <h3> Informations personnelles  </h3>
 
 	 <span class="fitem">
@@ -712,7 +755,7 @@ echo '
 	     
 	     <span class="fitem">
 	       <span class="label" id="lb_st_1_zip">Code postal*</span>
-	       <input class="inputText"  type="text" id="st_1_zip" name="st_1_zip" value='.$ST_1_ZIP.'"" placeholder="Code postal*" /><br/>
+	       <input class="inputText"  type="text" id="st_1_zip" name="st_1_zip" value="'.$ST_1_ZIP.'" placeholder="Code postal*" /><br/>
 	     </span>
 	     
 	     <span class="fitem">
@@ -910,6 +953,7 @@ echo '
 	} else {
 	  echo'<form id="form"  enctype="multipart/form-data" action="updateIndividual.php" method="post">
 	  	    <input   type="hidden"  name="id" value="'.$id.'"/>
+            <input   type="hidden"  name="o" value="'.$origin.'" />
     <h3> Informations personnelles  </h3>
      <span class="fitem">
 	   <span class="label" >Civilité*</span>
@@ -1311,10 +1355,10 @@ echo '
 	 ';
 	 
 	 if (canEdit()){
-	  echo '<a class="button" href="docs.php?id='.$id.'">Modifier les documents</a>';
+	  echo '<a class="button" href="docs.php?id='.$id.'&o='.$origin.'">Modifier les documents</a>';
     } 
   
-	 $doc=['Carte d\'Identité'=>[$IdCard]];
+	 $doc=['Carte d\'Identité'=>[$IdCard,$IdCard2]];
 	 if($type==1) {
 	    $doc=['Carte d\'Identité'=>[$IdCard_1,$IdCard_2,$IdCard_3,$IdCard_4,$IdCard_5,$IdCard_6,
 	           $IdCard_7,$IdCard_8,$IdCard_9,$IdCard_10,$IdCard_11,$IdCard_12],

@@ -169,8 +169,10 @@ echo '
 	  if (isset($name) && $name!=''){
 	    if (!$first){
 	       $query =$query . ' AND ';
-	    }
-	    $query =$query . " (Reg_Legal.Name LIKE '%".$name."%' OR Reg_Individual.FirstName LIKE '%".$name."%' OR Reg_Individual.LastName LIKE '%".$name."%' )";
+	    }	   
+	    $first=false;
+	    $name =  $mysqli->real_escape_string($name);
+	    $query =$query . " (Reg_Legal.Name LIKE '%".$name."%' OR Reg_Legal.RefName LIKE '%".$name."%' OR Reg_Legal.Contact LIKE '%".$name."%' OR Reg_Legal.ContactSurname LIKE '%".$name."%' OR Reg_Individual.FirstName LIKE '%".$name."%' OR Reg_Individual.LastName LIKE '%".$name."%' )";
 	    
 	  }
 	  
@@ -178,6 +180,8 @@ echo '
 	    if (!$first){
 	       $query =$query . ' AND ';
 	    }
+	    $first=false;
+	    $code =  $mysqli->real_escape_string($code);
 	    $query =$query . " Reg_Code.Code LIKE '%".$code."%'";
 	    
 	  }
@@ -186,6 +190,7 @@ echo '
 	    if (!$first){
 	       $query =$query . ' AND ';
 	    }
+	    $wallet =  $mysqli->real_escape_string($wallet);
 	    $query =$query . " Reg_Wallet.address LIKE '%".$wallet."%' ";
 	    
 	  }
@@ -216,7 +221,7 @@ echo '
         <td>'.$member.'</td><td>';
          echo  $ac_req==1?'OUI':'NON';
         
-        echo'<td><a class="button" href="consultPerson.php?id='.$id.'">Consulter</a></td></tr>';
+        echo'<td><a class="button" href="consultPerson.php?id='.$id.'&o=1_'.$tp.'_'.$st.'_'.$name.'_'.$code.'_'.$wallet.'">Consulter</a></td></tr>';
      }
      $stmt->close();	
      echo'</table>';

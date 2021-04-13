@@ -37,7 +37,7 @@ Rue des Savoises 15 | 1205 Genève |  monnaie-leman.org
 Découvrez les professionnels qui acceptent les lémans !";
 }
 
-function getBody($name, $type) {
+function getBody($name, $url_gen, $type) {
      if ($type==1) {
        
         return '<font face="HelveticaNeue-Light">
@@ -46,13 +46,12 @@ function getBody($name, $type) {
 <br/><br/>
 Merci pour votre inscription !
 <br/><br/>
-Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span>, en pièce jointe. Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span> (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 <br/><br/>
-N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.<br/>
 <span style="color:#2f6aa6;font-weight: bold;">Depuis votre ordinateur, sur votre navigateur Web, créez votre compte:</span><br/>
-<a target="_blank" href="https://wallet.monnaie-leman.org/" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
-<br/><br/>
-Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser</span> avec votre smartphone.
+<a target="_blank" href="'.$url_gen.'" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
+<br/>(N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)<br/><br/>
+Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser (importer)</span> avec votre smartphone.
 <br/><br/>
 Lémaniquement vôtres.<br/>
 L’équipe du Léman'.getHtmlFooter().'</font>';
@@ -61,31 +60,32 @@ L’équipe du Léman'.getHtmlFooter().'</font>';
 
 <span style="color:#2f6aa6" >Bonjour '.$name.'</span>,
 <br/><br/>
-Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span>, en pièce jointe. Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+Merci pour votre inscription !
 <br/><br/>
-N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.<br/>
+Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span> (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+<br/><br/>
 <span style="color:#2f6aa6;font-weight: bold;">Depuis votre ordinateur, sur votre navigateur Web, créez votre compte:</span><br/>
-<a target="_blank" href="https://wallet.monnaie-leman.org/" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
-<br/><br/>
-Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser</span> avec votre smartphone.
+<a target="_blank" href="'.$url_gen.'" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
+<br/>N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.<br/><br/>
+Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser (importer)</span> avec votre smartphone.
 <br/><br/>
 Lémaniquement vôtres.<br/>
 L’équipe du Léman'.getHtmlFooter().'</font>';
   }
 }
 
-function getAltBody($name, $type) {
+function getAltBody($name, $url_gen, $type) {
     if ($type==1) {
       return "Bonjour ".$name.",
 
 Merci pour votre inscription !
 
-Conservez en lieu sûr le document Code d’autorisation personnel, en pièce jointe. Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+Conservez en lieu sûr le document Code d’autorisation personnel (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 
-N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
-Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: https://wallet.monnaie-leman.org/index.html#generate
+Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: ".$url_gen."
+(N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)
 
-Une fois votre compte créé, vous pourrez le synchroniser avec votre smartphone.
+Une fois votre compte créé, vous pourrez le synchroniser (importer) avec votre smartphone.
 
 Lémaniquement vôtres.
 L’équipe du Léman".gatAltFoolter();
@@ -94,12 +94,12 @@ L’équipe du Léman".gatAltFoolter();
 
 Merci pour votre inscription !
 
-Conservez en lieu sûr le document Code d’autorisation personnel, en pièce jointe. Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+Conservez en lieu sûr le document Code d’autorisation personnel (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
 
-N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
-Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: https://wallet.monnaie-leman.org/index.html#generate
+Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: ".$url_gen."
+(N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)
 
-Une fois votre compte créé, vous pourrez le synchroniser avec votre smartphone.
+Une fois votre compte créé, vous pourrez le synchroniser (importer) avec votre smartphone.
 
 Lémaniquement vôtres.
 L’équipe du Léman".gatAltFoolter();
@@ -117,7 +117,9 @@ function getSubject($type) {
 }
 
 
-function sendConfirmationMail($to_address, $code_file, $name, $type) {
+function sendConfirmationMail($to_address, $code_file, $name, $url_gen, $type) {
+$url_gen = str_replace('"','&quot;',$url_gen);
+
 $from_address = 'ne-pas-repondre@monnaie-leman.org'; 
 $from_name = 'Ne pas repondre - Monnaie Leman';  
 
@@ -127,7 +129,7 @@ $host_password = "myMailPassword";
 
 $code_file_name ="Leman_electronique_Code_autorisation.pdf";
 $how_to_file_name ="Marche_a_suivre_creation_compte.pdf";
-$how_to_file ="./resources/Biletujo_Marche_a_suivre_creation_compte.pdf";
+#$how_to_file ="./resources/Biletujo_Marche_a_suivre_creation_compte.pdf";
 
 
     $mail = new PHPMailer(true);
@@ -152,14 +154,14 @@ $how_to_file ="./resources/Biletujo_Marche_a_suivre_creation_compte.pdf";
 
         // Attachments
         $mail->addAttachment($code_file, $code_file_name, 'base64', 'application/pdf');         
-        $mail->addAttachment($how_to_file, $how_to_file_name, 'base64', 'application/pdf');    
+        #$mail->addAttachment($how_to_file, $how_to_file_name, 'base64', 'application/pdf');    
 
         // Content
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->CharSet = 'UTF-8';
         $mail->Subject = getSubject($type);
-        $mail->Body    = getBody($name, $type);
-        $mail->AltBody = getAltBody($name, $type);
+        $mail->Body    = getBody($name, $url_gen, $type);
+        $mail->AltBody = getAltBody($name, $url_gen, $type);
 
         $mail->send();
    } catch (Exception $e) {

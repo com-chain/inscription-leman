@@ -22,6 +22,7 @@ echo'
 
 $id=$_GET['id'];
 
+$origin=$_GET['o'];
 $code = $_GET['code'];
 
 $query = 'SELECT 
@@ -56,7 +57,7 @@ echo '
   <span class="cont">
   
   
-    <a class="button" href="consultPerson.php?id='.$id.'">Annuler</a><br/>
+    <a class="button" href="consultPerson.php?id='.$id.'&o='.$origin.'">Annuler</a><br/>
   
     <h2> Ajouter manuelement un code </h2>';
     
@@ -77,7 +78,7 @@ echo '
     $stmt->bind_result($pid);
     $stmt->execute();
      while ($stmt->fetch()){ 
-        echo '<a  class="button" target="_blank" href="consultPerson.php?id='.$pid.'">Consulter la fiche</a>';
+        echo '<a  class="button" target="_blank" href="consultPerson.php?id='.$pid.'&o='.$origin.'">Consulter la fiche</a>';
      }
      
     $stmt->close();	
@@ -86,6 +87,7 @@ echo '
     
     echo '<form  action="saveCode.php" method="post" >
           <input   type="hidden"  name="id" value="'.$id.'" />
+          <input   type="hidden"  name="o" value="'.$origin.'" />
           <input type="radio" id="code_m" name="ct" value="Manual" checked="checked">Code existant</br>
           <span class="half" style="width:Calc(100% - 20px)">
             <span class="label" >Code à ajouter:</span>
