@@ -9,6 +9,7 @@ include 'connectionFactory.php';
 $mysqli= ConnectionFactory::GetConnection();
 
    $id = $_POST['id'];
+   $origin=$_POST['o'];
    // Table Person:
    $email = $_POST['mail'];
    $phone = $_POST['phone'];
@@ -172,7 +173,7 @@ $mysqli= ConnectionFactory::GetConnection();
    
  
  
-header('Location: ./consultPerson.php?id='.$id);
+header('Location: ./consultPerson.php?id='.$id.'&o='.$origin);
      
    
 ?>

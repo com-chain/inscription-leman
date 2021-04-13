@@ -7,6 +7,7 @@
     }
     
     $pid=$_POST['id'];
+    $origin=$_POST['o'];
     $validated=0;
     if (isset($_POST['validated'])){
         $validated=1;
@@ -15,7 +16,7 @@
     // Check format
     $addr = strtolower(preg_replace("/[^a-zA-Z0-9]+/", "", $_POST['wallet']));
     if (strlen($addr) != 42) {
-        header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=1');
+        header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=1&o='.$origin);
         exit();
     }
 
@@ -37,7 +38,7 @@
     $stmt->fetch();
     $stmt->close();
     if ($number>0){
-        header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=2');
+        header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=2&o='.$origin);
         exit();
     }
     
@@ -84,7 +85,7 @@
         $stmt->close();
         if ($conflictingid>0  ){
             if ($conflictingid !=$pid) {
-                header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=4&cid='.$codeId);
+                header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=4&cid='.$codeId.'&o='.$origin);
                 exit();
             } else {
                 // code ok
@@ -107,6 +108,6 @@
     $stmt->execute();
     $stmt->close();	
 
-    header('Location: ./consultPerson.php?id='.$pid);
+    header('Location: ./consultPerson.php?id='.$pid.'&o='.$origin);
   exit();
 ?>

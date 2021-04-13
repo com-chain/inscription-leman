@@ -221,7 +221,7 @@ echo '
         <td>'.$member.'</td><td>';
          echo  $ac_req==1?'OUI':'NON';
         
-        echo'<td><a class="button" href="consultPerson.php?id='.$id.'">Consulter</a></td></tr>';
+        echo'<td><a class="button" href="consultPerson.php?id='.$id.'&o=1_'.$tp.'_'.$st.'_'.$name.'_'.$code.'_'.$wallet.'">Consulter</a></td></tr>';
      }
      $stmt->close();	
      echo'</table>';

@@ -10,6 +10,7 @@
   $mysqli= ConnectionFactory::GetConnection();	
   
   $pid=$_POST['id'];
+  $origin=$_POST['o'];
   $ct=$_POST['ct'];
   $code=$_POST['code'];
   $lc=$_POST['lc'];
@@ -40,7 +41,7 @@
     $stmt->fetch();
     $stmt->close();
     if ($conflictingid>0 || strlen($code)!=32){
-        header('Location: ./addCode.php?id='.$pid.'&code='.$code);
+        header('Location: ./addCode.php?id='.$pid.'&code='.$code.'&o='.$origin);
         exit();
     }
     
@@ -54,7 +55,7 @@
   
   }  else {
     if ($lc<0){
-        header('Location: ./addCode.php?id='.$pid.'&code='.$lc);
+        header('Location: ./addCode.php?id='.$pid.'&code='.$lc.'&o='.$origin);
         exit();
     }
     
@@ -77,6 +78,6 @@
   
   
 
-  header('Location: ./consultPerson.php?id='.$pid);
+  header('Location: ./consultPerson.php?id='.$pid.'&o='.$origin);
   exit();
 ?>

@@ -12,8 +12,10 @@ $mysqli= ConnectionFactory::GetConnection();
 if(isset($_GET['id'])){
  
     $id=$_GET['id'];
+    $origin=$_GET['o'];
 } else {
     $id=$_POST['id'];
+    $origin=$_POST['o'];
 }
 
 $query = 'SELECT 
@@ -149,5 +151,5 @@ if (isset($_POST['id']) && isset($_POST['tp']) && isset($_POST['ind'])){
       	
     }             
 }
-header('Location: ./docs.php?id='.$id);
+header('Location: ./docs.php?id='.$id.'&o='.$origin);
 ?>
