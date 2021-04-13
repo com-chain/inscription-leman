@@ -208,7 +208,7 @@ $stmt->execute();
 while ($stmt->fetch()){ 
    $accept= true;// ($ac_req==1 && $code==0) || ($wall>0 && $valid==0) || ($member=='Oui' && $statusid<2);
    if ($filter==1) {
-      $accept =  $ac_req==1 ;
+      $accept =  $ac_req==1 && $statusid<2;
    }
    
    if ($filter==2) {
