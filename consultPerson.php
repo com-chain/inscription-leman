@@ -159,7 +159,8 @@ $query = 'SELECT
               Reg_Legal.FinState_3,
               Reg_Legal.Registration_1,
               Reg_Legal.Registration_2,
-              Reg_Legal.Registration_3
+              Reg_Legal.Registration_3,
+              Notes
 	           
 	          FROM Reg_Person 
 	            LEFT OUTER JOIN Reg_RecordType on Reg_RecordType.Id=Reg_Person.RecordTypeId
@@ -194,7 +195,9 @@ $query = 'SELECT
                        
                        $IdCard_1,$IdCard_2,$IdCard_3,$IdCard_4,$IdCard_5,$IdCard_6,
                        $IdCard_7,$IdCard_8,$IdCard_9,$IdCard_10,$IdCard_11,$IdCard_12,
-                       $FinState_1,$FinState_2,$FinState_3,$Registration_1,$Registration_2,$Registration_3);
+                       $FinState_1,$FinState_2,$FinState_3,$Registration_1,$Registration_2,$Registration_3,
+                       
+                       $Notes);
     $stmt->execute();
     $stmt->fetch();
     $stmt->close();	
@@ -322,7 +325,7 @@ echo '
 	
 	echo '</h2>';
 	
-	echo '<span class="full">';
+	echo '<span class="half">';
 	if (canEdit() && $status==1){
 	  echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2&o='.$origin.'">Mettre en attente</a> 
 	        <a class="button" href="changeStatus.php?id='.$id.'&stat=3&o='.$origin.'">Accepter</a>
@@ -390,6 +393,16 @@ echo '
 	echo'
 	</ul>
 	
+	</span>
+	<span class="half">
+	<h3> Notes:  </h3>
+	<form action="updateNotes.php" >
+	    <input   type="hidden"  name="id" value="'.$id.'"/>
+        <input   type="hidden"  name="o" value="'.$origin.'" />
+        <textarea name="note" style="height:10em;">'.$Notes.'</textarea>
+        <input type="submit" class="button" value="ENREGISTRER"/>
+        
+	</form>
 	</span>
 	<span class="full">
 	<h3> Code et comptes  </h3>

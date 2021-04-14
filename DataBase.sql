@@ -308,3 +308,6 @@ ALTER TABLE Reg_Individual ADD COLUMN IdCard2 VARCHAR( 255 )  NULL;
 --------------------
 create view lastStatusChange as select PersonId, max(EventDate) as EventDate from Reg_StatusHistory Group by PersonId;
 
+
+--------------------
+ALTER TABLE Reg_Person ADD COLUMN Notes TEXT NULL;
