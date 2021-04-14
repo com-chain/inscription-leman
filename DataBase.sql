@@ -304,3 +304,7 @@ ALTER TABLE Reg_Wallet ADD COLUMN MainWallet INT DEFAULT 0;
 --------------------
 ALTER TABLE Reg_Individual ADD COLUMN IdCard2 VARCHAR( 255 )  NULL;
 
+
+--------------------
+create view lastStatusChange as select PersonId, max(EventDate) as EventDate from Reg_StatusHistory Group by PersonId;
+

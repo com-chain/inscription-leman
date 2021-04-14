@@ -276,14 +276,15 @@ echo '
   $pieces = explode("_", $origin);
   if ($pieces[0]==0 && sizeof($pieces)==2) {
    echo '<a class="button" href="todo.php?filter='.$pieces[1].'">Fermer</a>';
-  } else if ($pieces[0]==1 && sizeof($pieces)==6) {
+  } else if ($pieces[0]==1 && sizeof($pieces)==7) {
     
     echo '<form  id="formNav" action="consult.php" method="post" >
           <input   type="hidden"  name="tp" value="'.$pieces[1].'" />
           <input   type="hidden"  name="st" value="'.$pieces[2].'" />
-          <input   type="hidden"  name="name" value="'.$pieces[3].'" />
-          <input   type="hidden"  name="code" value="'.$pieces[4].'" />
-          <input   type="hidden"  name="wallet" value="'.$pieces[5].'" />
+          <input   type="hidden"  name="usr" value="'.$pieces[3].'" />
+          <input   type="hidden"  name="name" value="'.$pieces[4].'" />
+          <input   type="hidden"  name="code" value="'.$pieces[5].'" />
+          <input   type="hidden"  name="wallet" value="'.$pieces[6].'" />
           <input class="button"  type="submit" value="Fermer" />
         </form>';
         
@@ -321,7 +322,7 @@ echo '
 	
 	echo '</h2>';
 	
-	echo '<span class="half">';
+	echo '<span class="full">';
 	if (canEdit() && $status==1){
 	  echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2&o='.$origin.'">Mettre en attente</a> 
 	        <a class="button" href="changeStatus.php?id='.$id.'&stat=3&o='.$origin.'">Accepter</a>
@@ -390,7 +391,7 @@ echo '
 	</ul>
 	
 	</span>
-	<span class="half">
+	<span class="full">
 	<h3> Code et comptes  </h3>
 	Code: ';if (canEdit()){echo'<a href="addCode.php?id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
 	<table>';
@@ -444,21 +445,22 @@ echo '
 	$query = 'SELECT address,
 	            Reg_Code.Code,
 	            Validated,
-	            valid_date 
+	            valid_date,
+	            link_date
 	          FROM Reg_Wallet
 	          LEFT OUTER JOIN Reg_Code ON CodeId=Reg_Code.Id
 	          WHERE Reg_Wallet.PersonId=? 
 	           ';
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
-    $stmt->bind_result($w_add,$w_code,$w_val, $w_date);
+    $stmt->bind_result($w_add,$w_code,$w_val, $w_date, $w_a_date);
     $stmt->execute();
-    echo'<tr><td>Address</td><td>Code</td><td>Statut</td><td>Date</td></tr>';
+   echo'<tr><td>Address</td><td>Code</td><td>Date Ajout</td><td>Date Modif</td><td>Statut</td></tr>';
     $index_cmpt=0;
     while ($stmt->fetch()){ 
         echo'<tr><td>
         <input type="text" readonly="readonly" value="'.$w_add.'" style="width:100px"/> 
-        </td><td>'.substr ($w_code,0,5).'...</td><td>'.$w_date.'</td><td>';
+        </td><td>'.substr ($w_code,0,7).'...</td><td>'.substr($w_a_date,0,10).'</td><td>'.$w_date.'</td><td>';
         
         if ($w_val==-1){
             echo 'rejeté';

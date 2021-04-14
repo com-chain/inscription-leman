@@ -18,6 +18,7 @@ echo'
 
 $tp = $_POST['tp'];
 $st = $_POST['st'];
+$usr = $_POST['usr'];
 $name = $_POST['name'];
 $code = $_POST['code'];
 $wallet = $_POST['wallet'];
@@ -67,8 +68,35 @@ echo '
 	    if ($st==100) {echo ' selected="selected" ';}
 	    echo '>Refusé</option>
 	   </select><br/>
-	 </span>
-	 <span class="fitem">
+	 </span>';
+	 
+	 echo ' 
+	 <span class="fitem"> 
+	 <span class="label" >Uniquement traité par:</span>
+	 <select  class="inputText" name="usr" >
+	    <option value ="0">--</option>
+	 ';
+	 
+	 
+	  $stmt = $mysqli->prepare('SELECT Id, EMail from Reg_SiteUser WHERE CanEdit=1');
+      $stmt->bind_result($uid,$uname);
+      $stmt->execute();
+      while ($stmt->fetch()){ 
+         echo'  <option value ="'.$uid.'"';
+         if ($usr==$uid) {
+           echo ' selected="selected" ';
+         }
+         echo'>'.$uname.'</option>';
+      }
+      $stmt->close();
+	 
+	 echo' </select><br/>
+	 </span>';
+	 
+	 
+	 
+	 
+	 echo'<span class="fitem">
 	   <span class="label" id="lb_name">Nom (personne / entreprise)</span>
 	   <input class="inputText"  type="text" id ="name" name="name" value="'.$name.'" placeholder="nom à chercher (fragment)" /><br/>
 	 </span>
@@ -87,7 +115,7 @@ echo '
 	 ';
   
   
-  if ((isset($tp) && $tp>0) || (isset($st) && $st>0) || (isset($name) && $name!='')
+  if ((isset($tp) && $tp>0) || (isset($st) && $st>0) || (isset($usr) && $usr>0) || (isset($name) && $name!='')
   || (isset($code) && $code!='')|| (isset($wallet) && $wallet!='')){
   
   
@@ -101,6 +129,13 @@ echo '
             $exportQS=$exportQS.'&';
        }
        $exportQS = $exportQS .'st='.$st;
+  }
+  
+   if (isset($usr) && $usr>0) {
+       if (strlen($exportQS)>0){
+            $exportQS=$exportQS.'&';
+       }
+       $exportQS = $exportQS .'usr='.$usr;
   }
   
   if (isset($name) && $name!='') {
@@ -140,13 +175,16 @@ echo '
 	           Reg_Legal.Name,
 	           Reg_StatusHistory.EventDate,
 	           Reg_Status.Name,
-	           Email
+	           Reg_SiteUser.EMail,
+	           Reg_Person.EMail
 	          FROM Reg_Person 
 	            LEFT OUTER JOIN Reg_RecordType on Reg_RecordType.Id=Reg_Person.RecordTypeId
 	            LEFT OUTER JOIN Reg_Individual on Reg_Individual.Id=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Legal on Reg_Legal.Id=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Status on Reg_Status.Id=Reg_Person.StatusId
-	            LEFT OUTER JOIN Reg_StatusHistory on Reg_StatusHistory.NewStatusId=Reg_Person.StatusId AND Reg_StatusHistory.PersonId=Reg_Person.Id
+	            LEFT OUTER JOIN lastStatusChange on lastStatusChange.PersonId= Reg_Person.Id
+	            LEFT OUTER JOIN Reg_StatusHistory on lastStatusChange.EventDate=Reg_StatusHistory.EventDate AND Reg_StatusHistory.PersonId=Reg_Person.Id
+	            LEFT OUTER JOIN Reg_SiteUser on Reg_StatusHistory.UserId = Reg_SiteUser.Id
 	            LEFT OUTER JOIN Reg_Code on Reg_Code.PersonId=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Wallet on Reg_Wallet.PersonId=Reg_Person.Id
 	            
@@ -163,6 +201,14 @@ echo '
 	       $query =$query . ' AND ';
 	    }
 	    $query =$query . ' Reg_Person.StatusId='.$st;
+	    $first=false;
+	  }
+	  
+	  if (isset($usr) && $usr>0){
+	    if (!$first){
+	       $query =$query . ' AND ';
+	    }
+	    $query =$query . ' Reg_StatusHistory.UserId='.$usr;
 	    $first=false;
 	  }
 	  
@@ -205,11 +251,13 @@ echo '
 	           Reg_Legal.Name,
 	           Reg_StatusHistory.EventDate,
 	           Reg_Status.Name,
-	           Email
+	           Reg_SiteUser.EMail,
+	           Reg_Person.Email
 	  ORDER BY Reg_StatusHistory.EventDate desc, Reg_Person.Id desc';      
 	  $stmt = $mysqli->prepare($query);
-      $stmt->bind_result($id,$member,$ac_req,$type,$typeName,$i_name,$e_name,$date,$status,$mail);
-      $stmt->execute();
+	
+      $stmt->bind_result($id,$member,$ac_req,$type,$typeName,$i_name,$e_name,$date,$status,$user,$mail);
+      $stmt->execute();  
       while ($stmt->fetch()){ 
       echo '<tr><td>'.$typeName.'</td><td>';
         if ($type==1){
@@ -217,11 +265,15 @@ echo '
         } else {
             echo $i_name;
         }
-        echo'</td><td>'.$date.'</td><td>'.$status.'</td><td>'.$mail.'</td>
+        echo'</td><td>'.$date.'</td><td>'.$status;
+        if (isset($user)) {
+            echo '<br/>('. substr($user,0,3).')';
+        }
+        echo'</td><td>'.$mail.'</td>
         <td>'.$member.'</td><td>';
          echo  $ac_req==1?'OUI':'NON';
         
-        echo'<td><a class="button" href="consultPerson.php?id='.$id.'&o=1_'.$tp.'_'.$st.'_'.$name.'_'.$code.'_'.$wallet.'">Consulter</a></td></tr>';
+        echo'<td><a class="button" href="consultPerson.php?id='.$id.'&o=1_'.$tp.'_'.$st.'_'.$usr.'_'.$name.'_'.$code.'_'.$wallet.'">Consulter</a></td></tr>';
      }
      $stmt->close();	
      echo'</table>';

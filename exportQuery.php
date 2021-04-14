@@ -11,6 +11,7 @@
   }*/
 $tp = $_GET['tp'];
 $st = $_GET['st'];
+$usr = $_GET['usr'];
 $name = $_GET['name'];
 $code = $_GET['code'];
 $wallet = $_GET['wallet']; 
@@ -176,7 +177,9 @@ $query = 'SELECT
 	            LEFT OUTER JOIN Reg_RecordType on Reg_RecordType.Id=Reg_Person.RecordTypeId
 	            LEFT OUTER JOIN Reg_Individual on Reg_Individual.Id=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Legal on Reg_Legal.Id=Reg_Person.Id
-	            LEFT OUTER JOIN Reg_Status on Reg_Status.Id=Reg_Person.StatusId
+	            LEFT OUTER JOIN Reg_Status on Reg_Status.Id=Reg_Person.StatusId 
+	            LEFT OUTER JOIN lastStatusChange on lastStatusChange.PersonId= Reg_Person.Id
+	            LEFT OUTER JOIN Reg_StatusHistory on lastStatusChange.EventDate=Reg_StatusHistory.EventDate AND Reg_StatusHistory.PersonId=Reg_Person.Id
 	            
 	            
 	          WHERE ';
@@ -193,6 +196,14 @@ $query = 'SELECT
 	       $query =$query . ' AND ';
 	    }
 	    $query =$query . ' Reg_Person.StatusId='.$st;
+	    $first=false;
+	  }
+	  
+	  if (isset($usr) && $usr>0){
+	    if (!$first){
+	       $query =$query . ' AND ';
+	    }
+	    $query =$query . ' Reg_StatusHistory.UserId='.$usr;
 	    $first=false;
 	  }
 	  
