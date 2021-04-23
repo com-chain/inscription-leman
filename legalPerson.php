@@ -2,7 +2,8 @@
 echo'
 <!DOCTYPE html>
 <html>
-  <head>';
+  <head>
+  <script src="resources/jquery/jquery.min.js"></script>';
 include 'p_head.php';
 
 $type_form=1;
@@ -486,7 +487,7 @@ echo '
 	 </span>
 	 <span class="fitem">
 	   <span class="label" id="lb_created_on">Date de création*</span>
-	   <input class="inputText"  type="date" id="created_on" name="created_on" value="" placeholder="Date de création*" required="required"/><br/>
+	   <input class="datechk inputText"  type="date" id="created_on" name="created_on" value="" required="required"/><br/>
 	 </span>
 	 
 	 
@@ -774,7 +775,7 @@ Souhaitez-vous autoriser d’autres personnes à gérer et utiliser le compte é
 	 
 	 <span class="fitem">
 	    <span class="label" id="lb_st_1_born">Date de naissance*</span>
-	    <input class="inputText"  type="date" name="st_1_born" value="" placeholder="Date de naissance*" >
+	    <input class="datechk inputText"  type="date" name="st_1_born" value=""  >
 	  
 	  </span>  
 	    
@@ -828,7 +829,7 @@ Souhaitez-vous autoriser d’autres personnes à gérer et utiliser le compte é
 	 
 	 <span class="fitem">
 	    <span class="label" id="lb_st_2_born">Date de naissance*</span>
-	    <input class="inputText"  type="date" name="st_2_born" value="" placeholder="Date de naissance*" >
+	    <inputclass="datechk inputText"  type="date" name="st_2_born" value=""  >
 	  
 	  </span>  
 	    
@@ -881,7 +882,7 @@ Souhaitez-vous autoriser d’autres personnes à gérer et utiliser le compte é
 	 
 	 <span class="fitem">
 	    <span class="label" id="lb_st_3_born">Date de naissance*</span>
-	    <input class="inputText"  type="date" name="st_3_born" value="" placeholder="Date de naissance*" >
+	    <input class="datechk inputText"  type="date" name="st_3_born" value=""  >
 	  
 	  </span>  
 	    
@@ -934,7 +935,7 @@ Souhaitez-vous autoriser d’autres personnes à gérer et utiliser le compte é
 	 
 	 <span class="fitem">
 	    <span class="label" id="lb_st_4_born">Date de naissance*</span>
-	    <input class="inputText"  type="date" name="st_4_born" value="" placeholder="Date de naissance*" >
+	    <input class="datechk inputText"  type="date" name="st_4_born" value=""  >
 	  
 	  </span>  
 	    
@@ -1046,7 +1047,7 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
 	      
 	    <span class="fitem">
 	        <span class="label" id="lb_aed_1_born">Date de naissance*</span>
-	        <input class="inputText"  type="date" name="aed_1_born" value="" placeholder="Date de naissance*" >
+	        <input class="datechk inputText"  type="date" name="aed_1_born" value=""  >
 	    </span>  
 	    
 	    <span class="fitem">
@@ -1098,7 +1099,7 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
 	 
 	 <span class="fitem">
 	    <span class="label" id="lb_aed_2_born">Date de naissance*</span>
-	    <input class="inputText"  type="date" name="aed_2_born" value="" placeholder="Date de naissance*" >
+	    <input class="datechk inputText"  type="date" name="aed_2_born" value=""  >
 	  
 	  </span>  
 	    
@@ -1151,7 +1152,7 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
 	 
 	 <span class="fitem">
 	    <span class="label" id="lb_aed_3_born">Date de naissance*</span>
-	    <input class="inputText"  type="date" name="aed_3_born" value="" placeholder="Date de naissance*" >
+	    <input class="datechk inputText"  type="date" name="aed_3_born" value=""  >
 	  
 	  </span>  
 	    
@@ -1204,7 +1205,7 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
 	 
 	 <span class="fitem">
 	    <span class="label" id="lb_aed_4_born">Date de naissance*</span>
-	    <input class="inputText"  type="date" name="aed_4_born" value="" placeholder="Date de naissance*" >
+	    <input class="datechk inputText"  type="date" name="aed_4_born" value="" >
 	  
 	  </span>  
 	    
@@ -1338,9 +1339,33 @@ echo'
       echo'
     document.getElementById("cr_acc").value=1;';
     }
-    echo'
+    echo" 
+    var dateClass='.datechk';
+    $(document).ready(function ()
+    {
+      if (document.querySelector(dateClass).type !== 'date')
+      {
+        var oCSS = document.createElement('link');
+        oCSS.type='text/css'; oCSS.rel='stylesheet';
+        oCSS.href='resources/jquery/jquery-ui.css';
+        oCSS.onload=function()
+        {
+          var oJS = document.createElement('script');
+          oJS.type='text/javascript';
+          oJS.src='resources/jquery/jquery-ui.min.js';
+          oJS.onload=function()
+          {
+            $(dateClass).datepicker({dateFormat: 'yy-mm-dd'});
+          }
+          document.body.appendChild(oJS);
+        }
+        document.body.appendChild(oCSS);
+      }
+    });
 
 </script>
 
 
-</html>';
+</html>";
+
+?>
