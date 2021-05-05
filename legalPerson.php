@@ -829,7 +829,7 @@ Souhaitez-vous autoriser d’autres personnes à gérer et utiliser le compte é
 	 
 	 <span class="fitem">
 	    <span class="label" id="lb_st_2_born">Date de naissance*</span>
-	    <inputclass="datechk inputText"  type="date" name="st_2_born" value=""  >
+	    <input class="datechk inputText"  type="date" name="st_2_born" value=""  >
 	  
 	  </span>  
 	    
