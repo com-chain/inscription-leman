@@ -24,7 +24,7 @@ if (isset($_POST['address'])){
     $stmt->close();
     
     if ($number>0){
-        $query = 'UPDATE TABLE Reg_Wallet
+        $query = 'UPDATE Reg_Wallet
                   SET Validated=0
 	              WHERE address=? 
 	           ';
