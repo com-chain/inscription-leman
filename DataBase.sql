@@ -311,3 +311,11 @@ create view lastStatusChange as select PersonId, max(EventDate) as EventDate fro
 
 --------------------
 ALTER TABLE Reg_Person ADD COLUMN Notes TEXT NULL;
+
+------------------------
+create view lastStatusChange2 as select max(Id) as Id, PersonId from Reg_StatusHistory Group by PersonId;
+
+
+
+
+

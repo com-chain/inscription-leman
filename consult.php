@@ -182,8 +182,8 @@ echo '
 	            LEFT OUTER JOIN Reg_Individual on Reg_Individual.Id=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Legal on Reg_Legal.Id=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Status on Reg_Status.Id=Reg_Person.StatusId
-	            LEFT OUTER JOIN lastStatusChange on lastStatusChange.PersonId= Reg_Person.Id
-	            LEFT OUTER JOIN Reg_StatusHistory on lastStatusChange.EventDate=Reg_StatusHistory.EventDate AND Reg_StatusHistory.PersonId=Reg_Person.Id
+	            LEFT OUTER JOIN lastStatusChange2 on lastStatusChange2.PersonId= Reg_Person.Id
+	            LEFT OUTER JOIN Reg_StatusHistory on lastStatusChange2.Id=Reg_StatusHistory.Id AND Reg_StatusHistory.PersonId=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_SiteUser on Reg_StatusHistory.UserId = Reg_SiteUser.Id
 	            LEFT OUTER JOIN Reg_Code on Reg_Code.PersonId=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Wallet on Reg_Wallet.PersonId=Reg_Person.Id
