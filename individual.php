@@ -408,10 +408,10 @@ Monnaie Léman Suisse - rue des Savoises 15 - 1205 Genève<br/>
 Banque Alternative Suisse - IBAN: CH22 0839 0034 3841 1010 0 - BIC: ABSOCH22 <br/>
 	  </span>
 	  <span class="full" id="coo_fr">
-Monnaie Léman France - 21 avenue de Verdun - 74100 Annemasse<br/>
-Caisse d’épargne Rhône Alpes Annemasse<br/>
-IBAN: FR76 1382 5002 0008 0092 2674 657 - BIC: CEPAFRPP382<br/>
-	  </span><br/>
+Monnaie Léman France - 11A avenue Napoléon III - 74160 Saint-Julien-en-Genevois<br/>
+Société financière de la Nef <br/>
+IBAN: FR76 2157 0000 0120 0017 0036 226 - BIC: STFEFR21XXX<br/>
+	  </span><br/> 
 <span class="labelWide">
 Vous pouvez régler votre cotisation en lémans électroniques (e-LEM) sur le compte de l’association (clé publique 0x15a18329381cdf1919d51d05834920585066646f): <span class="strong">e-LEM <span id="cot_amount_2">50(taux moyen du jour)</span></span>.
 

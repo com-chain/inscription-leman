@@ -175,7 +175,7 @@ echo '
 	           Reg_Legal.Name,
 	           Reg_StatusHistory.EventDate,
 	           Reg_Status.Name,
-	           Reg_SiteUser.EMail,
+	           Reg_SiteUser.Short,
 	           Reg_Person.EMail
 	          FROM Reg_Person 
 	            LEFT OUTER JOIN Reg_RecordType on Reg_RecordType.Id=Reg_Person.RecordTypeId
@@ -251,11 +251,10 @@ echo '
 	           Reg_Legal.Name,
 	           Reg_StatusHistory.EventDate,
 	           Reg_Status.Name,
-	           Reg_SiteUser.EMail,
+	           Reg_SiteUser.Short,
 	           Reg_Person.Email
 	  ORDER BY Reg_StatusHistory.EventDate desc, Reg_Person.Id desc';      
 	  $stmt = $mysqli->prepare($query);
-	
       $stmt->bind_result($id,$member,$ac_req,$type,$typeName,$i_name,$e_name,$date,$status,$user,$mail);
       $stmt->execute();  
       while ($stmt->fetch()){ 
@@ -267,7 +266,7 @@ echo '
         }
         echo'</td><td>'.$date.'</td><td>'.$status;
         if (isset($user)) {
-            echo '<br/>('. substr($user,0,3).')';
+            echo '<br/>('. $user.')';
         }
         echo'</td><td>'.$mail.'</td>
         <td>'.$member.'</td><td>';
