@@ -1,0 +1,659 @@
+<?php
+    ob_start();
+    include 'checkUser.php';
+    include 'connectionFactory.php';
+    $mysqli= ConnectionFactory::GetConnection();
+    require_once('ripcord/ripcord.php');
+  
+    if (isset($_GET['id'])){
+        $id=(int)$_GET['id'];
+        
+    $query = 'SELECT 
+        Reg_RecordType.Id,
+        Reg_RecordType.Name, 
+        Reg_Status.Id,
+        Reg_Status.Name,
+
+        Email,
+        Phone,
+
+        Address,
+        AddressComplement,
+        NPA,
+        City,
+        Country,
+
+        PostalAddress,
+        PostalAddressComplement,
+        PostalNPA ,
+        PostalCity ,
+        PostalCountry ,
+
+        Membership,
+        AccountRequest,
+        Newsletter,
+
+        PEP,
+        PEPRelated,
+
+        AED,
+
+        AED_1_FirstName,
+        AED_1_LastName,
+        AED_1_Address,
+        AED_1_AddressComplement,
+        AED_1_NPA,
+        AED_1_City,
+        AED_1_Country,
+        AED_1_Citizenship,
+        AED_1_BirthDate ,
+
+
+        AED_2_FirstName,
+        AED_2_LastName,
+        AED_2_Address,
+        AED_2_AddressComplement,
+        AED_2_NPA,
+        AED_2_City,
+        AED_2_Country,
+        AED_2_Citizenship,
+        AED_2_BirthDate ,
+
+        AED_3_FirstName,
+        AED_3_LastName,
+        AED_3_Address,
+        AED_3_AddressComplement,
+        AED_3_NPA,
+        AED_3_City,
+        AED_3_Country,
+        AED_3_Citizenship,
+        AED_3_BirthDate ,
+
+
+        AED_4_FirstName,
+        AED_4_LastName,
+        AED_4_Address,
+        AED_4_AddressComplement,
+        AED_4_NPA,
+        AED_4_City,
+        AED_4_Country,
+        AED_4_Citizenship,
+        AED_4_BirthDate ,
+
+        Reg_Individual.FirstName, 
+        Reg_Individual.LastName, 
+        Reg_Individual.Gender,
+        Reg_Individual.Citizenship,
+        Reg_Individual.BirthDate,
+        Reg_Individual.IdCard,
+
+        Reg_Legal.Name,
+        Reg_Legal.RefName,
+        Reg_Legal.Contact,
+        Reg_Legal.ContactSurname,
+        Reg_Legal.ContactGender,
+        Reg_Legal.LegalForm,
+        Reg_Legal.CreationDate,
+        Reg_Legal.ActivityField,
+        Reg_Legal.ActivityFieldSeg,
+        Reg_Legal.ActivityDescription,
+        Reg_Legal.EFT,
+        Reg_Legal.Website,
+
+        ST_1_FirstName,
+        ST_1_LastName,
+        ST_1_Address,
+        ST_1_AddressComplement,
+        ST_1_NPA,
+        ST_1_City,
+        ST_1_Country,
+        ST_1_Citizenship,
+        ST_1_BirthDate ,
+
+
+        ST_2_FirstName,
+        ST_2_LastName,
+        ST_2_Address,
+        ST_2_AddressComplement,
+        ST_2_NPA,
+        ST_2_City,
+        ST_2_Country,
+        ST_2_Citizenship,
+        ST_2_BirthDate ,
+
+        ST_3_FirstName,
+        ST_3_LastName,
+        ST_3_Address,
+        ST_3_AddressComplement,
+        ST_3_NPA,
+        ST_3_City,
+        ST_3_Country,
+        ST_3_Citizenship,
+        ST_3_BirthDate ,
+
+
+        ST_4_FirstName,
+        ST_4_LastName,
+        ST_4_Address,
+        ST_4_AddressComplement,
+        ST_4_NPA,
+        ST_4_City,
+        ST_4_Country,
+        ST_4_Citizenship,
+        ST_4_BirthDate ,
+
+
+        Reg_Legal.IdCard_1,
+        Reg_Legal.IdCard_2,
+        Reg_Legal.IdCard_3,
+        Reg_Legal.IdCard_4,
+        Reg_Legal.IdCard_5,
+        Reg_Legal.IdCard_6,
+        Reg_Legal.IdCard_7,
+        Reg_Legal.IdCard_8,
+        Reg_Legal.IdCard_9,
+        Reg_Legal.IdCard_10,
+        Reg_Legal.IdCard_11,
+        Reg_Legal.IdCard_12,
+        Reg_Legal.FinState_1,
+        Reg_Legal.FinState_2,
+        Reg_Legal.FinState_3,
+        Reg_Legal.Registration_1,
+        Reg_Legal.Registration_2,
+        Reg_Legal.Registration_3,
+
+        Notes
+
+        FROM Reg_Person 
+            LEFT OUTER JOIN Reg_RecordType on Reg_RecordType.Id=Reg_Person.RecordTypeId
+            LEFT OUTER JOIN Reg_Individual on Reg_Individual.Id=Reg_Person.Id
+            LEFT OUTER JOIN Reg_Legal on Reg_Legal.Id=Reg_Person.Id
+            LEFT OUTER JOIN Reg_Status on Reg_Status.Id=Reg_Person.StatusId
+        WHERE Reg_Person.Id = ?';
+              
+              
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("i",$id);
+    $stmt->bind_result($type,$typeName,$status,$statusName,$mail,$phone,
+                       $address,$addressComplement,$NPA,$city,$count,
+                       $p_address,$p_addressComplement,$p_NPA,$p_city,$p_country,
+                       $membership ,$acc_req ,$newsletter,$PEP,$PEPRelated,$aed,
+                       $AED_1_FirstName,$AED_1_LastName,$AED_1_Address,$AED_1_ComplAddress, $AED_1_ZIP, $AED_1_City, $AED_1_Country, $AED_1_Citizenship,$AED_1_BirthDate,
+                       $AED_2_FirstName,$AED_2_LastName,$AED_2_Address,$AED_2_ComplAddress, $AED_2_ZIP, $AED_2_City, $AED_2_Country, $AED_2_Citizenship,$AED_2_BirthDate,
+                       $AED_3_FirstName,$AED_3_LastName,$AED_3_Address,$AED_3_ComplAddress, $AED_3_ZIP, $AED_3_City, $AED_3_Country, $AED_3_Citizenship,$AED_3_BirthDate,
+                       $AED_4_FirstName,$AED_4_LastName,$AED_4_Address,$AED_4_ComplAddress, $AED_4_ZIP, $AED_4_City, $AED_4_Country, $AED_4_Citizenship,$AED_4_BirthDate,
+                       $FirstName,$LastName,$Gender,$Citizenship,$BirthDate,$IdCard,
+                       $Name,$RefName, $Contact, $ContactSurname, $ContactGender,$LegalForm,$CreationDate,$ActivityField,$ActivityFieldSeg,$ActivityDescription,$EFT,$site,
+                       
+                       
+                       $ST_1_FirstName,$ST_1_LastName,$ST_1_Address,$ST_1_ComplAddress, $ST_1_ZIP, $ST_1_City, $ST_1_Country, $ST_1_Citizenship,$ST_1_BirthDate,
+                       $ST_2_FirstName,$ST_2_LastName,$ST_2_Address,$ST_2_ComplAddress, $ST_2_ZIP, $ST_2_City, $ST_2_Country, $ST_2_Citizenship,$ST_2_BirthDate,
+                       $ST_3_FirstName,$ST_3_LastName,$ST_3_Address,$ST_3_ComplAddress, $ST_3_ZIP, $ST_3_City, $ST_3_Country, $ST_3_Citizenship,$ST_3_BirthDate,
+                       $ST_4_FirstName,$ST_4_LastName,$ST_4_Address,$ST_4_ComplAddress, $ST_4_ZIP, $ST_4_City, $ST_4_Country, $ST_4_Citizenship,$ST_4_BirthDate,
+                       
+                       
+                       
+                       $IdCard_1,$IdCard_2,$IdCard_3,$IdCard_4,$IdCard_5,$IdCard_6,
+                       $IdCard_7,$IdCard_8,$IdCard_9,$IdCard_10,$IdCard_11,$IdCard_12,
+                       $FinState_1,$FinState_2,$FinState_3,$Registration_1,$Registration_2,$Registration_3,
+                       $Notes);
+    $stmt->execute();
+    $stmt->fetch();
+    $stmt->close(); 
+
+
+    // code et comptes
+    
+    $query = 'SELECT Code, address fROM Reg_Wallet LEFT OUTER JOIN Reg_Code ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Wallet.PersonId=?';
+              
+              
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("i",$id);
+    $stmt->bind_result($code,$add);
+    $stmt->execute();
+    $wallets='';
+    while($stmt->fetch()){
+            if ($wallets!=''){
+             $wallets=$wallets.', ';
+            }
+            $wallets=$wallets.$code.'-'.$add;
+    }
+    $stmt->close();
+    
+    $query = 'SELECT Code fROM Reg_Code  LEFT OUTER JOIN Reg_Wallet ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Code.PersonId=?  and Reg_Wallet.CodeId IS NULL';
+              
+              
+    $stmt = $mysqli->prepare($query);
+    $stmt->bind_param("i",$id);
+    $stmt->bind_result($code);
+    $stmt->execute();
+    while($stmt->fetch()){
+            if ($wallets!=''){
+             $wallets=$wallets.', ';
+            }
+            $wallets=$wallets.$code;
+    }
+    $stmt->close();
+
+
+    $url = "https://test.leman-en-transition.org";
+    $db = "myOdooDb";
+    $username = "myOdooUser";
+    $password = "myOdooPassword";
+
+    $common = ripcord::client("$url/xmlrpc/2/common");
+    $common->version();
+
+    $uid = $common->authenticate($db, $username, $password, array());
+
+    $models = ripcord::client("$url/xmlrpc/2/object");
+    $models->execute_kw($db, $uid, $password,
+        'res.partner', 'check_access_rights',
+        array('read'), array('raise_exception' => false));
+        $models->execute_kw($db, $uid, $password,
+        'res.country', 'check_access_rights',
+        array('read'), array('raise_exception' => false));
+
+    // $search_odoo_id = $models->execute_kw($db, $uid, $password,
+    //     'res.partner', 'search', array(
+    //         array(array('leman_inscription_id', '=', $id))));
+    // if (count($search_odoo_id) == 1){
+    //     exit("Déjà exporté");
+    // }
+
+    if ($Gender == 'Masculin'){
+        $Gender_odoo = 'male';
+    } elseif ($Gender == 'Feminin'){
+        $Gender_odoo = 'female';
+    } elseif ($Gender == 'Autre'){
+        $Gender_odoo = 'other';
+    } else {
+        $Gender_odoo = False;
+    }
+    if ($ContactGender == 'Masculin'){
+        $ContactGender_odoo = 'male';
+    } elseif ($ContactGender == 'Feminin'){
+        $ContactGender_odoo = 'female';
+    } elseif ($ContactGender == 'Autre'){
+        $ContactGender_odoo = 'other';
+    } else {
+        $ContactGender_odoo = False;
+    }
+
+    if ($PEP == 1){
+        $PEP_odoo = True;
+    } else{
+        $PEP_odoo = False;
+    }
+    if ($PEPRelated == 1){
+        $PEPRelated_odoo = True;
+    } else{
+        $PEPRelated_odoo = False;
+    }
+
+    $odoo_search_nationality_id = $models->execute_kw($db, $uid, $password,
+        'res.country', 'search_read',
+        array(array(array('name', '=', $Citizenship))),
+        array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+    $Citizenship_odoo = $odoo_search_nationality_id[0]['id'] or False;
+
+    $odoo_search_country = $models->execute_kw($db, $uid, $password,
+        'res.country', 'search_read',
+        array(array(array('name', '=', $count))),
+        array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+    $country_odoo = $odoo_search_country[0]['id'] or False;
+
+    if ($typeName == 'Individuelle'){
+        $odoo_id = $models->execute_kw($db, $uid, $password,
+            'res.partner', 'create',
+            array(array(
+                    'lastname'=>$LastName,
+                    'firstname'=>$FirstName,
+                    'birthdate_date'=>$BirthDate,
+                    'gender'=>$Gender_odoo,
+                    'nationality_id'=>$Citizenship_odoo,
+                    'email'=>$mail,
+                    'phone'=>$phone,
+                    'street'=>$address,
+                    'street2'=>$addressComplement,
+                    'zip'=>$NPA,
+                    'city'=>$city,
+                    'country_id'=>$country_odoo,
+                    'wallet_accounts'=>$wallets,
+                    'pep'=>$PEP_odoo,
+                    'pepr'=>$PEPRelated_odoo,
+                    'comment'=>$Notes,
+                    'leman_inscription_id'=>$id,
+                )
+            )
+        );
+        echo '<p>Individuelle:'.$odoo_id.'</p>';
+    }
+
+    if ($typeName == 'Entreprise'){
+        echo '<p>'.$LegalForm.'</p>';
+        echo '<p>'.$ActivityField.'</p>';
+        echo '<p>'.$ActivityFieldSeg.'</p>';
+        $odoo_search_legal_id = $models->execute_kw($db, $uid, $password,
+            'res.partner.legal.status', 'search_read',
+            array(array(array('name', '=', $LegalForm))),
+            array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'), 'limit'=>1));
+        $LegalForm_odoo = $odoo_search_legal_id[0]['id'] or False;
+        $odoo_id = $models->execute_kw($db, $uid, $password,
+            'res.partner', 'create',
+            array(array(
+                    'company_type'=>'company',
+                    'name'=>$RefName,
+                    'legal_name'=>$Name,
+                    //'legal_status'=>$LegalForm_odoo, CREATE records in database
+                    //'creation_date'=>$CreationDate, add field in odoo?
+                    //'industry_id'=>$ActivityField,
+                    //'secondary_industry_ids'=>$ActivityFieldSeg,
+                    'detailed_activity'=>$ActivityDescription,
+                    'employees_number'=>$EFT,
+                    'website'=>$site,
+                    'email'=>$mail,
+                    'phone'=>$phone,
+                    'street'=>$address,
+                    'street2'=>$addressComplement,
+                    'zip'=>$NPA,
+                    'city'=>$city,
+                    'country_id'=>$country_odoo,
+                    'wallet_accounts'=>$wallets,
+                    'pep'=>$PEP_odoo,
+                    'pepr'=>$PEPRelated_odoo,
+                    'comment'=>$Notes,
+                    'leman_inscription_id'=>$id,
+                )
+            )
+        );
+        echo '<p>Entreprise:'.$odoo_id.'</p>';
+        $odoo_contact_id = $models->execute_kw($db, $uid, $password,
+            'res.partner', 'create',
+            array(array(
+                    'type'=>'contact',
+                    'leman_contact_type'=>'contact',
+                    'parent_id'=>$odoo_id,
+                    'lastname'=>$ContactSurname,
+                    'firstname'=>$Contact,
+                    'gender'=>$ContactGender_odoo,
+                )
+            )
+        );
+        echo '<p>contact:'.$odoo_contact_id.'</p>';
+        $odoo_search_country = $models->execute_kw($db, $uid, $password,
+            'res.country', 'search_read',
+            array(array(array('name', '=', $p_country))),
+            array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+        $p_country_odoo = $odoo_search_country[0]['id'] or False;
+        $odoo_postal_id = $models->execute_kw($db, $uid, $password,
+            'res.partner', 'create',
+            array(array(
+                    'type'=>'other',
+                    'leman_contact_type'=>'postal',
+                    'parent_id'=>$odoo_id,
+                    'street'=>$p_address,
+                    'street2'=>$p_addressComplement,
+                    'zip'=>$p_NPA,
+                    'city'=>$p_city,
+                    'country_id'=>$p_country_odoo,
+                )
+            )
+        );
+        echo '<p>postal:'.$odoo_postal_id.'</p>';
+        if ($ST_1_LastName != False){
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $ST_1_Country))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $ST_1_Country_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $ST_1_Citizenship))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $ST_1_Citizenship_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_st_1_id = $models->execute_kw($db, $uid, $password,
+                'res.partner', 'create',
+                array(array(
+                        'type'=>'other',
+                        'leman_contact_type'=>'ts',
+                        'parent_id'=>$odoo_id,
+                        'lastname'=>$ST_1_LastName,
+                        'firstname'=>$ST_1_FirstName,
+                        'birthdate_date'=>$ST_1_BirthDate,
+                        'nationality_id'=>$ST_1_Citizenship_odoo,
+                        'street'=>$ST_1_Address,
+                        'street2'=>$ST_1_ComplAddress,
+                        'zip'=>$ST_1_ZIP,
+                        'city'=>$ST_1_City,
+                        'country_id'=>$ST_1_Country_odoo,
+                    )
+                )
+            );
+            echo '<p>st1:'.$odoo_st_1_id.'</p>';
+        }
+        if ($ST_2_LastName != False){
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $ST_2_Country))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $ST_2_Country_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $ST_2_Citizenship))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $ST_2_Citizenship_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_st_2_id = $models->execute_kw($db, $uid, $password,
+                'res.partner', 'create',
+                array(array(
+                        'type'=>'other',
+                        'leman_contact_type'=>'ts',
+                        'parent_id'=>$odoo_id,
+                        'lastname'=>$ST_2_LastName,
+                        'firstname'=>$ST_2_FirstName,
+                        'birthdate_date'=>$ST_2_BirthDate,
+                        'nationality_id'=>$ST_2_Citizenship_odoo,
+                        'street'=>$ST_2_Address,
+                        'street2'=>$ST_2_ComplAddress,
+                        'zip'=>$ST_2_ZIP,
+                        'city'=>$ST_2_City,
+                        'country_id'=>$ST_2_Country_odoo,
+                    )
+                )
+            );
+            echo '<p>st2:'.$odoo_st_2_id.'</p>';
+        }
+        if ($ST_3_LastName != False){
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $ST_3_Country))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $ST_3_Country_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $ST_3_Citizenship))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $ST_3_Citizenship_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_st_3_id = $models->execute_kw($db, $uid, $password,
+                'res.partner', 'create',
+                array(array(
+                        'type'=>'other',
+                        'leman_contact_type'=>'ts',
+                        'parent_id'=>$odoo_id,
+                        'lastname'=>$ST_3_LastName,
+                        'firstname'=>$ST_3_FirstName,
+                        'birthdate_date'=>$ST_3_BirthDate,
+                        'nationality_id'=>$ST_3_Citizenship_odoo,
+                        'street'=>$ST_3_Address,
+                        'street2'=>$ST_3_ComplAddress,
+                        'zip'=>$ST_3_ZIP,
+                        'city'=>$ST_3_City,
+                        'country_id'=>$ST_3_Country_odoo,
+                    )
+                )
+            );
+            echo '<p>st3:'.$odoo_st_3_id.'</p>';
+        }
+        if ($ST_4_LastName != False){
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $ST_4_Country))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $ST_4_Country_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $ST_4_Citizenship))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $ST_4_Citizenship_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_st_4_id = $models->execute_kw($db, $uid, $password,
+                'res.partner', 'create',
+                array(array(
+                        'type'=>'other',
+                        'leman_contact_type'=>'ts',
+                        'parent_id'=>$odoo_id,
+                        'lastname'=>$ST_4_LastName,
+                        'firstname'=>$ST_4_FirstName,
+                        'birthdate_date'=>$ST_4_BirthDate,
+                        'nationality_id'=>$ST_4_Citizenship_odoo,
+                        'street'=>$ST_4_Address,
+                        'street2'=>$ST_4_ComplAddress,
+                        'zip'=>$ST_4_ZIP,
+                        'city'=>$ST_4_City,
+                        'country_id'=>$ST_4_Country_odoo,
+                    )
+                )
+            );
+            echo '<p>st4:'.$odoo_st_4_id.'</p>';
+        }
+    }
+
+    if ($aed == 'Autre'){
+        if ($AED_1_LastName != False){
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $AED_1_Country))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $AED_1_Country_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $AED_1_Citizenship))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $AED_1_Citizenship_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_ade_1_id = $models->execute_kw($db, $uid, $password,
+                'res.partner', 'create',
+                array(array(
+                        'type'=>'other',
+                        'leman_contact_type'=>'ade',
+                        'parent_id'=>$odoo_id,
+                        'lastname'=>$AED_1_LastName,
+                        'firstname'=>$AED_1_FirstName,
+                        'birthdate_date'=>$AED_1_BirthDate,
+                        'nationality_id'=>$AED_1_Citizenship_odoo,
+                        'street'=>$AED_1_Address,
+                        'street2'=>$AED_1_ComplAddress,
+                        'zip'=>$AED_1_ZIP,
+                        'city'=>$AED_1_City,
+                        'country_id'=>$AED_1_Country_odoo,
+                    )
+                )
+            );
+            echo '<p>aed1:'.$odoo_ade_1_id.'</p>';
+        }
+        if ($AED_2_LastName != False){
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $AED_2_Country))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $AED_2_Country_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $AED_2_Citizenship))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $AED_2_Citizenship_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_ade_2_id = $models->execute_kw($db, $uid, $password,
+                'res.partner', 'create',
+                array(array(
+                        'type'=>'other',
+                        'leman_contact_type'=>'ade',
+                        'parent_id'=>$odoo_id,
+                        'lastname'=>$AED_2_LastName,
+                        'firstname'=>$AED_2_FirstName,
+                        'birthdate_date'=>$AED_2_BirthDate,
+                        'nationality_id'=>$AED_2_Citizenship_odoo,
+                        'street'=>$AED_2_Address,
+                        'street2'=>$AED_2_ComplAddress,
+                        'zip'=>$AED_2_ZIP,
+                        'city'=>$AED_2_City,
+                        'country_id'=>$AED_2_Country_odoo,
+                    )
+                )
+            );
+            echo '<p>aed2:'.$odoo_ade_2_id.'</p>';
+        }
+        if ($AED_3_LastName != False){
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $AED_3_Country))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $AED_3_Country_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $AED_3_Citizenship))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $AED_3_Citizenship_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_ade_3_id = $models->execute_kw($db, $uid, $password,
+                'res.partner', 'create',
+                array(array(
+                        'type'=>'other',
+                        'leman_contact_type'=>'ade',
+                        'parent_id'=>$odoo_id,
+                        'lastname'=>$AED_3_LastName,
+                        'firstname'=>$AED_3_FirstName,
+                        'birthdate_date'=>$AED_3_BirthDate,
+                        'nationality_id'=>$AED_3_Citizenship_odoo,
+                        'street'=>$AED_3_Address,
+                        'street2'=>$AED_3_ComplAddress,
+                        'zip'=>$AED_3_ZIP,
+                        'city'=>$AED_3_City,
+                        'country_id'=>$AED_3_Country_odoo,
+                    )
+                )
+            );
+            echo '<p>aed3:'.$odoo_ade_3_id.'</p>';
+        }
+        if ($AED_4_LastName != False){
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $AED_4_Country))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $AED_4_Country_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $AED_4_Citizenship))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $AED_4_Citizenship_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_ade_4_id = $models->execute_kw($db, $uid, $password,
+                'res.partner', 'create',
+                array(array(
+                        'type'=>'other',
+                        'leman_contact_type'=>'ade',
+                        'parent_id'=>$odoo_id,
+                        'lastname'=>$AED_4_LastName,
+                        'firstname'=>$AED_4_FirstName,
+                        'birthdate_date'=>$AED_4_BirthDate,
+                        'nationality_id'=>$AED_4_Citizenship_odoo,
+                        'street'=>$AED_4_Address,
+                        'street2'=>$AED_4_ComplAddress,
+                        'zip'=>$AED_4_ZIP,
+                        'city'=>$AED_4_City,
+                        'country_id'=>$AED_4_Country_odoo,
+                    )
+                )
+            );
+            echo '<p>aed4:'.$odoo_ade_4_id.'</p>';
+        }
+    }
+
+    }
+   
+?>
