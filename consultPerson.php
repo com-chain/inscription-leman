@@ -298,6 +298,7 @@ echo '
     
     
     echo'<a class="button" href="fixStructure.php?id='.$id.'" style="float:right;">SOS</a>
+    <a class="button" href="exportodoo.php?id='.$id.'" style="float:right;">Exporter Odoo Test</a>
     <a class="button" href="export.php?id='.$id.'" style="float:right;">Exporter</a><br/>
 	<h2>  Demande d\'';
 	if (trim($membership)=='Oui'){
