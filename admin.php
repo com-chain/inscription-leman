@@ -28,14 +28,15 @@ echo'
           <a class="button" href="changeUser.php?id=0" title="Nouvel Utilisateur">Nouvel Utilisateur</a>
 
       <table class="wt"><tr class="tblHeader"><td >Identifiant</td>
+      <td>Nom court</td>
       <td>Derni&egrave;re connection</td>
       <td >Admin</td>
       <td >Droit d\'édition</td>
       <td >Droit de connection</td>
       <td >Action</td>
       </tr>';
-     $stmt = $mysqli->prepare("SELECT Id,EMail,LastLoggedIn,Salt, IsAdmin, CanEdit, CanLogIn FROM Reg_SiteUser ");
-     $stmt->bind_result( $Id, $EMail,$last,$s, $IsAdmin,$CanEdit,$CanLogIn);
+     $stmt = $mysqli->prepare("SELECT Id,EMail,Short, LastLoggedIn,Salt, IsAdmin, CanEdit, CanLogIn FROM Reg_SiteUser ");
+     $stmt->bind_result( $Id, $EMail,$short,$last,$s, $IsAdmin,$CanEdit,$CanLogIn);
      $stmt->execute();
      while ($stmt->fetch()){
      
@@ -45,6 +46,7 @@ echo'
        $date=$d1->format('d/m/Y');
      }
      echo' <tr ><td >'.$Id.' - '. $EMail.'</td>
+      <td>'.$short.'</td>
       <td>'.$date.'</td>
       <td class="rt" >'.$IsAdmin.'</td>
       <td class="rt" >'.$CanEdit.'</td>

@@ -18,9 +18,9 @@
 	  $button='Modifier';
 	}
 	
-	$stmt = $mysqli->prepare("SELECT Id,EMail,LastLoggedIn,Salt,IsAdmin, CanEdit, CanLogIn FROM Reg_SiteUser WHERE Id=? ");
+	$stmt = $mysqli->prepare("SELECT Id,EMail,Short,LastLoggedIn,Salt,IsAdmin, CanEdit, CanLogIn FROM Reg_SiteUser WHERE Id=? ");
 	$stmt->bind_param("i",$_GET['uid'] );
-    $stmt->bind_result( $Id, $EMail,$last,$s, $IsAdmin,$CanEdit,$CanLogIn);
+    $stmt->bind_result( $Id, $EMail,$short,$last,$s, $IsAdmin,$CanEdit,$CanLogIn);
     $stmt->execute();
     $stmt->fetch();
     $stmt->close();
@@ -48,6 +48,10 @@ echo'
           <span class="fitem">
             <span class="label">Identifiant* :</span>
             <input type="text" name="mail" value="'.$EMail.'" '.$readonly.'/>
+          </span>
+         <span class="fitem">
+            <span class="label">Nom Court* :</span>
+            <input type="text" name="short" value="'.$short.'"/>
           </span>';
           if ($isReadonly==0){
                     echo' <span class="fitem"><span class="label">Mot de passe* :</span><input type="text" name="psw" /></span>';

@@ -175,15 +175,15 @@ echo '
 	           Reg_Legal.Name,
 	           Reg_StatusHistory.EventDate,
 	           Reg_Status.Name,
-	           Reg_SiteUser.EMail,
+	           Reg_SiteUser.Short,
 	           Reg_Person.EMail
 	          FROM Reg_Person 
 	            LEFT OUTER JOIN Reg_RecordType on Reg_RecordType.Id=Reg_Person.RecordTypeId
 	            LEFT OUTER JOIN Reg_Individual on Reg_Individual.Id=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Legal on Reg_Legal.Id=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Status on Reg_Status.Id=Reg_Person.StatusId
-	            LEFT OUTER JOIN lastStatusChange on lastStatusChange.PersonId= Reg_Person.Id
-	            LEFT OUTER JOIN Reg_StatusHistory on lastStatusChange.EventDate=Reg_StatusHistory.EventDate AND Reg_StatusHistory.PersonId=Reg_Person.Id
+	            LEFT OUTER JOIN lastStatusChange2 on lastStatusChange2.PersonId= Reg_Person.Id
+	            LEFT OUTER JOIN Reg_StatusHistory on lastStatusChange2.Id=Reg_StatusHistory.Id AND Reg_StatusHistory.PersonId=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_SiteUser on Reg_StatusHistory.UserId = Reg_SiteUser.Id
 	            LEFT OUTER JOIN Reg_Code on Reg_Code.PersonId=Reg_Person.Id
 	            LEFT OUTER JOIN Reg_Wallet on Reg_Wallet.PersonId=Reg_Person.Id
@@ -251,11 +251,10 @@ echo '
 	           Reg_Legal.Name,
 	           Reg_StatusHistory.EventDate,
 	           Reg_Status.Name,
-	           Reg_SiteUser.EMail,
+	           Reg_SiteUser.Short,
 	           Reg_Person.Email
 	  ORDER BY Reg_StatusHistory.EventDate desc, Reg_Person.Id desc';      
 	  $stmt = $mysqli->prepare($query);
-	
       $stmt->bind_result($id,$member,$ac_req,$type,$typeName,$i_name,$e_name,$date,$status,$user,$mail);
       $stmt->execute();  
       while ($stmt->fetch()){ 
@@ -267,7 +266,7 @@ echo '
         }
         echo'</td><td>'.$date.'</td><td>'.$status;
         if (isset($user)) {
-            echo '<br/>('. substr($user,0,3).')';
+            echo '<br/>('. $user.')';
         }
         echo'</td><td>'.$mail.'</td>
         <td>'.$member.'</td><td>';
