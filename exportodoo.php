@@ -235,6 +235,58 @@
     }
     $stmt->close();
 
+    $array_legal_status['CH-Association'] = "CH - Association";
+    $array_legal_status['CH-Coopérative'] = "CH - Coopérative";
+    $array_legal_status['CH-Fondation'] = "CH - Fondation";
+    $array_legal_status['CH-Raison individuelle'] = "CH - Raison individuelle";
+    $array_legal_status['CH-SNC'] = "CH - Société en nom collectif (SNC)";
+    $array_legal_status['CH-Sàrl'] = "CH - Société à responsabilité limitée (Sàrl)";
+    $array_legal_status['CH-SA'] = "CH - Société anonyme (SA)";
+    $array_legal_status['CH-Société en commandite'] = "CH - Société en commandite";
+    $array_legal_status['FR-Association'] = "FR - Association";
+    $array_legal_status['FR-EI'] = "FR - Entreprise individuelle (EI)";
+    $array_legal_status['FR-EIRL'] = "FR - Entreprise individuelle à responsabilité limitée (EIRL)";
+    $array_legal_status['FR-EURL'] = "FR - Entreprise unipersonnelle à responsabilité limitée (EURL)";
+    $array_legal_status['FR-EARL'] = "FR - Exploitation agricole à responsabilité limitée (EARL)";
+    $array_legal_status['FR-SARL'] = "FR - Société à responsabilité limitée (SARL)";
+    $array_legal_status['FR-SA'] = "FR - Société anonyme (SA)";
+    $array_legal_status['FR-SAS'] = "FR - Société par actions simplifiée (SAS)";
+    $array_legal_status['FR-SASU'] = "FR - Société par actions simplifiée unipersonnelle (SASU)";
+    $array_legal_status['FR-SNC'] = "FR - Société en nom collectif (SNC)";
+    $array_legal_status['FR-SCOP'] = "FR - Société coopérative de production (SCOP)";
+    $array_legal_status['FR-SCIC'] = "FR - Société coopérative d’intérêt collectif (SCIC)";
+    $array_legal_status['FR-SCA'] = "FR - Société en commandite par actions (SCA)";
+    $array_legal_status['FR-SCS'] = "FR - Société en commandite simple (SCS)";
+    $array_legal_status['FR-SCP'] = "FR - Société civile professionnelle (SCP)";
+    $array_legal_status['FR-SCM'] = "FR - Société civile de moyens (SCM)";
+    $array_legal_status['FR-SCI'] = "FR - Société civile immobilière (SCI)";
+    $array_legal_status['FR-Mutuelle'] = "FR - Mutuelle";
+    $array_legal_status['FR-Fondation'] = "FR - Fondation";
+
+    $array_activity['ActivitésCitoyennesAdvocacy'] = "Activités Citoyennes & Advocacy";
+    $array_activity['AdministratifAudit'] = "Administratif & Audit";
+    $array_activity['AgricultureProducteurs'] = "Agriculture & Producteurs";
+    $array_activity['AlimentationEpicerie'] = "Alimentation & Epicerie";
+    $array_activity['Artisanat'] = "Artisanat";
+    $array_activity['BarRestauration'] = "Bar & Restauration";
+    $array_activity['CommunicationGraphismeDessinImpression'] = "Communication - Graphisme - Dessin - Impression";
+    $array_activity['Culture'] = "Culture";
+    $array_activity['EducationFormation'] = "Education & Formation";
+    $array_activity['Energie'] = "Energie";
+    $array_activity['Événementiel'] = "Événementiel";
+    $array_activity['FournituresEquipement'] = "Fournitures & Equipement";
+    $array_activity['HabillementBeauté'] = "Habillement & Beauté";
+    $array_activity['HumanitaireCaritatif'] = "Humanitaire & Caritatif";
+    $array_activity['InformatiqueElectronique'] = "Informatique& Electronique";
+    $array_activity['LogementConstruction'] = "Logement & Construction";
+    $array_activity['MobilitéTransport'] = "Mobilité & Transport";
+    $array_activity['NettoyageGestionDéchets'] = "Nettoyage & Gestion déchets";
+    $array_activity['PresseMédias'] = "Presse & Médias";
+    $array_activity['RéparationSAV'] = "Réparation & SAV";
+    $array_activity['SantéBienêtre'] = "Santé & Bien-être";
+    $array_activity['Services'] = "Services";
+    $array_activity['TourismeLoisirs'] = "Tourisme & Loisirs";
+
 
     $url = "https://test.leman-en-transition.org";
     $db = "myOdooDb";
@@ -247,13 +299,8 @@
     $uid = $common->authenticate($db, $username, $password, array());
 
     $models = ripcord::client("$url/xmlrpc/2/object");
-    $models->execute_kw($db, $uid, $password,
-        'res.partner', 'check_access_rights',
-        array('read'), array('raise_exception' => false));
-        $models->execute_kw($db, $uid, $password,
-        'res.country', 'check_access_rights',
-        array('read'), array('raise_exception' => false));
 
+    // avoid multiple import, uncomment when connecting to prod
     // $search_odoo_id = $models->execute_kw($db, $uid, $password,
     //     'res.partner', 'search', array(
     //         array(array('leman_inscription_id', '=', $id))));
@@ -261,6 +308,7 @@
     //     exit("Déjà exporté");
     // }
 
+    //format Gender
     if ($Gender == 'Masculin'){
         $Gender_odoo = 'male';
     } elseif ($Gender == 'Feminin'){
@@ -280,6 +328,7 @@
         $ContactGender_odoo = False;
     }
 
+    // format PEP
     if ($PEP == 1){
         $PEP_odoo = True;
     } else{
@@ -289,6 +338,14 @@
         $PEPRelated_odoo = True;
     } else{
         $PEPRelated_odoo = False;
+    }
+
+    if ($newsletter == 1){
+        $odoo_search_mailing_list_id = $models->execute_kw($db, $uid, $password,
+            'mail.mass_mailing.list', 'search_read',
+            array(array(array('name', 'like', 'Newsletter mensuelle'))),
+            array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+        $newsletter_list_odoo = $odoo_search_mailing_list_id[0]['id'] or False;
     }
 
     $odoo_search_nationality_id = $models->execute_kw($db, $uid, $password,
@@ -327,28 +384,68 @@
                 )
             )
         );
-        echo '<p>Individuelle:'.$odoo_id.'</p>';
+        if (is_int($odoo_id)){
+            echo '<p>Export inscription individuelle:'.$odoo_id.'</p>';
+        } else{
+            echo '<p>Export inscription individuelle: Erreur</p>';
+        }
+        if ($newsletter_list_odoo){
+            $odoo_mailing_contact_id = $models->execute_kw($db, $uid, $password,
+                'mail.mass_mailing.contact', 'create',
+                array(array(
+                        'partner_id'=>$odoo_id,
+                        'list_ids'=>array(array(4,$newsletter_list_odoo)),
+
+                    )
+                )
+            );
+            if (is_int($odoo_mailing_contact_id)){
+                echo '<p>Inscription newsletter:'.$odoo_mailing_contact_id.'</p>';
+            } else{
+                echo '<p>Inscription newsletter: Erreur</p>';
+            }
+        }
     }
 
     if ($typeName == 'Entreprise'){
-        echo '<p>'.$LegalForm.'</p>';
-        echo '<p>'.$ActivityField.'</p>';
-        echo '<p>'.$ActivityFieldSeg.'</p>';
+        $LegalForm_name = $array_legal_status[$LegalForm];
         $odoo_search_legal_id = $models->execute_kw($db, $uid, $password,
             'res.partner.legal.status', 'search_read',
-            array(array(array('name', '=', $LegalForm))),
+            array(array(array('name', '=', $LegalForm_name))),
             array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'), 'limit'=>1));
         $LegalForm_odoo = $odoo_search_legal_id[0]['id'] or False;
+
+        $ActivityField_name = $array_activity[$ActivityField];
+        $odoo_search_activity_id = $models->execute_kw($db, $uid, $password,
+            'res.partner.industry', 'search_read',
+            array(array(array('name', '=', $ActivityField_name))),
+            array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'), 'limit'=>1));
+        $ActivityField_odoo = $odoo_search_activity_id[0]['id'] or False;
+
+        $ActivityFieldSeg_name = $array_activity[$ActivityFieldSeg];
+        $odoo_search_activity_id = $models->execute_kw($db, $uid, $password,
+            'res.partner.industry', 'search_read',
+            array(array(array('name', '=', $ActivityFieldSeg_name))),
+            array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'), 'limit'=>1));
+        $ActivityFieldSeg_odoo = $odoo_search_activity_id[0]['id'] or False;
+
+        if ($RefName != False){
+            $Name_odoo = $RefName;
+        } else{
+            $Name_odoo = $Name;
+        }
+
         $odoo_id = $models->execute_kw($db, $uid, $password,
             'res.partner', 'create',
             array(array(
                     'company_type'=>'company',
-                    'name'=>$RefName,
+                    'name'=>$Name_odoo,
+                    'public_name'=>$RefName,
                     'legal_name'=>$Name,
-                    //'legal_status'=>$LegalForm_odoo, CREATE records in database
-                    //'creation_date'=>$CreationDate, add field in odoo?
-                    //'industry_id'=>$ActivityField,
-                    //'secondary_industry_ids'=>$ActivityFieldSeg,
+                    'legal_status'=>$LegalForm_odoo,
+                    'creation_date'=>$CreationDate,
+                    'industry_id'=>$ActivityField_odoo,
+                    'secondary_industry_ids'=>array(array(4,$ActivityFieldSeg_odoo)),
                     'detailed_activity'=>$ActivityDescription,
                     'employees_number'=>$EFT,
                     'website'=>$site,
@@ -367,7 +464,27 @@
                 )
             )
         );
-        echo '<p>Entreprise:'.$odoo_id.'</p>';
+        if (is_int($odoo_id)){
+            echo '<p>Export inscription entreprise:'.$odoo_id.'</p>';
+        } else{
+            echo '<p>Export inscription entreprise: Erreur</p>';
+        }
+        if ($newsletter_list_odoo){
+            $odoo_mailing_contact_id = $models->execute_kw($db, $uid, $password,
+                'mail.mass_mailing.contact', 'create',
+                array(array(
+                        'partner_id'=>$odoo_id,
+                        'list_ids'=>array(array(4,$newsletter_list_odoo)),
+
+                    )
+                )
+            );
+            if (is_int($odoo_mailing_contact_id)){
+                echo '<p>Inscription newsletter:'.$odoo_mailing_contact_id.'</p>';
+            } else{
+                echo '<p>Inscription newsletter: Erreur</p>';
+            }
+        }
         $odoo_contact_id = $models->execute_kw($db, $uid, $password,
             'res.partner', 'create',
             array(array(
@@ -377,10 +494,15 @@
                     'lastname'=>$ContactSurname,
                     'firstname'=>$Contact,
                     'gender'=>$ContactGender_odoo,
+                    'email'=>$mail,
                 )
             )
         );
-        echo '<p>contact:'.$odoo_contact_id.'</p>';
+        if (is_int($odoo_contact_id)){
+            echo '<p>Export personne de contact:'.$odoo_contact_id.'</p>';
+        } else{
+            echo '<p>Export personne de contact: Erreur</p>';
+        }
         $odoo_search_country = $models->execute_kw($db, $uid, $password,
             'res.country', 'search_read',
             array(array(array('name', '=', $p_country))),
@@ -400,7 +522,11 @@
                 )
             )
         );
-        echo '<p>postal:'.$odoo_postal_id.'</p>';
+        if (is_int($odoo_postal_id)){
+            echo '<p>Export adresse postale:'.$odoo_postal_id.'</p>';
+        } else{
+            echo '<p>Export adresse postale: Erreur</p>';
+        }
         if ($ST_1_LastName != False){
             $odoo_search_country = $models->execute_kw($db, $uid, $password,
                 'res.country', 'search_read',
@@ -430,7 +556,11 @@
                     )
                 )
             );
-            echo '<p>st1:'.$odoo_st_1_id.'</p>';
+            if (is_int($odoo_st_1_id)){
+                echo '<p>Export tiers subordonné:'.$odoo_st_1_id.'</p>';
+            } else{
+                echo '<p>Export tiers subordonné: Erreur</p>';
+            }
         }
         if ($ST_2_LastName != False){
             $odoo_search_country = $models->execute_kw($db, $uid, $password,
@@ -461,7 +591,11 @@
                     )
                 )
             );
-            echo '<p>st2:'.$odoo_st_2_id.'</p>';
+            if (is_int($odoo_st_2_id)){
+                echo '<p>Export tiers subordonné:'.$odoo_st_2_id.'</p>';
+            } else{
+                echo '<p>Export tiers subordonné: Erreur</p>';
+            }
         }
         if ($ST_3_LastName != False){
             $odoo_search_country = $models->execute_kw($db, $uid, $password,
@@ -492,7 +626,11 @@
                     )
                 )
             );
-            echo '<p>st3:'.$odoo_st_3_id.'</p>';
+            if (is_int($odoo_st_3_id)){
+                echo '<p>Export tiers subordonné:'.$odoo_st_3_id.'</p>';
+            } else{
+                echo '<p>Export tiers subordonné: Erreur</p>';
+            }
         }
         if ($ST_4_LastName != False){
             $odoo_search_country = $models->execute_kw($db, $uid, $password,
@@ -523,7 +661,11 @@
                     )
                 )
             );
-            echo '<p>st4:'.$odoo_st_4_id.'</p>';
+            if (is_int($odoo_st_4_id)){
+                echo '<p>Export tiers subordonné:'.$odoo_st_4_id.'</p>';
+            } else{
+                echo '<p>Export tiers subordonné: Erreur</p>';
+            }
         }
     }
 
@@ -557,7 +699,11 @@
                     )
                 )
             );
-            echo '<p>aed1:'.$odoo_ade_1_id.'</p>';
+            if (is_int($odoo_ade_1_id)){
+                echo '<p>Export ayant droit économique:'.$odoo_ade_1_id.'</p>';
+            } else{
+                echo '<p>Export ayant droit économique: Erreur</p>';
+            }
         }
         if ($AED_2_LastName != False){
             $odoo_search_country = $models->execute_kw($db, $uid, $password,
@@ -588,7 +734,11 @@
                     )
                 )
             );
-            echo '<p>aed2:'.$odoo_ade_2_id.'</p>';
+            if (is_int($odoo_ade_2_id)){
+                echo '<p>Export ayant droit économique:'.$odoo_ade_2_id.'</p>';
+            } else{
+                echo '<p>Export ayant droit économique: Erreur</p>';
+            }
         }
         if ($AED_3_LastName != False){
             $odoo_search_country = $models->execute_kw($db, $uid, $password,
@@ -619,7 +769,11 @@
                     )
                 )
             );
-            echo '<p>aed3:'.$odoo_ade_3_id.'</p>';
+            if (is_int($odoo_ade_3_id)){
+                echo '<p>Export ayant droit économique:'.$odoo_ade_3_id.'</p>';
+            } else{
+                echo '<p>Export ayant droit économique: Erreur</p>';
+            }
         }
         if ($AED_4_LastName != False){
             $odoo_search_country = $models->execute_kw($db, $uid, $password,
@@ -650,7 +804,11 @@
                     )
                 )
             );
-            echo '<p>aed4:'.$odoo_ade_4_id.'</p>';
+            if (is_int($odoo_ade_4_id)){
+                echo '<p>Export ayant droit économique:'.$odoo_ade_4_id.'</p>';
+            } else{
+                echo '<p>Export ayant droit économique: Erreur</p>';
+            }
         }
     }
 
