@@ -112,7 +112,7 @@ echo'
        
        if (country=="France"){
             document.getElementById("cot_amount").innerHTML="EUR&nbsp;"+amount_fr;
-            document.getElementById("cot_amount_2").innerHTML=amount_fr_lem+ " (taux moyen du jour)";
+            document.getElementById("cot_amount_2").innerHTML=amount_fr;//+ " (taux moyen du jour)";
             document.getElementById("coo_ch").style.display="None";
             document.getElementById("coo_fr").style.display="inline-block";
        } else {

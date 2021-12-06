@@ -325,7 +325,7 @@ echo '
 	
 	echo '</h2>';
 	
-	echo '<span class="half">';
+	echo '<span class="full">';
 	if (canEdit() && $status==1){
 	  echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2&o='.$origin.'">Mettre en attente</a> 
 	        <a class="button" href="changeStatus.php?id='.$id.'&stat=3&o='.$origin.'">Accepter</a>
@@ -394,7 +394,7 @@ echo '
 	</ul>
 	
 	</span>
-	<span class="half">
+	<span class="full">
 	<h3> Notes:  </h3>
 	<form action="updateNotes.php" >
 	    <input   type="hidden"  name="id" value="'.$id.'"/>
@@ -468,7 +468,7 @@ echo '
 	$stmt->bind_param("i",$id);
     $stmt->bind_result($w_add,$w_code,$w_val, $w_date, $w_a_date);
     $stmt->execute();
-   echo'<tr><td>Address</td><td>Code</td><td>Date Ajout</td><td>Date Modif</td><td>Statut</td></tr>';
+   echo'<tr><td>Address</td><td>Code</td><td>Date création</td><td>Date validation</td><td>Statut</td></tr>';
     $index_cmpt=0;
     while ($stmt->fetch()){ 
         echo'<tr><td>

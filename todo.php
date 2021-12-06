@@ -72,18 +72,22 @@ $mysqli= ConnectionFactory::GetConnection();
 		$codeId = $stmt2->insert_id;
 		$stmt2->close();	
 
-		$query = 'INSERT INTO  Reg_Wallet (address, CodeId, Validated) VALUES (?,?,0)';       
+		$query = 'UPDATE Reg_Wallet SET CodeId=? WHERE address=?';       
 		$stmt2 = $mysqli->prepare($query);
-		$stmt2->bind_param("si",$addr,$codeId);
+		$stmt2->bind_param("is",$codeId,$addr);
 		$stmt2->execute();
-		$stmt2->close();	
+		$stmt2->close();
+		
+			
 	} else {
-		$query = 'INSERT INTO  Reg_Wallet (address, PersonId, CodeId, Validated) VALUES (?,?,?,0)';       
+		$query = 'UPDATE Reg_Wallet SET PersonId=?, CodeId=? WHERE address=?';       
 		$stmt2 = $mysqli->prepare($query);
-		$stmt2->bind_param("sii",$addr,$pid,$codeId);
+		$stmt2->bind_param("iis",$pid,$codeId, $addr);
 		$stmt2->execute();
 		$stmt2->close();	
 	} 
+	
+	
    }
 
 
