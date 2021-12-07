@@ -298,6 +298,7 @@ echo '
     
     
     echo'<a class="button" href="fixStructure.php?id='.$id.'" style="float:right;">SOS</a>
+    <a class="button" href="exportodoo.php?id='.$id.'" style="float:right;">Exporter Odoo Test</a>
     <a class="button" href="export.php?id='.$id.'" style="float:right;">Exporter</a><br/>
 	<h2>  Demande d\'';
 	if (trim($membership)=='Oui'){
@@ -325,7 +326,7 @@ echo '
 	
 	echo '</h2>';
 	
-	echo '<span class="half">';
+	echo '<span class="full">';
 	if (canEdit() && $status==1){
 	  echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2&o='.$origin.'">Mettre en attente</a> 
 	        <a class="button" href="changeStatus.php?id='.$id.'&stat=3&o='.$origin.'">Accepter</a>
@@ -394,16 +395,7 @@ echo '
 	</ul>
 	
 	</span>
-	<span class="half">
-	<h3> Notes:  </h3>
-	<form action="updateNotes.php" >
-	    <input   type="hidden"  name="id" value="'.$id.'"/>
-        <input   type="hidden"  name="o" value="'.$origin.'" />
-        <textarea name="note" style="height:10em;">'.$Notes.'</textarea>
-        <input type="submit" class="button" value="ENREGISTRER"/>
-        
-	</form>
-	</span>
+	
 	<span class="full">
 	<h3> Code et comptes  </h3>
 	Code: ';if (canEdit()){echo'<a href="addCode.php?id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
@@ -468,7 +460,7 @@ echo '
 	$stmt->bind_param("i",$id);
     $stmt->bind_result($w_add,$w_code,$w_val, $w_date, $w_a_date);
     $stmt->execute();
-   echo'<tr><td>Address</td><td>Code</td><td>Date Ajout</td><td>Date Modif</td><td>Statut</td></tr>';
+   echo'<tr><td>Address</td><td>Code</td><td>Date création</td><td>Date validation</td><td>Statut</td></tr>';
     $index_cmpt=0;
     while ($stmt->fetch()){ 
         echo'<tr><td>
@@ -580,6 +572,21 @@ echo '
 	
 	
 	echo'</span>';
+	
+	
+	
+	
+	echo'
+	<span class="full">
+	<h3> Notes:  </h3>
+	<form action="updateNotes.php" >
+	    <input   type="hidden"  name="id" value="'.$id.'"/>
+        <input   type="hidden"  name="o" value="'.$origin.'" />
+        <textarea name="note" style="height:10em;width:680px">'.$Notes.'</textarea>
+        <input type="submit" class="button" value="ENREGISTRER"/>
+        
+	</form>
+	</span>';
 	
 	
 	

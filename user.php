@@ -67,9 +67,9 @@ echo'
     <a class="button" href="consult.php">Retour</a><br/>
 	<h2> Mon Compte Utilisateur </h2>';
 
-  $stmt = $mysqli->prepare("SELECT Id,EMail,LastLoggedIn,Salt,IsAdmin, CanEdit, CanLogIn FROM Reg_SiteUser WHERE Id=? ");
+  $stmt = $mysqli->prepare("SELECT Id,EMail,Short, LastLoggedIn,Salt,IsAdmin, CanEdit, CanLogIn FROM Reg_SiteUser WHERE Id=? ");
 	$stmt->bind_param("i",$_SESSION['_UserId'] );
-    $stmt->bind_result( $uid, $EMail,$last,$s, $IsAdmin,$CanEdit,$CanLogIn);
+    $stmt->bind_result( $uid, $EMail,$short, $last,$s, $IsAdmin,$CanEdit,$CanLogIn);
     $stmt->execute();
     $stmt->fetch();
     $stmt->close();
@@ -82,6 +82,7 @@ echo'
   echo '      
         
          <span class="fitem"><span class="label">Nom d\'utilisateur:</span>'. $EMail.'</span>
+         <span class="fitem"><span class="label">Nom court:</span>'. $short.'</span>
          <span class="fitem"><span class="label">Dernier login:</span>'.$date.'</span>';
          
   

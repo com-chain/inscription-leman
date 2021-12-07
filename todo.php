@@ -14,6 +14,10 @@ $mysqli= ConnectionFactory::GetConnection();
     $stmt->bind_result($add_id, $addr);
     $stmt->execute();
     $add_without_code =0;
+    $add_without_code_l = []; 
+    
+    $to_add_addr=[];
+    $to_add_code=[];
     while ($stmt->fetch()) {
            // get code
             $code='';
@@ -33,47 +37,58 @@ $mysqli= ConnectionFactory::GetConnection();
             if ($result !== FALSE && $result!='KO' && isset($res->$addr)) {
                 
                 $code = $res->$addr;
-                
-                $query = 'SELECT Id, PersonId
-	                      FROM Reg_Code
-	                      WHERE Code=? 
-	                       ';
-	            $stmt2 = $mysqli->prepare($query);
-	            $stmt2->bind_param("s",$code);
-                $stmt2->bind_result($codeId, $pid);
-                $stmt2->execute();
-                $stmt2->fetch();
-                $stmt2->close();
-                if (!isset($codeId ) ) {
-                    // code unknow
-                    // insert code without the person
-                    $query = 'INSERT INTO  Reg_Code (Code) VALUES (?)';  
-	                $stmt2 = $mysqli->prepare($query);
-	                $stmt2->bind_param("s",$code);
-                    $stmt2->execute();
-                    $codeId = $stmt2->insert_id;
-                    $stmt2->close();	
-                    
-                    $query = 'INSERT INTO  Reg_Wallet (address, CodeId, Validated) VALUES (?,?,0)';       
-	                $stmt2 = $mysqli->prepare($query);
-	                $stmt2->bind_param("si",$addr,$codeId);
-                    $stmt2->execute();
-                    $stmt2->close();	
-                } else {
-                 $query = 'INSERT INTO  Reg_Wallet (address, PersonId, CodeId, Validated) VALUES (?,?,?,0)';       
-	             $stmt2 = $mysqli->prepare($query);
-	             $stmt2->bind_param("sii",$addr,$pid,$codeId);
-                 $stmt2->execute();
-                 $stmt2->close();	
-                } 
+                $to_add_addr[]=$addr;
+                $to_add_code[]= $code; 
             } else { 
                 // no code found...
                 $add_without_code+=1;
+                $add_without_code_l[] = $addr;
             }
     }
     
     $stmt->close(); 
+    
+    
+    for ($index=0; $index<count($to_add_addr); $index++) {
+      $code = $to_add_code[$index];
+      $addr =   $to_add_addr[$index];
+      $query = 'SELECT Id, PersonId
+	                      FROM Reg_Code
+	                      WHERE Code=? 
+	                       ';
+	$stmt2 = $mysqli->prepare($query);
+	$stmt2->bind_param("s",$code);
+	$stmt2->bind_result($codeId, $pid);
+	$stmt2->execute();
+	$stmt2->fetch();
+	$stmt2->close();
+	if (!isset($codeId ) ) {
+		// code unknow
+		// insert code without the person
+		$query = 'INSERT INTO  Reg_Code (Code) VALUES (?)';  
+		$stmt2 = $mysqli->prepare($query);
+		$stmt2->bind_param("s",$code);
+		$stmt2->execute();
+		$codeId = $stmt2->insert_id;
+		$stmt2->close();	
 
+		$query = 'UPDATE Reg_Wallet SET CodeId=? WHERE address=?';       
+		$stmt2 = $mysqli->prepare($query);
+		$stmt2->bind_param("is",$codeId,$addr);
+		$stmt2->execute();
+		$stmt2->close();
+		
+			
+	} else {
+		$query = 'UPDATE Reg_Wallet SET PersonId=?, CodeId=? WHERE address=?';       
+		$stmt2 = $mysqli->prepare($query);
+		$stmt2->bind_param("iis",$pid,$codeId, $addr);
+		$stmt2->execute();
+		$stmt2->close();	
+	} 
+	
+	
+   }
 
 
 ////
@@ -135,6 +150,9 @@ echo '
     
     if ($add_without_code>0) {
         echo '<h2> Il y a '.$add_without_code.' adresses sans code et non liées en DB</h2><br>';
+        foreach ($add_without_code_l as $add_non_lie) {
+           echo $add_non_lie.'<br/>';
+        } 
     }
     
     
@@ -174,7 +192,7 @@ echo '
 	           Reg_StatusHistory.EventDate,
 	           Reg_Status.id,
 	           Reg_Status.Name,
-	           Reg_SiteUser.EMail,
+	           Reg_SiteUser.Short,
 	           Reg_Person.Email,
 	           count(Reg_Code.Id),
 	           min(ABS(Reg_Wallet.Validated)),
@@ -197,7 +215,7 @@ echo '
 	           Reg_Legal.Name,
 	           Reg_StatusHistory.EventDate,
 	           Reg_Status.Name,
-	           Reg_SiteUser.EMail,
+	           Reg_SiteUser.Short,
 	           Reg_Person.Email
 	          ORDER BY Reg_StatusHistory.EventDate desc, Reg_Person.Id desc';
 	          
@@ -233,7 +251,7 @@ while ($stmt->fetch()){
         }
         echo'</td><td>'.$date.'</td><td>'.$status;
         if (isset($user)) {
-            echo '<br/>('. substr($user,0,3).')';
+            echo '<br/>('.$user.')';
         }
         echo'</td><td>'.$mail.'</td>
         <td>'.$member.'</td><td>';

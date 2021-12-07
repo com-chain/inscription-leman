@@ -29,7 +29,7 @@
   
    $query = 'SELECT count(Id)
 	          FROM Reg_Wallet
-	          WHERE address=? 
+	          WHERE address=? AND (PersonId IS NOT NULL OR CodeId IS NOT NULL)
 	           ';
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("s",$addr);
@@ -40,7 +40,19 @@
     if ($number>0){
         header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=2&o='.$origin);
         exit();
+    } else {
+        $query = 'DELETE FROM Reg_Wallet
+	              WHERE address=? AND PersonId IS NULL AND CodeId IS NULL';
+	    $stmt = $mysqli->prepare($query);
+	    $stmt->bind_param("s",$addr);
+        $stmt->execute();
+        $stmt->close();
+    
     }
+    
+    
+  
+    
     
     // get code
     $code='';
