@@ -326,7 +326,7 @@ echo '
 	
 	echo '</h2>';
 	
-	echo '<span class="half">';
+	echo '<span class="full">';
 	if (canEdit() && $status==1){
 	  echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2&o='.$origin.'">Mettre en attente</a> 
 	        <a class="button" href="changeStatus.php?id='.$id.'&stat=3&o='.$origin.'">Accepter</a>
@@ -396,7 +396,7 @@ echo '
 	
 	</span>
 	
-	<span class="half">
+	<span class="full">
 	<h3> Code et comptes  </h3>
 	Code: ';if (canEdit()){echo'<a href="addCode.php?id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
 	<table>';
