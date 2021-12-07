@@ -326,7 +326,7 @@ echo '
 	
 	echo '</h2>';
 	
-	echo '<span class="full">';
+	echo '<span class="half">';
 	if (canEdit() && $status==1){
 	  echo '<a class="button" href="changeStatus.php?id='.$id.'&stat=2&o='.$origin.'">Mettre en attente</a> 
 	        <a class="button" href="changeStatus.php?id='.$id.'&stat=3&o='.$origin.'">Accepter</a>
@@ -395,17 +395,8 @@ echo '
 	</ul>
 	
 	</span>
-	<span class="full">
-	<h3> Notes:  </h3>
-	<form action="updateNotes.php" >
-	    <input   type="hidden"  name="id" value="'.$id.'"/>
-        <input   type="hidden"  name="o" value="'.$origin.'" />
-        <textarea name="note" style="height:10em;">'.$Notes.'</textarea>
-        <input type="submit" class="button" value="ENREGISTRER"/>
-        
-	</form>
-	</span>
-	<span class="full">
+	
+	<span class="half">
 	<h3> Code et comptes  </h3>
 	Code: ';if (canEdit()){echo'<a href="addCode.php?id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
 	<table>';
@@ -581,6 +572,21 @@ echo '
 	
 	
 	echo'</span>';
+	
+	
+	
+	
+	echo'
+	<span class="full">
+	<h3> Notes:  </h3>
+	<form action="updateNotes.php" >
+	    <input   type="hidden"  name="id" value="'.$id.'"/>
+        <input   type="hidden"  name="o" value="'.$origin.'" />
+        <textarea name="note" style="height:10em;width:680px">'.$Notes.'</textarea>
+        <input type="submit" class="button" value="ENREGISTRER"/>
+        
+	</form>
+	</span>';
 	
 	
 	
