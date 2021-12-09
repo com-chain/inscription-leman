@@ -445,7 +445,6 @@
                     'legal_status'=>$LegalForm_odoo,
                     'creation_date'=>$CreationDate,
                     'industry_id'=>$ActivityField_odoo,
-                    'secondary_industry_ids'=>array(array(4,$ActivityFieldSeg_odoo)),
                     'detailed_activity'=>$ActivityDescription,
                     'employees_number'=>$EFT,
                     'website'=>$site,
@@ -464,6 +463,10 @@
                 )
             )
         );
+        if (is_int($ActivityFieldSeg_odoo)){
+            $models->execute_kw($db, $uid, $password,'res.partner', 'write',
+                array(array($odoo_id), array('secondary_industry_ids'=>array(array(4,$ActivityFieldSeg_odoo)))));
+        }
         if (is_int($odoo_id)){
             echo '<p>Export inscription entreprise:'.$odoo_id.'</p>';
         } else{
