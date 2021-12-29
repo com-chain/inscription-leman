@@ -288,7 +288,7 @@
     $array_activity['TourismeLoisirs'] = "Tourisme & Loisirs";
 
 
-    $url = "https://test.leman-en-transition.org";
+    $url = "https://leman-en-transition.org";
     $db = "myOdooDb";
     $username = "myOdooUser";
     $password = "myOdooPassword";
@@ -300,13 +300,13 @@
 
     $models = ripcord::client("$url/xmlrpc/2/object");
 
-    // avoid multiple import, uncomment when connecting to prod
-    // $search_odoo_id = $models->execute_kw($db, $uid, $password,
-    //     'res.partner', 'search', array(
-    //         array(array('leman_inscription_id', '=', $id))));
-    // if (count($search_odoo_id) == 1){
-    //     exit("Déjà exporté");
-    // }
+    //avoid multiple import, uncomment when connecting to prod
+    $search_odoo_id = $models->execute_kw($db, $uid, $password,
+        'res.partner', 'search', array(
+            array(array('leman_inscription_id', '=', $id))));
+    if (count($search_odoo_id) >= 1){
+        exit("Déjà exporté");
+    }
 
     //format Gender
     if ($Gender == 'Masculin'){
@@ -338,6 +338,17 @@
         $PEPRelated_odoo = True;
     } else{
         $PEPRelated_odoo = False;
+    }
+
+    if ($wallets!=''){
+        $electronic_account_odoo = True;
+    } else {
+        $electronic_account_odoo = False;
+    }
+
+    //quick an dirty, if it happens again with another date, improve with Datetime lib
+    if ($CreationDate == "1000-01-01"){
+        $CreationDate = False;
     }
 
     if ($newsletter == 1){
@@ -386,6 +397,7 @@
                     'comment'=>$Notes,
                     'leman_inscription_id'=>$id,
                     'free_member'=>$membership_odoo,
+                    'electronic_account'=>$electronic_account_odoo,
                 )
             )
         );
@@ -466,6 +478,7 @@
                     'comment'=>$Notes,
                     'leman_inscription_id'=>$id,
                     'free_member'=>'True',
+                    'electronic_account'=>$electronic_account_odoo,
                 )
             )
         );
