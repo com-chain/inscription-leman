@@ -359,7 +359,11 @@
         array(array(array('name', '=', $count))),
         array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
     $country_odoo = $odoo_search_country[0]['id'] or False;
-
+    if ($membership == 'Oui'){
+        $membership_odoo = 'true';
+    } else{
+        $membership_odoo = '';
+    }
     if ($typeName == 'Individuelle'){
         $odoo_id = $models->execute_kw($db, $uid, $password,
             'res.partner', 'create',
@@ -381,6 +385,7 @@
                     'pepr'=>$PEPRelated_odoo,
                     'comment'=>$Notes,
                     'leman_inscription_id'=>$id,
+                    'free_member'=>$membership_odoo,
                 )
             )
         );
@@ -460,6 +465,7 @@
                     'pepr'=>$PEPRelated_odoo,
                     'comment'=>$Notes,
                     'leman_inscription_id'=>$id,
+                    'free_member'=>'True',
                 )
             )
         );
@@ -494,8 +500,8 @@
                     'type'=>'contact',
                     'leman_contact_type'=>'contact',
                     'parent_id'=>$odoo_id,
-                    'lastname'=>$ContactSurname,
-                    'firstname'=>$Contact,
+                    'lastname'=>$Contact,
+                    'firstname'=>$ContactSurname,
                     'gender'=>$ContactGender_odoo,
                     'email'=>$mail,
                 )
@@ -506,29 +512,31 @@
         } else{
             echo '<p>Export personne de contact: Erreur</p>';
         }
-        $odoo_search_country = $models->execute_kw($db, $uid, $password,
-            'res.country', 'search_read',
-            array(array(array('name', '=', $p_country))),
-            array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
-        $p_country_odoo = $odoo_search_country[0]['id'] or False;
-        $odoo_postal_id = $models->execute_kw($db, $uid, $password,
-            'res.partner', 'create',
-            array(array(
-                    'type'=>'other',
-                    'leman_contact_type'=>'postal',
-                    'parent_id'=>$odoo_id,
-                    'street'=>$p_address,
-                    'street2'=>$p_addressComplement,
-                    'zip'=>$p_NPA,
-                    'city'=>$p_city,
-                    'country_id'=>$p_country_odoo,
+        if ($p_address != $address){
+            $odoo_search_country = $models->execute_kw($db, $uid, $password,
+                'res.country', 'search_read',
+                array(array(array('name', '=', $p_country))),
+                array('fields'=>array('id'), 'context'=>array('lang'=>'fr_FR'),'limit'=>1));
+            $p_country_odoo = $odoo_search_country[0]['id'] or False;
+            $odoo_postal_id = $models->execute_kw($db, $uid, $password,
+                'res.partner', 'create',
+                array(array(
+                        'type'=>'other',
+                        'leman_contact_type'=>'postal',
+                        'parent_id'=>$odoo_id,
+                        'street'=>$p_address,
+                        'street2'=>$p_addressComplement,
+                        'zip'=>$p_NPA,
+                        'city'=>$p_city,
+                        'country_id'=>$p_country_odoo,
+                    )
                 )
-            )
-        );
-        if (is_int($odoo_postal_id)){
-            echo '<p>Export adresse postale:'.$odoo_postal_id.'</p>';
-        } else{
-            echo '<p>Export adresse postale: Erreur</p>';
+            );
+            if (is_int($odoo_postal_id)){
+                echo '<p>Export adresse postale:'.$odoo_postal_id.'</p>';
+            } else{
+                echo '<p>Export adresse postale: Erreur</p>';
+            }
         }
         if ($ST_1_LastName != False){
             $odoo_search_country = $models->execute_kw($db, $uid, $password,
