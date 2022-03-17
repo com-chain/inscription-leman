@@ -394,20 +394,25 @@ echo '
 	echo'
 	</ul>
 	
-	</span>
+	</span>';
+	
+	
+	/* Comptes et code CHF */
+	echo'
 	
 	<span class="full">
-	<h3> Code et comptes  </h3>
-	Code: ';if (canEdit()){echo'<a href="addCode.php?id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
+	<h3> Code et comptes - CHF </h3>
+	Code: ';if (canEdit()){echo'<a href="addCode.php?cur=CHF&id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
 	<table>';
-	$query = 'SELECT Reg_Code.Id,
+	$query = "SELECT Reg_Code.Id,
 	            Reg_Code.Code,
 	            count(Reg_Wallet.CodeId)
 	          FROM Reg_Code
 	           LEFT OUTER JOIN Reg_Wallet ON Reg_Wallet.CodeId=Reg_Code.Id
 	          WHERE Reg_Code.PersonId=? 
+	                AND Reg_Code.Currency='CHF' 
 	          GROUP BY Reg_Code.Code
-	           ';
+	           ";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
     $stmt->bind_result($cid, $code_code, $number_w);
@@ -429,6 +434,7 @@ echo '
                         Voulez-vous vraiement supprimer le code '.$code_code.'?
                     </span>
                     <form  action="saveCode.php" method="post" >
+                        <input   type="hidden"  name="cur" value="CHF" />
                         <input   type="hidden"  name="o" value="'.$origin.'" />
                         <input   type="hidden"  name="id" value="'.$id.'" />
                         <input   type="hidden"  name="cid" value="'.$cid.'" />                       <span class="pop_btn_bar">
@@ -445,17 +451,17 @@ echo '
     }
     $stmt->close();	
 	echo'</table>
-	Comptes: ';if (canEdit()){echo'<a href="addWallet.php?id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
+	Comptes: ';if (canEdit()){echo'<a href="addWallet.php?cur=CHF&id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
 	<table>';
-	$query = 'SELECT address,
+	$query = "SELECT address,
 	            Reg_Code.Code,
 	            Validated,
 	            valid_date,
 	            link_date
 	          FROM Reg_Wallet
 	          LEFT OUTER JOIN Reg_Code ON CodeId=Reg_Code.Id
-	          WHERE Reg_Wallet.PersonId=? 
-	           ';
+	          WHERE Reg_Wallet.PersonId=? AND Reg_Wallet.Currency='CHF' 
+	           ";
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
     $stmt->bind_result($w_add,$w_code,$w_val, $w_date, $w_a_date);
@@ -477,7 +483,7 @@ echo '
                         Remettre en attente <br/>'.$w_add.'
                     </span>
                     <span class="pop_btn_bar">
-                       <a href="resetlockWallet.php?id='.$id.'&add='.$w_add.'&o='.$origin.'" class="buttonlt">Reset</a>
+                       <a href="resetlockWallet.php?cur=CHF&id='.$id.'&add='.$w_add.'&o='.$origin.'" class="buttonlt">Reset</a>
                     </span>
                     <span class="pop_content">
                        &nbsp;<br/>
@@ -551,7 +557,7 @@ echo '
                         Refuser la demande de débloquage<br/>
                     </span>
                     <span class="pop_btn_bar">
-                       <a href="lockWallet.php?id='.$id.'&add='.$w_add.'&o='.$origin.'" class="buttonlt">Rejeter</a>
+                       <a href="lockWallet.php?cur=CHF&id='.$id.'&add='.$w_add.'&o='.$origin.'" class="buttonlt">Rejeter</a>
                     </span>
                     <span class="pop_content">
                        &nbsp;<br/>
@@ -572,6 +578,197 @@ echo '
 	
 	
 	echo'</span>';
+	
+	
+	
+	
+	/* Code et comptes _ eur*/
+	
+	echo'
+	<span class="full">
+	<h3> Code et comptes - EUR </h3>
+	Code: ';if (canEdit()){echo'<a href="addCode.php?cur=EUR&id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
+	<table>';
+	$query = "SELECT Reg_Code.Id,
+	            Reg_Code.Code,
+	            count(Reg_Wallet.CodeId)
+	          FROM Reg_Code
+	           LEFT OUTER JOIN Reg_Wallet ON Reg_Wallet.CodeId=Reg_Code.Id
+	          WHERE Reg_Code.PersonId=? 
+	           AND Reg_Code.Currency='EUR'
+	          GROUP BY Reg_Code.Code
+	           ";
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i",$id);
+    $stmt->bind_result($cid, $code_code, $number_w);
+    $stmt->execute();
+    while ($stmt->fetch()){ 
+        echo'<tr><td>'.$code_code.'<form target="_blank"  id="form'.$cid.'" action="pdf_eur.php" method="post" style="display:inline;">
+          <input   type="hidden"  name="code" value="'.$code_code.'" />
+          <input class="buttonlt"  type="submit" value="PDF" />
+        </form></td>';
+          if ($number_w==0){
+            echo '<td><a class="buttonlt" onClick="document.getElementById(\'pop_eur'.$cid.'\').classList.toggle(\'pop_hidden\');">X</a></td>
+            
+            <span id="pop_eur'.$cid.'" class="glass pop_hidden">
+                <span class="popup">
+                    <span class="pop_title">
+                        Confirmation
+                    </span>
+                    <span class="pop_content">
+                        Voulez-vous vraiement supprimer le code '.$code_code.'?
+                    </span>
+                    <form  action="saveCode.php" method="post" >
+                        <input   type="hidden"  name="cur" value="EUR" />
+                        <input   type="hidden"  name="o" value="'.$origin.'" />
+                        <input   type="hidden"  name="id" value="'.$id.'" />
+                        <input   type="hidden"  name="cid" value="'.$cid.'" />                       <span class="pop_btn_bar">
+                        <input class="button"  type="submit" value="Supprimer" />
+                        <a class="button" onClick="document.getElementById(\'pop_eur'.$cid.'\').classList.toggle(\'pop_hidden\');">Conserver</a>
+                        </span>
+                    </form>
+                </span>
+            </span>
+            
+            ';
+          }
+          echo'</tr>';
+    }
+    $stmt->close();	
+	echo'</table>
+	Comptes: ';if (canEdit()){echo'<a href="addWallet.php?cur=EUR&id='.$id.'&o='.$origin.'" class="buttonlt" >Ajouter</a>';} echo'<br>
+	<table>';
+	$query = "SELECT address,
+	            Reg_Code.Code,
+	            Validated,
+	            valid_date,
+	            link_date
+	          FROM Reg_Wallet
+	          LEFT OUTER JOIN Reg_Code ON CodeId=Reg_Code.Id
+	          WHERE Reg_Wallet.PersonId=? AND Reg_Wallet.Currency='EUR'
+	           ";
+	$stmt = $mysqli->prepare($query);
+	$stmt->bind_param("i",$id);
+    $stmt->bind_result($w_add,$w_code,$w_val, $w_date, $w_a_date);
+    $stmt->execute();
+   echo'<tr><td>Address</td><td>Code</td><td>Date création</td><td>Date validation</td><td>Statut</td></tr>';
+    $index_cmpt=0;
+    while ($stmt->fetch()){ 
+        echo'<tr><td>
+        <input type="text" readonly="readonly" value="'.$w_add.'" style="width:100px"/> 
+        </td><td>'.substr ($w_code,0,7).'...</td><td>'.substr($w_a_date,0,10).'</td><td>'.$w_date.'</td><td>';
+        
+        if ($w_val==-1){
+            echo 'rejeté';
+             echo'
+            
+              <span id="popAct_eur_rej'.$index_cmpt.'" class="glass pop_hidden">
+                <span class="popup">
+                    <span class="pop_title">
+                        Remettre en attente <br/>'.$w_add.'
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a href="resetlockWallet.php?cur=EUR&id='.$id.'&add='.$w_add.'&o='.$origin.'" class="buttonlt">Reset</a>
+                    </span>
+                    <span class="pop_content">
+                       &nbsp;<br/>
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a onclick="document.getElementById(\'popAct_eur_rej'.$index_cmpt.'\').classList.toggle(\'pop_hidden\')" class="buttonlt">Annuler</a>
+                    </span>
+                </span>
+            </span>
+            
+            <a  onclick="document.getElementById(\'popAct_eur_rej'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">&#x21B6;</a>';
+            
+        } else if ($w_val==1){
+            echo 'validé';
+             echo'
+            
+              <span id="popAct_eur_acc'.$index_cmpt.'" class="glass pop_hidden">
+                <span class="popup">
+                    <span class="pop_title">
+                       Bloquer le compte <br/>'.$w_add.'
+                    </span>
+                    <span class="pop_btn_bar">
+                    <a onClick="window.open(\'lock_eur.php?id='.$id.'&add='.$w_add.'\'); document.getElementById(\'popAct_eur_acc'.$index_cmpt.'\').style.display=\'None\';document.getElementById(\'popAct_eur_acc'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">Bloquer dans le Bureau</a>
+             
+                    </span>
+                    <span class="pop_content">
+                       &nbsp;<br/>
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a onclick="document.getElementById(\'popAct_eur_acc'.$index_cmpt.'\').classList.toggle(\'pop_hidden\')" class="buttonlt">Annuler</a>
+                    </span>
+                </span>
+            </span>
+            
+           <a  onclick="document.getElementById(\'popAct_eur_acc'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">&#x21B6;</a>';
+       
+            
+        } else {
+            echo ' 
+             <span id="popAct_eur'.$index_cmpt.'" class="glass pop_hidden">
+                <span class="popup">
+                    <span class="pop_title">
+                        Demande de débloquage d\'un compte <br/>'.$w_add.'
+                    </span>
+                    <span class="pop_content">
+                        Accepter la demande: <br/>';
+                  
+              if($type==1) {
+                 echo'Pour un compte de type PROFESSIONEL <br/>
+                 Choix des limite Lemanex: 
+                       <select id="limit_type_eur'.$index_cmpt.'">
+                        <option value="0">Compte additionel: [0,3000]LEM-EUR</option>
+                        <option value="1">Categorie 1 - [-1000, 3000]LEM-EUR</option>
+                        <option value="2">Categorie 2 - [-5000, 15000]LEM-EUR</option>
+                        <option value="3">Categorie 3 - [-10000, 30000]LEM-EUR</option>
+                        <option value="4">Categorie 4 - [-20000, 60000]LEM-EUR</option>
+                       </select><br/>
+                       cette action va débloquer le compte, définir les limites Lemanex et envoyer le mail de confirmation';
+              
+              }  else {
+                 echo' Pour un compte de type INDIVIDUEL <br/>cette action va débloquer le compte, mettre les limites Lemanex à  <select id="limit_type'.$index_cmpt.'" >
+                        <option value="0">[0,3000]LEM-EUR</option> </select> et envoyer le mail de confirmation';
+              }       
+                    
+              echo '</span>
+                    <span class="pop_btn_bar">
+                        <a onClick="window.open(\'unlock_eur.php?id='.$id.'&type='.$type.'&add='.$w_add.'&cat=\'+document.getElementById(\'limit_type_eur'.$index_cmpt.'\').value); document.getElementById(\'btnAct_eur'.$index_cmpt.'\').style.display=\'None\';document.getElementById(\'popAct_eur'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">Débloquer dans le Bureau</a>
+                   
+                    </span>
+                    <span class="pop_content" >
+                        Refuser la demande de débloquage<br/>
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a href="lockWallet.php?cur=EUR&id='.$id.'&add='.$w_add.'&o='.$origin.'" class="buttonlt">Rejeter</a>
+                    </span>
+                    <span class="pop_content">
+                       &nbsp;<br/>
+                    </span>
+                    <span class="pop_btn_bar">
+                       <a onclick="document.getElementById(\'popAct_eur'.$index_cmpt.'\').classList.toggle(\'pop_hidden\')" class="buttonlt">Annuler</a>
+                    </span>
+                </span>
+            </span>
+            
+            <a id="btnAct_eur'.$index_cmpt.'" onclick="document.getElementById(\'popAct_eur'.$index_cmpt.'\').classList.toggle(\'pop_hidden\');" class="buttonlt">Action</a>';
+        }
+        echo'</td></tr>';
+        $index_cmpt++;
+    }
+    $stmt->close();	
+	echo'</table>';
+	
+	
+	echo'</span>';
+	
+	/* Code et comptes _ eur*/
+	
+	
+	
+	
 	
 	
 	

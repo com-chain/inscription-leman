@@ -9,6 +9,7 @@
   include 'connectionFactory.php';
   $mysqli= ConnectionFactory::GetConnection();	
   
+  $curr=$_POST['cur'];
   $pid=$_POST['id'];
   $origin=$_POST['o'];
   $ct=$_POST['ct'];
@@ -41,21 +42,21 @@
     $stmt->fetch();
     $stmt->close();
     if ($conflictingid>0 || strlen($code)!=32){
-        header('Location: ./addCode.php?id='.$pid.'&code='.$code.'&o='.$origin);
+        header('Location: ./addCode.php?cur='.$curr.'&id='.$pid.'&code='.$code.'&o='.$origin);
         exit();
     }
     
     
-   $query = 'INSERT INTO  Reg_Code (PersonId,Code) VALUES (?,?)';
+   $query = 'INSERT INTO  Reg_Code (PersonId,Code,Currency) VALUES (?,?,?)';
 	          
 	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("is",$pid,$code);
+	$stmt->bind_param("iss",$pid,$code,$curr);
     $stmt->execute();
     $stmt->close();	
   
   }  else {
     if ($lc<0){
-        header('Location: ./addCode.php?id='.$pid.'&code='.$lc.'&o='.$origin);
+        header('Location: ./addCode.php?cur='.$curr.'&id='.$pid.'&code='.$lc.'&o='.$origin);
         exit();
     }
     

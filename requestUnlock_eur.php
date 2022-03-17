@@ -3,8 +3,8 @@ include 'connectionFactory.php';
 $mysqli= ConnectionFactory::GetConnection();
 header('Access-Control-Allow-Origin: *');
 
-$curr='CHF';
-    
+$curr='EUR';
+
 if (isset($_POST['address'])){
 
     $addr = strtolower(preg_replace("/[^a-zA-Z0-9]+/", "", $_POST['address']));
@@ -41,7 +41,7 @@ if (isset($_POST['address'])){
     $code='';
     $codeId='';
     $url = "https://node-001.cchosting.org/specific/MLGetCode.php";
-            $data = array('server' => 'Monnaie-Leman', 'addresses'=>$addr);
+            $data = array('server' => 'Leman-EU', 'addresses'=>$addr);
             $options = array(
             'http' => array(
                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
@@ -100,7 +100,7 @@ if (isset($_POST['address'])){
         $stmt->execute();
         $stmt->close();	
     } 
- }    
+ }   
      
     
              

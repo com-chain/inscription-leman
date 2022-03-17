@@ -5,7 +5,8 @@
         header('Location: ./consult.php');
         exit();
     }
-    
+     
+    $curr=$_POST['cur'];
     $pid=$_POST['id'];
     $origin=$_POST['o'];
     $validated=0;
@@ -16,7 +17,7 @@
     // Check format
     $addr = strtolower(preg_replace("/[^a-zA-Z0-9]+/", "", $_POST['wallet']));
     if (strlen($addr) != 42) {
-        header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=1&o='.$origin);
+        header('Location: ./addWallet.php?cur='.$curr.'&id='.$pid.'&wallet='.$_POST['wallet'].'&error=1&o='.$origin);
         exit();
     }
 
@@ -38,7 +39,7 @@
     $stmt->fetch();
     $stmt->close();
     if ($number>0){
-        header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=2&o='.$origin);
+        header('Location: ./addWallet.php?cur='.$curr.'&id='.$pid.'&wallet='.$_POST['wallet'].'&error=2&o='.$origin);
         exit();
     } else {
         $query = 'DELETE FROM Reg_Wallet
@@ -57,9 +58,15 @@
     // get code
     $code='';
     $codeId='';
+   
     $url = "https://node-001.cchosting.org/specific/MLGetCode.php";
-            $data = array('server' => 'Monnaie-Leman', 'addresses'=>$addr);
-            $options = array(
+    $data = array('server' => 'Monnaie-Leman', 'addresses'=>$addr);
+    if ($curr=='EUR') {
+        $data = array('server' => 'Leman-EU', 'addresses'=>$addr);
+    }
+    
+    
+    $options = array(
             'http' => array(
                 'header'  => "Content-type: application/x-www-form-urlencoded\r\n",
                 'method'  => 'POST',
@@ -73,13 +80,13 @@
         $code = $res->$addr;
     } else {
         ////  insert without code 
-        $query = 'INSERT INTO  Reg_Wallet (address, PersonId, Validated) VALUES (?,?,?)';       
+        $query = 'INSERT INTO  Reg_Wallet (address, PersonId, Validated, Currency) VALUES (?,?,?,?)';       
 	    $stmt = $mysqli->prepare($query);
-	    $stmt->bind_param("sii",$addr,$pid,$validated);
+	    $stmt->bind_param("siis",$addr,$pid,$validated,$curr);
         $stmt->execute();
         $stmt->close();	
         header('Location: ./consultPerson.php?id='.$pid);
-        //header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=3');
+        //header('Location: ./addWallet.php?cur='$curr.'&id='.$pid.'&wallet='.$_POST['wallet'].'&error=3');
         exit();
     }
     
@@ -97,16 +104,16 @@
         $stmt->close();
         if ($conflictingid>0  ){
             if ($conflictingid !=$pid) {
-                header('Location: ./addWallet.php?id='.$pid.'&wallet='.$_POST['wallet'].'&error=4&cid='.$codeId.'&o='.$origin);
+                header('Location: ./addWallet.php?cur='.$curr.'&id='.$pid.'&wallet='.$_POST['wallet'].'&error=4&cid='.$codeId.'&o='.$origin);
                 exit();
             } else {
                 // code ok
             }
         } else {
             // insert code
-            $query = 'INSERT INTO  Reg_Code (PersonId,Code) VALUES (?,?)';  
+            $query = 'INSERT INTO  Reg_Code (PersonId,Code, Currency) VALUES (?,?,?)';  
 	        $stmt = $mysqli->prepare($query);
-	        $stmt->bind_param("is",$pid,$code);
+	        $stmt->bind_param("iss",$pid,$code,$curr);
             $stmt->execute();
             $codeId = $stmt->insert_id;
             $stmt->close();	
@@ -114,9 +121,9 @@
     }
     
     // insert address
-    $query = 'INSERT INTO  Reg_Wallet (address, PersonId, CodeId, Validated) VALUES (?,?,?,?)';       
+    $query = 'INSERT INTO  Reg_Wallet (address, PersonId, CodeId, Validated, Currency) VALUES (?,?,?,?,?)';       
 	$stmt = $mysqli->prepare($query);
-	$stmt->bind_param("siii",$addr,$pid,$codeId,$validated);
+	$stmt->bind_param("siiis",$addr,$pid,$codeId,$validated,$curr);
     $stmt->execute();
     $stmt->close();	
 

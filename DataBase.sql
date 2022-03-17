@@ -274,7 +274,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON myDbName.* TO 'myDbUser';
 
 CREATE TABLE  Reg_Code (
   Id INT NOT NULL  AUTO_INCREMENT PRIMARY KEY ,
-  PersonId INT  NULL,
+   FROM  INT  NULL,
   Code VARCHAR( 32 ) NOT NULL,
   CONSTRAINT R_code_fk FOREIGN KEY (PersonId) REFERENCES Reg_Person(Id)
 );
@@ -318,5 +318,21 @@ create view lastStatusChange2 as select max(Id) as Id, PersonId from Reg_StatusH
 
 -----------------------
 ALTER TABLE Reg_SiteUser ADD COLUMN Short VARCHAR(255);
+-----------------------------
+
+
+
+
+ alter table Reg_Code add column   Currency VARCHAR(3) NULL DEFAULT 'CHF';
+ alter table Reg_Wallet add column   Currency VARCHAR(3) NULL DEFAULT 'CHF';
+ 
+ ----------------------------
+ ALTER TABLE Reg_Person ADD COLUMN CurrencyReq  VARCHAR( 255 ) NULL;
+ UPDATE TABLE Reg_Person INNER JOIN Reg_Codeset ON Reg_Person.Id = Reg_Codeset.PersonId SET CurrencyReq='CHF';
+ UPDATE TABLE Reg_Person INNER JOIN Reg_Wallet ON Reg_Person.Id = Reg_Wallet.PersonId SET CurrencyReq='CHF';
+  
+ 
+
+
 
 

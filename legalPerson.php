@@ -13,9 +13,16 @@ if (isset($_GET['adh']) && $_GET['adh']==1){
 
 makeHead($type_form);
 
+$payload = file_get_contents('https://www.ecb.europa.eu/stats/policy_and_exchange_rates/euro_reference_exchange_rates/html/eurofxref-graph-chf.en.html');  
+preg_match_all("/rateLatest='([0-9.]*)'/", $payload, $out, PREG_PATTERN_ORDER);
+$rate=$out[1][0];
+preg_match_all("/rateLatestInverse='([0-9.]*)'/", $payload, $out, PREG_PATTERN_ORDER);
+$rateInverse=$out[1][0];
+
 echo'  
 
   <script>
+    var type_form ='. $type_form.';
   
   
     window.onload = function() {
@@ -25,8 +32,8 @@ echo'
          }
     }
     
-     function setTypeForm(type_form){
-        if (type_form==0){
+     function setTypeForm(type_f){
+        if (type_f==0){
              document.getElementById("title").innerHTML="Adhésion à Monnaie Léman";
              document.getElementById("tot_step").innerHTML=2;
              document.getElementById("adh_next").style.display="None";
@@ -36,6 +43,7 @@ echo'
              document.getElementById("fld_att").style.display="inline-block";
              document.getElementById("att").checked = false;
              document.getElementById("lb_ad_ass").innerHTML="Confirmation de votre demande d’adhésion?*";
+             document.getElementById("curr_sel").style.display="None";
              
              
         } else {
@@ -46,6 +54,7 @@ echo'
              document.getElementById("fld_ce").style.display="None";
              document.getElementById("fld_att").style.display="None";
              document.getElementById("lb_ad_ass").innerHTML="Voulez-vous adhérer à l\'association Monnaie Léman?*";
+             document.getElementById("curr_sel").style.display="inline-block";
              
         }  
     }
@@ -76,18 +85,35 @@ echo'
         }
     }
     
+    function adjustCurrency(){
+       var country = document.forms["form"]["country"].value;
+       if (country=="France"){
+           document.getElementById("chx_curr_eur").checked = true;
+       } else if (country=="Suisse"){
+           document.getElementById("chx_curr_chf").checked = true;
+       } else {
+           document.getElementById("chx_curr_chf").checked = true;
+           document.getElementById("chx_curr_chf").checked = false;
+       }
+    }
+    
+    
     function computeCotisation(){
        var country = document.forms["form"]["country"].value;
        var etp  = parseInt(document.forms["form"]["ETP"].value);
        
+       var currency = document.forms["form"]["chx_curr"].value;
+       
        var amount_ch=0;
        var amount_fr=0;
-       var amount_fr_lem=0;';
+       var amount_ch_changed=0;
+       var amount_fr_changed=0;';
        
     foreach ($cotisation_e_ch as $etp => $value){
        echo'
        if (etp>='.$etp.'){
           amount_ch = '.$value.';
+          amount_fr_changed = '.eur_from_chf($value, $rateInverse).';
        }
        ';
        
@@ -96,30 +122,39 @@ echo'
        echo'
        if (etp>='.$etp.'){
           amount_fr = '.$value.';
+          amount_ch_changed = '.chf_from_eur($value, $rate).';
        }
        ';
        
     }
-    foreach ($cotisation_e_fr_lem as $etp => $value){
        echo'
-       if (etp>='.$etp.'){
-          amount_fr_lem = '.$value.';
-       }
-       '; 
-    }
-       
-       echo'
-       
        if (country=="France"){
             document.getElementById("cot_amount").innerHTML="EUR&nbsp;"+amount_fr;
-            document.getElementById("cot_amount_2").innerHTML=amount_fr;//+ " (taux moyen du jour)";
+            document.getElementById("cot_amount_3").innerHTML=amount_ch_changed;
+            document.getElementById("cot_amount_5").innerHTML=amount_fr;
             document.getElementById("coo_ch").style.display="None";
             document.getElementById("coo_fr").style.display="inline-block";
-       } else {
+            
+            if (currency == "CHF") {
+                document.getElementById("ad_fr_ep").style.display="None";
+                document.getElementById("ad_ch_ep").style.display="inline-block";
+            } else {
+                document.getElementById("ad_ch_ep").style.display="None";
+                document.getElementById("ad_fr_ep").style.display="inline-block";
+            }
+       } else {   // Suisse
             document.getElementById("cot_amount").innerHTML="CHF&nbsp;"+amount_ch;
-            document.getElementById("cot_amount_2").innerHTML=amount_ch;
+            document.getElementById("cot_amount_3").innerHTML=amount_ch;
+            document.getElementById("cot_amount_5").innerHTML=amount_fr_changed;
             document.getElementById("coo_fr").style.display="None";
             document.getElementById("coo_ch").style.display="inline-block";
+            if (currency == "EUR") {
+                document.getElementById("ad_ch_ep").style.display="None";
+                document.getElementById("ad_fr_ep").style.display="inline-block";
+            } else {
+                document.getElementById("ad_fr_ep").style.display="None";
+                document.getElementById("ad_ch_ep").style.display="inline-block";
+            }
        } 
     }
     
@@ -155,6 +190,15 @@ echo'
            valid=false;
        } else {
             document.getElementById("lb_mailconf").classList.remove("missing");
+       }
+       
+        if (type_form==1) {
+           if (document.forms["form"]["chx_curr"].value != ""){
+               document.getElementById("lb_chx_curr").classList.remove("missing");
+           } else {
+              document.getElementById("lb_chx_curr").classList.add("missing");
+              valid=false;
+           }
        }
        
        
@@ -556,8 +600,8 @@ echo '
 	 
 	 <span class="fitem">
 	   <span class="label" id="lb_country">Pays*</span>
-	   <select  class="inputText" name="country" id ="country" onChange="computeCotisation();" >
-	   '.$country.'
+	   <select  class="inputText" name="country" id ="country" onChange="adjustCurrency();computeCotisation();" >
+	   '.$restricted_country.'
 	   </select><br/>
 	 </span>
 	 
@@ -590,10 +634,27 @@ echo '
 	     <span class="fitem">
 	       <span class="label" id="lb_p_country">Pays*</span>
 	       <select  class="inputText" name="p_country" id ="p_country" >
-	       '.$country.'
+	       '.$restricted_country.'
 	       </select><br/>
 	     </span>
 	 </span>
+	 
+	 	 
+    <span id="curr_sel">
+        <h3> J\'ouvre </h3>
+          <span class="label" id="lb_chx_curr">un compte*</span>
+	      <span class="rb3">
+            <input type="radio" id="chx_curr_chf" name="chx_curr" value="CHF"  onchange="computeCotisation();"> LEM-CHF 
+	      </span>
+	      <span class="rb3">
+            <input type="radio" id="chx_curr_eur" name="chx_curr" value="EUR"  onchange="computeCotisation();"> LEM-EUR
+	      </span><br/>
+	      <span class="label"> deux comptes</span>
+	      <span class="rb3">
+            <input type="radio" id="chx_curr_both" name="chx_curr" value="BOTH"  onchange="computeCotisation();"> LEM-CHF et LEM-EUR
+	      </span>
+    </span> <br/>
+
 	 <a class="button" onclick="if (validateSectionInfo()){showSection(\'sect_add\');}">Suivant</a>
 </div>
 <div id="sect_add" style="display:none" >
@@ -612,7 +673,7 @@ Avec ce compte, vous bénéficiez:<ul>
 	  Les coordonnées bancaires de Monnaie Léman:
  </span>
 	     <span class="full" id="coo_ch">
-Monnaie Léman Suisse - rue des Savoises 15 - 1205 Genève<br/>
+Monnaie Léman Suisse - Ch. du 23-Août 1 - 1205 Genève<br/>
 Banque Alternative Suisse - IBAN: CH22 0839 0034 3841 1010 0 - BIC: ABSOCH22 <br/>
 	  </span>
 	  <span class="full" id="coo_fr">
@@ -620,11 +681,24 @@ Monnaie Léman France - 11A avenue Napoléon III - 74160 Saint-Julien-en-Genevoi
 Société financière de la Nef <br/>
 IBAN: FR76 2157 0000 0120 0017 0036 226 - BIC: STFEFR21XXX<br/>
 	  </span><br/>
-	  <span class="labelWide">
-Vous pouvez régler votre cotisation en lémans électroniques (e-LEM) sur le compte de l’association (clé publique 0x15a18329381cdf1919d51d05834920585066646f): <span class="strong">e-LEM <span  id="cot_amount_2">50(taux moyen du jour)</span></span>.
+<span id="ad_fr_ep" class="labelWide" >		  
+Vous pouvez régler votre cotisation en lémans électroniques (eLEM-EUR) sur le compte de l’association (clé publique 0x7018f1347ab91b81e0846c134f97c17817fc27da): <span class="strong">eLEM-EUR <span id="cot_amount_5" >50</span></span>.
+<br/><br/>
 
-	  
-	 </span>';
+Vous recevrez une facture dans les prochains jours.
+
+<br/>
+<br/>
+</span>	 
+
+<span id="ad_ch_ep" class="labelWide" >	
+Vous pouvez régler votre cotisation en lémans électroniques sur le compte de l’association (clé publique 0x15a18329381cdf1919d51d05834920585066646): <span class="strong">eLEM-CHF <span id="cot_amount_3" >50</span></span>.
+<br/><br/>
+
+Vous recevrez une facture dans les prochains jours.
+<br/>
+<br/>
+</span> ';
 	 
 
 
@@ -667,8 +741,8 @@ if ($type_form==0) {
 
 echo '
 	 
+	  <span class="labelWide" id="lb_ad_ass">Voulez vous adhérer à l\'association Monnaie-Léman?*</span>
 	  <span class="fitem">
-	   <span class="labelWide" id="lb_ad_ass">Voulez vous adhérer à l\'association Monnaie-Léman?*</span>
 	   <select  class="inputText" name="ad_ass" id ="ad_ass" >
 	    <option value =""></option>
 	    <option value ="Oui">Oui</option>
@@ -677,13 +751,13 @@ echo '
 	 </span>
 	 
 	  <span class="fitem">
-	   <input class="inputCb"  type="checkbox"  id="data" name="data" value="1" required="required"/>
-	   <span class="labelCb" id="lb_data">En remplissant ce formulaire, vous acceptez que l\'on utilise vos données pour vous contacter, ou pour toutes autres utilisations permettant de développer le Léman de façon anonyme sans les communiquer à des tiers.*</span><br/>
+	   <input class="inputCb" style="margin-left: 20px !important;"  type="checkbox"  id="data" name="data" value="1" required="required"/>
+	   <span class="labelCb"  style="width: calc(100% - 80px);"  id="lb_data">En remplissant ce formulaire, vous acceptez que l\'on utilise vos données pour vous contacter, ou pour toutes autres utilisations permettant de développer le Léman de façon anonyme sans les communiquer à des tiers.*</span><br/>
 	 </span>
 	 
 	 <span class="fitem">
-	   <input class="inputCb"  type="checkbox" id="news" name="news" value="1" />
-	   <span  class="labelCb">En cochant cette case, je consens à recevoir la newsletter de l’association. </span><br/>
+	   <input class="inputCb"  style="margin-left: 20px !important;"  type="checkbox" id="news" name="news" value="1" />
+	   <span  class="labelCb"  style="width: calc(100% - 80px);" >En cochant cette case, je consens à recevoir la newsletter de l’association. </span><br/>
 	 </span>
 	 
  <span class="fitem" id="fld_ce" style="display:None;">
@@ -1334,7 +1408,7 @@ foreach($ids as $img_id){
     }';
 }
 echo'
-    setTypeForm('.$type_form.');';
+    setTypeForm(type_form);';
     if ($type_form==1){
       echo'
     document.getElementById("cr_acc").value=1;';

@@ -15,6 +15,7 @@ include 'checkUser.php';
 <?php       
 
 echo'
+           <span style="font-weight:600;">Monnaie Léman - CHF </span><br/>
            <span style="font-weight:600;">Compte &agrave; d&eacute;bloquer:</span><br/>
            <input id="id" type="hidden" value="'.$_GET['id'].'"/>
            Adresse: <input id="add" type="text" readonly="readonly" value="'.$_GET['add'].'"/> <br/>';
@@ -89,7 +90,7 @@ echo'
      
 var sendData = function() {  
     var xobj = new XMLHttpRequest();
-    xobj.open('GET', 'unlockWallet.php?id='+document.getElementById("id").value+'&add='+document.getElementById("add").value, true); 
+    xobj.open('GET', 'unlockWallet.php?cur=CHF&id='+document.getElementById("id").value+'&add='+document.getElementById("add").value, true); 
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             alert('Compte débloqué');

@@ -21,6 +21,7 @@ echo'
 
 
 $id=$_GET['id'];
+$curr=$_GET['cur'];
 $origin=$_GET['o'];
 $wallet ='';
 if (isset($_GET['wallet'])){
@@ -61,7 +62,7 @@ echo '
   
     <a class="button" href="consultPerson.php?id='.$id.'&o='.$origin.'">Annuler</a><br/>
   
-    <h2> Ajouter manuelement un compte </h2>';
+    <h2> Ajouter manuelement un compte en LEM - '.$curr.'</h2>';
     
     if ($typeId==1){
         echo '<h3> Pour l\'Entreprise '.$Name.'</h3></br>';
@@ -103,6 +104,8 @@ echo '
                 echo '<a  class="button" target="_blank" href="consultPerson.php?id='.$pid.'">Consulter la fiche</a>';
             }
             $stmt->close();
+        }else  if ($_GET['error']==5){
+            echo '<span class="widelabel missing" >L\'adresse fournie est associée à un Code liée à l\'autre monnaie!</span> <br/>';
         }
      	
         echo '<br/><br/><br/><br/>';
@@ -110,6 +113,7 @@ echo '
     
     
     echo '<form  action="saveWallet.php" method="post" >
+          <input   type="hidden"  name="cur" value="'.$curr.'" />
           <input   type="hidden"  name="id" value="'.$id.'" />
           <input   type="hidden"  name="o" value="'.$origin.'" />
           <span class="label" >Address du compte à ajouter:</span>

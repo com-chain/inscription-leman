@@ -3,10 +3,17 @@ require('fpdf/fpdf.php');
 include 'str.php';
 
 function getPDF($code, $mysqli, $local) {
+
+
     $res = validMember($mysqli, $code);
     if ($res['Valid']!=True){
         echo "Hello!";
         exit;
+    }
+    
+    $signature_handler = new CurrencySignatureHandler("Monnaie-Leman", "myPathToPrivateKeyPemFile", "resources/wide-logo_CHF.png");
+    if ($res['Curr']=="EUR") {
+        $signature_handler = new CurrencySignatureHandler("Leman-EU", "file://../id_rsa_eu.pem", "resources/wide-logo_EUR.png");
     }
 
     $do_output_file = $local;
@@ -14,6 +21,15 @@ function getPDF($code, $mysqli, $local) {
 
     class PDF extends FPDF
     {
+    
+    public string $logo_path;
+    
+    public function __construct(string $logo_path) {
+        
+        parent::__construct();
+        $this->logo_path = $logo_path;
+    }
+    
     function Font(){
        // $this->AddFont('HelveticaLt','','/HelveticaLt.php');
     }
@@ -22,11 +38,11 @@ function getPDF($code, $mysqli, $local) {
     function Header()
     {
         // Logo
-        $this->Image('resources/wide-logo.png',10,6,50);
+        $this->Image($this->logo_path,10,6,50);
         // Police Arial gras 15
         $this->SetFont('Arial','B',14);
         // Décalage à droite
-       // $this->Cell(73);
+        // $this->Cell(73);
         // Titre
         $this->SetXY (15,25);
         $this->Cell(0,10,utf8_decode('Léman électronique: code d\'autorisation personnel'),0,0,'C');
@@ -119,7 +135,7 @@ function getPDF($code, $mysqli, $local) {
     }
 
     // Instanciation de la classe dérivée
-    $pdf = new PDF();
+    $pdf = new PDF($signature_handler->getLogoPath());
     $pdf->Font();
     $pdf->SetMargins(15,0);
     $pdf->AliasNbPages();
@@ -147,7 +163,7 @@ function getPDF($code, $mysqli, $local) {
 
 
     $pdf->LigneVide();
-    $pdf->AjoutCadreParagraphe(getStr($res['code']));
+    $pdf->AjoutCadreParagraphe($signature_handler->getStr($res['code']));
 
     $pdf->AjoutText("Les personnes physiques (particuliers) et les personnes morales (entreprises, associations y c. raisons individuelles)
 reçoivent des codes d'autorisation distincts. Ce code d'autorisation vous ");
@@ -174,7 +190,7 @@ reçoivent des codes d'autorisation distincts. Ce code d'autorisation vous ");
     $pdf->AjoutText("1.    Commencer la procédure d'autorisation sur un ordinateur à la page ");
 
     $pdf->SetMargins(26,0);
-    $pdf->AjoutLien('https://wallet.monnaie-leman.org/','https://wallet.monnaie-leman.org/index.html?code='.getStr($res['code']));
+    $pdf->AjoutLien('https://wallet.monnaie-leman.org/','https://wallet.monnaie-leman.org/index.html?code='.$signature_handler->getStr($res['code']));
     $pdf->AjoutText(" (2ème icône avec le \"+\").");
 
     $pdf->SetMargins(20,0,15);

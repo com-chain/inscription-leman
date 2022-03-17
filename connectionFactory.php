@@ -20,6 +20,7 @@ function validMember($mysqli, $Code) {
         $stmt = $mysqli->prepare("
         SELECT 
             Reg_Code.PersonId,
+            Reg_Code.Currency,
             RecordTypeId,
             Reg_Legal.Name,
             Reg_Legal.Contact,
@@ -34,7 +35,7 @@ function validMember($mysqli, $Code) {
         WHERE Code=?");
         
         $stmt->bind_param("s", $Code);
-        $stmt->bind_result($id, $type,$company,$ct_name, $ct_surname,$surname,$lastname,$res_code);
+        $stmt->bind_result($id, $currency, $type,$company,$ct_name, $ct_surname,$surname,$lastname,$res_code);
         $stmt->execute();
         $result = array( "Valid"=>False);
         while ($stmt->fetch()){
@@ -48,7 +49,7 @@ function validMember($mysqli, $Code) {
                 $last = $lastname;
             }
         
-            $result = array("id"=>$id,"code"=>$res_code, "Valid"=>($res_code==$Code), "Name"=>$person, "FirstName"=>$first, "LastName"=>$last, "Company"=>$company, "Type"=>$type);
+            $result = array("id"=>$id,"code"=>$res_code, "Curr"=>$currency, "Valid"=>($res_code==$Code), "Name"=>$person, "FirstName"=>$first, "LastName"=>$last, "Company"=>$company, "Type"=>$type);
         }
         return $result;
 }

@@ -8,18 +8,15 @@ include 'p_head.php';
 include 'p_mail.php';
 
   
-  
-	
-
-
 // Handle the post
  if (isset($_POST['name'])){
  
  
    $AccountRequest = $_POST['cr_acc'];
- 
- 
- 
+   $CurrencyReq =  $_POST['chx_curr'];
+   if ($AccountRequest==0) {
+      $CurrencyReq = 'NONE';
+   }
  
     makeHead($AccountRequest);
     echo'  
@@ -77,15 +74,15 @@ include 'p_mail.php';
       
       $query = "INSERT INTO Reg_Person (RecordTypeId, StatusId, Email, Phone,
                                     Address, AddressComplement, NPA, City, Country,
-                                    Membership,AccountRequest, DataUsage, Newsletter,
+                                    Membership,AccountRequest, CurrencyReq, DataUsage, Newsletter,
                                     PEP, PEPRelated, FINMA, AED,
                                     CGU, Charte, Engagment,Attestation) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       $person_id = -1;
       $ok =true;
       $stmt = $mysqli->prepare($query);
       $stmt->bind_param("iissssssssiiiiiisiiii", $recordTypeId, $statusId, $email, $phone,
-              $address, $compl, $npa, $city, $country,  $membership,$AccountRequest,
+              $address, $compl, $npa, $city, $country,  $membership, $AccountRequest, $CurrencyReq,
               $dataUsge, $newsletter, $pep, $pepRelated, $finma,
               $aed,$cgu, $charte, $engagment, $attestation);
      if (! $stmt->execute()) {
@@ -194,19 +191,37 @@ include 'p_mail.php';
      }
      
      
+     $add_chf=$CurrencyReq=='CHF' || $CurrencyReq=='BOTH';
+     $ad_eur=$CurrencyReq=='EUR' || $CurrencyReq=='BOTH';
      
-       //// Code if needed
-      if ($ok && $AccountRequest==1) {
-         $code=md5($person_id.$last_name.$first_name);
-         $query = "INSERT INTO Reg_Code (PersonId,Code) VALUES (?,?)";
+     $code_chf=md5($person_id.$last_name.$first_name.'CHF');
+     $code_eur=md5($person_id.$last_name.$first_name.'EUR');
+     
+       //// Code CHF if needed
+      if ($ok && $AccountRequest==1 && $add_chf) {
+         
+         $query = "INSERT INTO Reg_Code (PersonId,Code,Currency) VALUES (?,?,'CHF')";
          $stmt = $mysqli->prepare($query);
-         $stmt->bind_param("is",$person_id,$code);
+         $stmt->bind_param("is",$person_id,$code_chf);
          if (! $stmt->execute()) {
              $ok=false;
               echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
          }
          $stmt->close();
       }
+      
+       //// Code EUR if needed
+      if ($ok && $AccountRequest==1 && $add_eur) {
+         $query = "INSERT INTO Reg_Code (PersonId,Code,Currency) VALUES (?,?,'EUR')";
+         $stmt = $mysqli->prepare($query);
+         $stmt->bind_param("is",$person_id,$code_eur);
+         if (! $stmt->execute()) {
+             $ok=false;
+              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. </h3>';
+         }
+         $stmt->close();
+      }
+     
      
      
      // audit
@@ -226,14 +241,27 @@ include 'p_mail.php';
      if ($ok){
      
          if ($AccountRequest==1)  {
+         
             // generate pdf 
             include 'pdf_builder.php';
-            getPDF($code, $mysqli, true);
-            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf', $first_name ,'https://wallet.monnaie-leman.org/index.html?code='.getStr($code), 2);
-
+            if ($add_chf) {
+                getPDF($code_chf, $mysqli, true);
+            }
+            
+            if ($add_eur){
+                getPDF($code_eur, $mysqli, true);
+            }
+            
+            if ($add_chf || $add_eur) {
+                /// TODO
+                sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code_chf.'.pdf', $first_name ,'https://wallet.monnaie-leman.org/index.html?code='.getStr($code_chf), 2);
+                sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code_eur.'.pdf', $first_name ,'https://wallet.monnaie-leman.org/index.html?code='.getStr($code_eur), 2);
+            }
+             
+        
             echo '<h3  class="center_msg"> BRAVO! VOUS AVEZ TERMINÉ LA PREMIÈRE PHASE AVEC SUCCÈS. </h3>';
             echo '<h3  class="center_msg"> DEUXIÈME PHASE: CRÉEZ VOTRE COMPTE! </h3>';
-            echo '<h3  class="center_msg"> VOUS VENEZ DE RECEVOIR PAR E-MAIL VOTRE "CODE D\'AUTORISATION". </h3>';
+            echo '<h3  class="center_msg"> VOUS VENEZ DE RECEVOIR PAR E-MAIL VOTRE/VOS "CODE D\'AUTORISATION". </h3>';
         /*
             echo ' <h3  class="center_msg"> Demande d’ouverture de compte pour PARTICULIER 
 envoyée avec succès. </h3>

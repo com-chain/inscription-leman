@@ -14,6 +14,10 @@ include 'p_mail.php';
  
    $AccountRequest = $_POST['cr_acc'];
  
+   $CurrencyReq =  $_POST['chx_curr'];
+   if ($AccountRequest==0) {
+      $CurrencyReq = 'NONE';
+   }
  
  
  
@@ -80,15 +84,15 @@ include 'p_mail.php';
       $query = "INSERT INTO Reg_Person (RecordTypeId, StatusId, Email, Phone,
                                     Address, AddressComplement, NPA, City, Country,
                                     PostalAddress,PostalAddressComplement, PostalNPA, PostalCity, PostalCountry,
-                                    Membership, AccountRequest, DataUsage, Newsletter,
+                                    Membership, AccountRequest, CurrencyReq, DataUsage, Newsletter,
                                     PEP, PEPRelated, FINMA, AED,
                                     CGU, Charte, Engagment,Attestation) 
-                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       $person_id = -1;
       $ok =true;
       $stmt = $mysqli->prepare($query);
       $stmt->bind_param("iisssssssssssssiiiiiisiiii", $recordTypeId, $statusId, $email, $phone,
-              $address, $compl_add, $npa, $city, $country,  $post_address, $post_compl_add, $post_npa, $post_city, $post_country, $membership,$AccountRequest,
+              $address, $compl_add, $npa, $city, $country,  $post_address, $post_compl_add, $post_npa, $post_city, $post_country, $membership,$AccountRequest, $CurrencyReq,
               $dataUsge, $newsletter, $pep, $pepRelated, $finma,
               $aed,$cgu, $charte, $engagment, $attestation);
      if (! $stmt->execute()) {
@@ -271,16 +275,33 @@ include 'p_mail.php';
       
     }
     
+     $add_chf=$CurrencyReq=='CHF' || $CurrencyReq=='BOTH';
+     $ad_eur=$CurrencyReq=='EUR' || $CurrencyReq=='BOTH';
+     
+     $code_chf=md5($person_id.$name.'CHF');
+     $code_eur=md5($person_id.$name.'EUR');
     
-    //// Code if needed
-      if ($ok && $AccountRequest==1) {
-         $code=md5($person_id.$name);
+     
+    //// Code CHF if needed
+     if ($ok && $AccountRequest==1 && $add_chf) {
          $query = "INSERT INTO Reg_Code (PersonId,Code) VALUES (?,?)";
          $stmt = $mysqli->prepare($query);
-         $stmt->bind_param("is",$person_id,$code);
+         $stmt->bind_param("is",$person_id,$code_chf);
          if (! $stmt->execute()) {
              $ok=false;
               echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE008)</h3>';
+         }
+         $stmt->close();
+      }
+      
+    //// Code EUR if needed
+      if ($ok && $AccountRequest==1 && $add_eur) {
+         $query = "INSERT INTO Reg_Code (PersonId,Code,Currency) VALUES (?,?,'EUR')";
+         $stmt = $mysqli->prepare($query);
+         $stmt->bind_param("is",$person_id,$code_eur);
+         if (! $stmt->execute()) {
+             $ok=false;
+              echo '<h3> Une erreur s\'est produite lors du traitement de votre demande. (EE008b) </h3>';
          }
          $stmt->close();
       }
@@ -308,9 +329,21 @@ include 'p_mail.php';
         if ($AccountRequest==1)  {
             // generate pdf 
             include 'pdf_builder.php';
-            getPDF($code, $mysqli, true);
-            sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code.'.pdf' , $name , 'https://wallet.monnaie-leman.org/index.html?code='.getStr($code), 1);
-
+             if ($add_chf) {
+                getPDF($code_chf, $mysqli, true);
+            }
+            
+            if ($add_eur){
+                getPDF($code_eur, $mysqli, true);
+            }
+            
+            if ($add_chf || $add_eur) {
+                /// TODO
+                sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code_chf.'.pdf', $name ,'https://wallet.monnaie-leman.org/index.html?code='.getStr($code_chf), 1);
+                sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code_eur.'.pdf', $name ,'https://wallet.monnaie-leman.org/index.html?code='.getStr($code_eur), 1);
+            }
+            
+            
             
             echo '<h3  class="center_msg"> BRAVO! VOUS AVEZ TERMINÉ LA PREMIÈRE PHASE AVEC SUCCÈS. </h3>';
             echo '<h3  class="center_msg"> DEUXIÈME PHASE: CRÉEZ VOTRE COMPTE! </h3>';

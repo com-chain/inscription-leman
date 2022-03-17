@@ -34,7 +34,7 @@
 	   $stmt->execute();
  	   $stmt->close();
      }  */
-     // echo $password_md5; exit();
+    #  echo $password_md5; exit();
 	 if(similar_text($password_md5, $Password, $percent)==32){
 	   $_SESSION['_UserId'] = $UserId;
 	   $_SESSION['_IsAdmin'] = $IsAdmin;

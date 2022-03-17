@@ -13,16 +13,19 @@ $cotisation_e_ch=[0=>75,2=>200,10=>400,30=>1000];
 $cotisation_e_fr=[0=>60,2=>160,10=>320,30=>800];
 
 // apply change
-$json = file_get_contents('https://api.exchangeratesapi.io/latest?symbols=CHF');
-$rates = json_decode($json);
-$eur_chf = $rates->rates->CHF;
-$eur_chf *=1.01;   //1% de frais
-
-$cotisation_i_fr_lem=round($cotisation_i_fr*$eur_chf, 2);
-$cotisation_e_fr_lem=[];
-foreach ($cotisation_e_fr as $etp => $value){
-    $cotisation_e_fr_lem[$etp] = round($value*$eur_chf, 2);
+function chf_from_eur($eur, $rate) {
+   return round($eur*$rate*1.01, 2); //1% de frais
 }
+// apply change
+function eur_from_chf($chf, $rate) {
+   return round($chf*$rate*1.01, 2); //1% de frais
+}
+
+$chf_eur = 1; //TODO get from some API
+$chf_eur *=1.01;   
+
+$cotisation_i_fr_lem=round($cotisation_i_ch*$chf_eur, 2);
+
     
    
 
@@ -74,6 +77,10 @@ echo'
 ';
 
 }
+
+$restricted_country='<option value =""></option>
+        <option value ="Suisse">Suisse</option>
+	    <option value ="France">France</option>';
 
 
 $country ='        <option value =""></option>

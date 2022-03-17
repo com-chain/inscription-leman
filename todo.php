@@ -7,11 +7,11 @@ $mysqli= ConnectionFactory::GetConnection();
 
 // Check addresses without link
 
- $query = 'SELECT Id, address
+ $query = 'SELECT Id, address, Currency
 	          FROM Reg_Wallet
 	          WHERE PersonId IS NULL and  CodeId IS NULL';
 	$stmt = $mysqli->prepare($query);
-    $stmt->bind_result($add_id, $addr);
+    $stmt->bind_result($add_id, $addr, $curr);
     $stmt->execute();
     $add_without_code =0;
     $add_without_code_l = []; 
@@ -52,22 +52,22 @@ $mysqli= ConnectionFactory::GetConnection();
     for ($index=0; $index<count($to_add_addr); $index++) {
       $code = $to_add_code[$index];
       $addr =   $to_add_addr[$index];
-      $query = 'SELECT Id, PersonId
+      $query = 'SELECT Id, PersonId, Currency
 	                      FROM Reg_Code
 	                      WHERE Code=? 
 	                       ';
 	$stmt2 = $mysqli->prepare($query);
 	$stmt2->bind_param("s",$code);
-	$stmt2->bind_result($codeId, $pid);
+	$stmt2->bind_result($codeId, $pid, $curr);
 	$stmt2->execute();
 	$stmt2->fetch();
 	$stmt2->close();
 	if (!isset($codeId ) ) {
 		// code unknow
 		// insert code without the person
-		$query = 'INSERT INTO  Reg_Code (Code) VALUES (?)';  
+		$query = 'INSERT INTO  Reg_Code (Code, Currency) VALUES (?,?)';  
 		$stmt2 = $mysqli->prepare($query);
-		$stmt2->bind_param("s",$code);
+		$stmt2->bind_param("ss",$code, $curr);
 		$stmt2->execute();
 		$codeId = $stmt2->insert_id;
 		$stmt2->close();	

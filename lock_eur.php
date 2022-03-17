@@ -15,7 +15,7 @@ include 'checkUser.php';
 <?php       
 
 echo'
-           <span style="font-weight:600;">Monnaie Léman - CHF </span><br/>
+           <span style="font-weight:600;">Monnaie Léman - EUR </span><br/>
            <span style="font-weight:600;">Compte &agrave; bloquer:</span><br/>
            <input id="id" type="hidden" value="'.$_GET['id'].'"/>
            Adresse: <input id="add" type="text" readonly="readonly" value="'.$_GET['add'].'"/> <br/>';
@@ -59,7 +59,7 @@ echo'
      
 var sendData = function() {  
     var xobj = new XMLHttpRequest();
-    xobj.open('GET', 'unlockWallet.php?cur=CHF&id='+document.getElementById("id").value+'&add='+document.getElementById("add").value+'&inv=1', true); 
+    xobj.open('GET', 'unlockWallet.php?cur=EUR&id='+document.getElementById("id").value+'&add='+document.getElementById("add").value+'&inv=1', true); 
     xobj.onreadystatechange = function () {
           if (xobj.readyState == 4 && xobj.status == "200") {
             alert('Compte Bloqué');
@@ -74,7 +74,7 @@ var sendData = function() {
 
 var openWallet= function(){
  // Cas 1 wallet stoqué
- var json_wallet = localStorage.getItem('AdminWallet');
+ var json_wallet = localStorage.getItem('AdminWalletEUR');
  if (json_wallet==undefined || json_wallet=='') {
     document.getElementById('selector').style.display="inline-block";
     
@@ -90,13 +90,13 @@ var loadWallet = function(json_wallet) {
     document.getElementById("blockie").style.backgroundImage = 'url(' + Wallet.blockies(address) +')';
     jsc3l_bcRead.getAccountType(address, function(value){
         if (value==2) {
-            localStorage.setItem('AdminWallet',json_wallet);
+            localStorage.setItem('AdminWalletEUR',json_wallet);
             document.getElementById("passwrd").style.display="inline-block";
             document.getElementById("Message").innerHTML+= "<br/>Attente du mot de passe du compte admin...";
             document.getElementById('selector').style.display="None";
         } else {
             document.getElementById("Message").innerHTML= "Le compte n'est pas un compte admin !";
-            localStorage.setItem('AdminWallet',"");
+            localStorage.setItem('AdminWalletEUR',"");
         }
     });  
 }
@@ -171,7 +171,7 @@ var lock = function() {
     // Décryptage du wallet
     try {
    
-        var local_wallet = Wallet.getWalletFromPrivKeyFile(localStorage.getItem('AdminWallet'), password);
+        var local_wallet = Wallet.getWalletFromPrivKeyFile(localStorage.getItem('AdminWalletEUR'), password);
         document.getElementById("Message").innerHTML+= "<br/>D&eacute;verrouillage du compte Admin...";
         document.getElementById("passwrd").style.display="none";   
     } catch (error) {

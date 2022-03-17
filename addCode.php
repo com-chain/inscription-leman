@@ -21,7 +21,7 @@ echo'
 
 
 $id=$_GET['id'];
-
+$curr=$_GET['cur'];
 $origin=$_GET['o'];
 $code = $_GET['code'];
 
@@ -59,7 +59,7 @@ echo '
   
     <a class="button" href="consultPerson.php?id='.$id.'&o='.$origin.'">Annuler</a><br/>
   
-    <h2> Ajouter manuelement un code </h2>';
+    <h2> Ajouter manuelement un code pour les LEM - '.$curr.'</h2>';
     
     if ($typeId==1){
         echo '<h3> Pour l\'Entreprise '.$Name.'</h3></br>';
@@ -86,6 +86,7 @@ echo '
     }
     
     echo '<form  action="saveCode.php" method="post" >
+          <input   type="hidden"  name="cur" value="'.$curr.'" />
           <input   type="hidden"  name="id" value="'.$id.'" />
           <input   type="hidden"  name="o" value="'.$origin.'" />
           <input type="radio" id="code_m" name="ct" value="Manual" checked="checked">Code existant</br>
@@ -95,8 +96,9 @@ echo '
           </span><br/>';
           
           
-    $query = 'SELECT count(*) FROM Reg_Code WHERE PersonId IS NULL';
+    $query = 'SELECT count(*) FROM Reg_Code WHERE PersonId IS NULL AND Currency=?';
     $stmt = $mysqli->prepare($query);
+    $stmt->bind_param('s',$curr);
     $stmt->bind_result($nb);
     $stmt->execute();
     $stmt->fetch();
@@ -105,8 +107,9 @@ echo '
         echo '<input type="radio" id="code_m" name="ct" value="Link">Code non lié</br>
           <span class="half" style="width:Calc(100% - 20px)">
             <span class="label" >Code:</span>';
-        $query = 'SELECT Reg_Code.Id , code, address FROM Reg_Code LEFT OUTER JOIN Reg_Wallet ON CodeId = Reg_Code.Id WHERE Reg_Code.PersonId IS NULL';
+        $query = 'SELECT Reg_Code.Id , code, address FROM Reg_Code LEFT OUTER JOIN Reg_Wallet ON CodeId = Reg_Code.Id WHERE Reg_Code.PersonId IS NULL AND Currency=?';
         $stmt = $mysqli->prepare($query);
+        $stmt->bind_param('s',$curr);
         $stmt->bind_result($codeid, $code,$add);
         $stmt->execute();
         echo ' <select  class="inputText" name="lc" >
@@ -120,9 +123,9 @@ echo '
     }  
     
     if ($typeId==1) {
-        $newcode=md5($id.$Name);     
+        $newcode=md5($id.$Name.$curr);     
     } else {
-        $newcode=md5($id.$LastName.$FirstName);
+        $newcode=md5($id.$LastName.$FirstName.$curr);
     }
      
     $query = 'SELECT count(*) FROM Reg_Code WHERE Code=?';
