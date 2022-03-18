@@ -253,9 +253,15 @@ include 'p_mail.php';
             }
             
             if ($add_chf || $add_eur) {
-                /// TODO
-                sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code_chf.'.pdf', $first_name ,'https://wallet.monnaie-leman.org/index.html?code='.getStr($code_chf), 2);
-                sendConfirmationMail($email, './Data/img_'.$person_id.'/Code_'.$code_eur.'.pdf', $first_name ,'https://wallet.monnaie-leman.org/index.html?code='.getStr($code_eur), 2);
+                sendConfirmationMail($email, 
+                                     './Data/img_'.$person_id.'/Code_'.$code_chf.'.pdf', 
+                                     './Data/img_'.$person_id.'/Code_'.$code_eur.'.pdf', 
+                                     $first_name ,
+                                     'https://wallet.monnaie-leman.org/index.html?code='.getStr($code_chf),
+                                     'https://wallet.monnaie-leman.org/index.html?code='.getStr($code_eur),
+                                      2, 
+                                      $CurrencyReq, 
+                                      $country);
             }
              
         

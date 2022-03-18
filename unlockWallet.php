@@ -26,6 +26,7 @@
         $query_data = 'SELECT 
                   Reg_Person.Email,
                   Reg_Person.RecordTypeId,
+	              Reg_Wallet.Currency,
 	              Reg_Individual.FirstName, 
 	              Reg_Individual.LastName, 
 	              
@@ -36,10 +37,11 @@
 	              FROM Reg_Person 
 	                LEFT OUTER JOIN Reg_Individual on Reg_Individual.Id=Reg_Person.Id
 	                LEFT OUTER JOIN Reg_Legal on Reg_Legal.Id=Reg_Person.Id
+	                LEFT OUTER JOIN Reg_Wallet on Reg_Wallet.PersonId=Reg_Person.Id AND address=?
 	              WHERE Reg_Person.Id = ?';            
         $stmt = $mysqli->prepare($query_data);
-	    $stmt->bind_param("i",$pid);
-        $stmt->bind_result($mail, $type, $ind_first, $ind_last, $leg_name, $leg_c_last, $leg_c_first);
+	    $stmt->bind_param("si",$add, $pid);
+        $stmt->bind_result($mail, $type, $currency, $ind_first, $ind_last, $leg_name, $leg_c_last, $leg_c_first);
         $stmt->execute();
         $stmt->fetch();
         $stmt->close();	
@@ -51,7 +53,7 @@
         
         
         include 'p_mail.php';
-        sendUnlockingMail($mail, $add, $full_name, $type);
+        sendUnlockingMail($mail, $add, $full_name, $type, $currency);
         
     }
 

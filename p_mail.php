@@ -12,7 +12,6 @@ function getHtmlFooter() {
 <span class="" style="color: rgb(31, 87, 148);"></span>
 <span style="color:#2f6aa6">
 <b>Monnaie Léman</b><br/>
-Rue des Savoises 15 |&nbsp;1205 Genève |&nbsp;
 <a target="_blank" href="https://monnaie-leman.org/" style="color:#2f6aa6" >monnaie-leman.org</a>
 </span>
 <br/><br/>
@@ -32,92 +31,207 @@ function gatAltFoolter() {
     return "
     
 Monnaie Léman
-Rue des Savoises 15 | 1205 Genève |  monnaie-leman.org
+monnaie-leman.org
 
 Découvrez les professionnels qui acceptent les lémans !";
 }
 
-function getBody($name, $url_gen, $type) {
-     if ($type==1) {
-       
-        return '<font face="HelveticaNeue-Light">
 
+function getSubject($type, $currency, $country) {
+    if ($type==1) {
+        if ($currency=="CHF") {
+          return 'Léman électronique: création de votre compte professionnel (LEM-CHF)';
+        } else  if ($currency=="EUR") {
+          return 'Léman électronique: création de votre compte professionnel (LEM-EUR)';
+        } else  if ($currency=="BOTH") {
+            if ($country=="France") {
+                 return 'Léman électronique: création de vos comptes professionnels (LEM-EUR & LEM-CHF)';
+            } else {
+                 return 'Léman électronique: création de vos comptes professionnels (LEM-CHF & LEM-EUR)';
+            }
+        }  else {
+           return "";
+        }
+    } else {
+        if ($currency=="CHF") {
+          return 'Léman électronique: création de votre compte personnel (LEM-CHF)';
+        } else  if ($currency=="EUR") {
+          return 'Léman électronique: création de votre compte personnel (LEM-EUR)';
+        } else  if ($currency=="BOTH") {
+            if ($country=="France") {
+                 return 'Léman électronique: création de vos comptes personnels (LEM-EUR & LEM-CHF)';
+            } else {
+                 return 'Léman électronique: création de vos comptes personnels (LEM-CHF & LEM-EUR)';
+            }
+        }  else {
+           return "";
+        }
+    }
+}
+
+function getBody($name, $url_gen_ch,$url_gen_fr, $type, $currency, $country) {
+      if ($currency=="CHF" ) {
+          return '<font face="HelveticaNeue-Light">
 <span style="color:#2f6aa6" >Bonjour '.$name.'</span>,
 <br/><br/>
 Merci pour votre inscription !
 <br/><br/>
-Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span> (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+En annexe, vous trouverez un document <span style="color:#2f6aa6">Code d’autorisation personnel</span>.
 <br/><br/>
-<span style="color:#2f6aa6;font-weight: bold;">Depuis votre ordinateur, sur votre navigateur Web, créez votre compte:</span><br/>
-<a target="_blank" href="'.$url_gen.'" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
-<br/>(N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)<br/><br/>
-Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser (importer)</span> avec votre smartphone.
+<span style="font-weight:bold;">Important:</span> conservez ce document en lieu sûr; il vous sera nécessaire à chaque fois que vous souhaitez ouvrir un compte supplémentaire.
+<br/><br/>
+<span style="font-weight:bold;">Attention:</span> pour la création du compte, n’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
+<br/><br/>
+<span style="font-weight:bold;">Depuis votre ordinateur</span>,  sur votre navigateur Web, créez votre compte sur:<a target="_blank" href="'.$url_gen_ch.'" style="color:#2f6aa6";>https://wallet.monnaie-leman.org</a>
+<br/><br/>
+Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser</span> avec vos autres appareils (smartphone, tablette, etc.).
 <br/><br/>
 Lémaniquement vôtres.<br/>
 L’équipe du Léman'.getHtmlFooter().'</font>';
-    } else {
-      return '<font face="HelveticaNeue-Light">
-
+        } else   if ( $currency=="EUR") {
+          return '<font face="HelveticaNeue-Light">
 <span style="color:#2f6aa6" >Bonjour '.$name.'</span>,
 <br/><br/>
 Merci pour votre inscription !
 <br/><br/>
-Conservez en lieu sûr le document <span style="color:#2f6aa6">Code d’autorisation personnel</span> (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+En annexe, vous trouverez un document <span style="color:#2f6aa6">Code d’autorisation personnel</span>.
 <br/><br/>
-<span style="color:#2f6aa6;font-weight: bold;">Depuis votre ordinateur, sur votre navigateur Web, créez votre compte:</span><br/>
-<a target="_blank" href="'.$url_gen.'" style="color:#2f6aa6"font-weight: bold;>https://wallet.monnaie-leman.org</a>
-<br/>N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.<br/><br/>
-Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser (importer)</span> avec votre smartphone.
+<span style="font-weight:bold;">Important:</span> conservez ce document en lieu sûr; il vous sera nécessaire à chaque fois que vous souhaitez ouvrir un compte supplémentaire.
+<br/><br/>
+<span style="font-weight:bold;">Attention:</span> pour la création du compte, n’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
+<br/><br/>
+<span style="font-weight:bold;">Depuis votre ordinateur</span>,  sur votre navigateur Web, créez votre compte sur:<a target="_blank" href="'.$url_gen_fr.'" style="color:#2f6aa6";>https://wallet.monnaie-leman.org</a>
+<br/><br/>
+Une fois votre compte créé, vous pourrez le <span style="color:#2f6aa6">synchroniser</span> avec vos autres appareils (smartphone, tablette, etc.).
 <br/><br/>
 Lémaniquement vôtres.<br/>
 L’équipe du Léman'.getHtmlFooter().'</font>';
-  }
+        } else  if ($currency=="BOTH") {
+            if ($country=="France") {
+                 return '<font face="HelveticaNeue-Light">
+<span style="color:#2f6aa6" >Bonjour '.$name.'</span>,
+<br/><br/>
+Merci pour votre inscription.<br/>
+Et félicitations… Vous avez choisi d’ouvrir 2 comptes, un dans chaque monnaie: LEM-EUR & LEM-CHF !
+<br/><br/>
+En annexe, vous trouverez 2 documents <span style="color:#2f6aa6">Code d’autorisation personnel</span>: un pour les <span style="color:#2f6aa6" >LEM-EUR</span> et un autre pour les <span style="color:#2f6aa6" >LEM-CHF</span>.
+<br/><br/>
+<span style="font-weight:bold;">Important:</span> conservez ces documents en lieu sûr; ils vous seront nécessaires à chaque fois que vous souhaitez ouvrir un compte supplémentaire.
+<br/><br/>
+<span style="font-weight:bold;">Attention:</span> pour la création du compte, n’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
+<br/><br/>
+<span style="font-weight:bold;">Depuis votre ordinateur</span>, sur votre navigateur Web, créez vos comptes <span style="color:#2f6aa6" >LEM-EUR</span> sur: <a target="_blank" href="'.$url_gen_fr.'" style="color:#2f6aa6";>https://wallet.monnaie-leman.org</a> et <span style="color:#2f6aa6" >LEM-CHF</span> sur: <a target="_blank" href="'.$url_gen_ch.'" style="color:#2f6aa6";>https://wallet.monnaie-leman.org</a>
+<br/><br/>
+Une fois vos comptes créés, vous pourrez les <span style="color:#2f6aa6">synchroniser</span> avec vos autres appareils (smartphone, tablette, etc.).
+<br/><br/>
+Lémaniquement vôtres.<br/>
+L’équipe du Léman'.getHtmlFooter().'</font>';
+            } else {
+                 return '<font face="HelveticaNeue-Light">
+<span style="color:#2f6aa6" >Bonjour '.$name.'</span>,
+<br/><br/>
+Merci pour votre inscription.<br/>
+Et félicitations… Vous avez choisi d’ouvrir 2 comptes, un dans chaque monnaie: LEM-CHF & LEM-EUR !
+<br/><br/>
+En annexe, vous trouverez 2 documents <span style="color:#2f6aa6">Code d’autorisation personnel</span>: un pour les <span style="color:#2f6aa6" >LEM-CHF</span> et un autre pour les <span style="color:#2f6aa6" >LEM-EUR</span>.
+<br/><br/>
+<span style="font-weight:bold;">Important:</span> conservez ces documents en lieu sûr; ils vous seront nécessaires à chaque fois que vous souhaitez ouvrir un compte supplémentaire.
+<br/><br/>
+<span style="font-weight:bold;">Attention:</span> pour la création du compte, n’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
+<br/><br/>
+<span style="font-weight:bold;">Depuis votre ordinateur</span>, sur votre navigateur Web, créez vos comptes <span style="color:#2f6aa6" >LEM-CHF</span> sur: <a target="_blank" href="'.$url_gen_ch.'" style="color:#2f6aa6";>https://wallet.monnaie-leman.org</a> et <span style="color:#2f6aa6" >LEM-EUR</span> sur: <a target="_blank" href="'.$url_gen_fr.'" style="color:#2f6aa6";>https://wallet.monnaie-leman.org</a>
+<br/><br/>
+Une fois vos comptes créés, vous pourrez les <span style="color:#2f6aa6">synchroniser</span> avec vos autres appareils (smartphone, tablette, etc.).
+<br/><br/>
+Lémaniquement vôtres.<br/>
+L’équipe du Léman'.getHtmlFooter().'</font>';
+            }
+        }  else {
+           return "";
+        }
 }
 
-function getAltBody($name, $url_gen, $type) {
-    if ($type==1) {
-      return "Bonjour ".$name.",
+function getAltBody($name, $url_gen_ch,$url_gen_fr, $type, $currency, $country) {
+if ($currency=="CHF") {
+          return 'Bonjour '.$name.',
 
 Merci pour votre inscription !
 
-Conservez en lieu sûr le document Code d’autorisation personnel (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+En annexe, vous trouverez un document "Code d’autorisation personnel".
 
-Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: ".$url_gen."
-(N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)
+Important: conservez ce document en lieu sûr; il vous sera nécessaire à chaque fois que vous souhaitez ouvrir un compte supplémentaire.
 
-Une fois votre compte créé, vous pourrez le synchroniser (importer) avec votre smartphone.
+Attention: pour la création du compte, n’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
+
+Depuis votre ordinateur,  sur votre navigateur Web, créez votre compte sur: '.$url_gen_ch.'
+
+Une fois votre compte créé, vous pourrez le synchroniser avec vos autres appareils (smartphone, tablette, etc.).
 
 Lémaniquement vôtres.
-L’équipe du Léman".gatAltFoolter();
-    } else {
-      return  "Bonjour ".$name.",
+L’équipe du Léman'.gatAltFoolter();
+        } else if ($currency=="EUR") {
+          return 'Bonjour '.$name.',
 
 Merci pour votre inscription !
 
-Conservez en lieu sûr le document Code d’autorisation personnel (en pièce jointe). Il vous sera nécessaire si vous souhaitez ouvrir un autre compte ultérieurement.
+En annexe, vous trouverez un document "Code d’autorisation personnel".
 
-Depuis votre ordinateur, sur votre navigateur Web, créez votre compte: ".$url_gen."
-(N’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.)
+Important: conservez ce document en lieu sûr; il vous sera nécessaire à chaque fois que vous souhaitez ouvrir un compte supplémentaire.
 
-Une fois votre compte créé, vous pourrez le synchroniser (importer) avec votre smartphone.
+Attention: pour la création du compte, n’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
+
+Depuis votre ordinateur,  sur votre navigateur Web, créez votre compte sur: '.$url_gen_fr.'
+
+Une fois votre compte créé, vous pourrez le synchroniser avec vos autres appareils (smartphone, tablette, etc.).
 
 Lémaniquement vôtres.
-L’équipe du Léman".gatAltFoolter();
-    }
-    
+L’équipe du Léman'.gatAltFoolter();
+        } else if ($currency=="BOTH") {
+            if ($country=="France") {
+                 return 'Bonjour '.$name.',
+
+Merci pour votre inscription.
+Et félicitations… Vous avez choisi d’ouvrir 2 comptes, un dans chaque monnaie: LEM-EUR & LEM-CHF !
+
+En annexe, vous trouverez 2 documents "Code d’autorisation personnel": un pour les LEM-EUR et un autre pour les LEM-CHF.
+
+Important: conservez ces documents en lieu sûr; ils vous seront nécessaires à chaque fois que vous souhaitez ouvrir un compte supplémentaire.
+
+Attention: pour la création du compte, n’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
+
+Depuis votre ordinateur</span>, sur votre navigateur Web, créez vos comptes LEM-EUR sur: '.$url_gen_fr.' et LEM-CHF sur: '.$url_gen_ch.'
+
+Une fois vos comptes créés, vous pourrez les synchroniser avec vos autres appareils (smartphone, tablette, etc.).
+
+Lémaniquement vôtres.
+L’équipe du Léman'.gatAltFoolter();
+            } else {
+                 return 'Bonjour '.$name.',
+
+Merci pour votre inscription.
+Et félicitations… Vous avez choisi d’ouvrir 2 comptes, un dans chaque monnaie: LEM-CHF & LEM-EUR !
+
+En annexe, vous trouverez 2 documents "Code d’autorisation personnel": un pour les LEM-CHF et un autre pour les LEM-EUR.
+
+Important: conservez ces documents en lieu sûr; ils vous seront nécessaires à chaque fois que vous souhaitez ouvrir un compte supplémentaire.
+
+Attention: pour la création du compte, n’utilisez pas votre smartphone pour des raisons techniques de sauvegarde.
+
+Depuis votre ordinateur</span>, sur votre navigateur Web, créez vos comptes LEM-CHF sur: '.$url_gen_ch.' et LEM-EUR sur: '.$url_gen_fr.'
+
+Une fois vos comptes créés, vous pourrez les synchroniser avec vos autres appareils (smartphone, tablette, etc.).
+
+Lémaniquement vôtres.
+L’équipe du Léman'.gatAltFoolter();;
+            }
+        }  else {
+           return "";
+        }
 }
 
-function getSubject($type) {
-    if ($type==1) {
-        return 'Léman électronique: création de votre compte professionnel';
-    } else {
-        return 'Léman électronique: création de votre compte personnel';
-    }
-    
-}
 
 
-function sendConfirmationMail($to_address, $code_file, $name, $url_gen, $type) {
+function sendConfirmationMail($to_address, $code_CHF_file, $code_EUR_file, $name, $url_gen_ch,$url_gen_fr, $type, $currency, $country) {
 $url_gen = str_replace('"','&quot;',$url_gen);
 
 $from_address = 'ne-pas-repondre@monnaie-leman.org'; 
@@ -127,7 +241,8 @@ $host = "myMailHost";
 $host_login = $from_address;
 $host_password = "myMailPassword";
 
-$code_file_name ="Leman_electronique_Code_autorisation.pdf";
+$code_CHF_file_name ="Leman_electronique_CHF_Code_autorisation.pdf";
+$code_EUR_file_name ="Leman_electronique_EUR_Code_autorisation.pdf";
 $how_to_file_name ="Marche_a_suivre_creation_compte.pdf";
 #$how_to_file ="./resources/Biletujo_Marche_a_suivre_creation_compte.pdf";
 
@@ -153,15 +268,20 @@ $how_to_file_name ="Marche_a_suivre_creation_compte.pdf";
         $mail->addBCC($from_address);
 
         // Attachments
-        $mail->addAttachment($code_file, $code_file_name, 'base64', 'application/pdf');         
+        if ($currency == "CHF" || $currency == "BOTH") {
+            $mail->addAttachment($code_CHF_file, $code_CHF_file_name, 'base64', 'application/pdf');    
+        } 
+        if ($currency == "EUR" || $currency == "BOTH") {
+            $mail->addAttachment($code_EUR_file, $code_EUR_file_name, 'base64', 'application/pdf');    
+        }     
         #$mail->addAttachment($how_to_file, $how_to_file_name, 'base64', 'application/pdf');    
 
         // Content
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->CharSet = 'UTF-8';
-        $mail->Subject = getSubject($type);
-        $mail->Body    = getBody($name, $url_gen, $type);
-        $mail->AltBody = getAltBody($name, $url_gen, $type);
+        $mail->Subject = getSubject($type, $currency, $country);
+        $mail->Body    = getBody($name, $url_gen_ch,$url_gen_fr, $type, $currency, $country);
+        $mail->AltBody = getAltBody($name, $url_gen_ch,$url_gen_fr, $type, $currency, $country);
 
         $mail->send();
    } catch (Exception $e) {
@@ -170,13 +290,13 @@ $how_to_file_name ="Marche_a_suivre_creation_compte.pdf";
 
 }
 
+// TODO swap the bank informations
 
-
-function getUnlockSubject($type) {
+function getUnlockSubject($type, $currency) {
     if ($type==1) {
-        return 'Léman électronique: activation de votre compte professionnel';
+        return 'Léman électronique: activation de votre compte professionnel (LEM-'.$currency.')';
     } else {
-        return 'Léman électronique: activation de votre compte personnel';
+        return 'Léman électronique: activation de votre compte personnel (LEM-'.$currency.')';
     }
 }
 
@@ -275,7 +395,7 @@ Nous restons bien volontiers à votre disposition pour tout complément d'inform
     }}
 
 
-function sendUnlockingMail($to_address, $wallet, $name, $type) {
+function sendUnlockingMail($to_address, $wallet, $name, $type, $currency) {
     $from_address = 'ne-pas-repondre@monnaie-leman.org'; 
     $from_name = 'Ne pas repondre - Monnaie Leman';  
 
@@ -309,7 +429,7 @@ function sendUnlockingMail($to_address, $wallet, $name, $type) {
         // Content
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->CharSet = 'UTF-8';
-        $mail->Subject = getUnlockSubject($type);
+        $mail->Subject = getUnlockSubject($type, $currency);
         $mail->Body    = getUnlockBody($name, $type, $wallet);
         $mail->AltBody = getUnlockAltBody($name, $type, $wallet);
 
