@@ -81,7 +81,7 @@ include 'p_mail.php';
       $person_id = -1;
       $ok =true;
       $stmt = $mysqli->prepare($query);
-      $stmt->bind_param("iissssssssiiiiiisiiii", $recordTypeId, $statusId, $email, $phone,
+      $stmt->bind_param("iissssssssisiiiiisiiii", $recordTypeId, $statusId, $email, $phone,
               $address, $compl, $npa, $city, $country,  $membership, $AccountRequest, $CurrencyReq,
               $dataUsge, $newsletter, $pep, $pepRelated, $finma,
               $aed,$cgu, $charte, $engagment, $attestation);
@@ -192,7 +192,7 @@ include 'p_mail.php';
      
      
      $add_chf=$CurrencyReq=='CHF' || $CurrencyReq=='BOTH';
-     $ad_eur=$CurrencyReq=='EUR' || $CurrencyReq=='BOTH';
+     $add_eur=$CurrencyReq=='EUR' || $CurrencyReq=='BOTH';
      
      $code_chf=md5($person_id.$last_name.$first_name.'CHF');
      $code_eur=md5($person_id.$last_name.$first_name.'EUR');
@@ -239,11 +239,15 @@ include 'p_mail.php';
          $stmt->close(); 
      } 
      if ($ok){
+       
+
      
          if ($AccountRequest==1)  {
          
             // generate pdf 
-            include 'pdf_builder.php';
+            require_once 'pdf_builder.php';
+            $signature_handler_chf = new CurrencySignatureHandler("Monnaie-Leman", "myPathToPrivateKeyPemFile", "resources/wide-logo_CHF.png");
+            $signature_handler_eur = new CurrencySignatureHandler("Leman-EU", "file://../id_rsa_eu.pem", "resources/wide-logo_EUR.png");
             if ($add_chf) {
                 getPDF($code_chf, $mysqli, true);
             }
@@ -257,8 +261,8 @@ include 'p_mail.php';
                                      './Data/img_'.$person_id.'/Code_'.$code_chf.'.pdf', 
                                      './Data/img_'.$person_id.'/Code_'.$code_eur.'.pdf', 
                                      $first_name ,
-                                     'https://wallet.monnaie-leman.org/index.html?code='.getStr($code_chf),
-                                     'https://wallet.monnaie-leman.org/index.html?code='.getStr($code_eur),
+                                     'https://wallet.monnaie-leman.org/index.html?code='.$signature_handler_chf->getStr($code_chf),
+                                     'https://wallet.monnaie-leman.org/index.html?code='.$signature_handler_eur->getStr($code_eur),
                                       2, 
                                       $CurrencyReq, 
                                       $country);

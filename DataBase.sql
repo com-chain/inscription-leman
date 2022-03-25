@@ -328,8 +328,8 @@ ALTER TABLE Reg_SiteUser ADD COLUMN Short VARCHAR(255);
  
  ----------------------------
  ALTER TABLE Reg_Person ADD COLUMN CurrencyReq  VARCHAR( 255 ) NULL;
- UPDATE TABLE Reg_Person INNER JOIN Reg_Codeset ON Reg_Person.Id = Reg_Codeset.PersonId SET CurrencyReq='CHF';
- UPDATE TABLE Reg_Person INNER JOIN Reg_Wallet ON Reg_Person.Id = Reg_Wallet.PersonId SET CurrencyReq='CHF';
+ UPDATE  Reg_Person INNER JOIN Reg_Code ON Reg_Person.Id = Reg_Code.PersonId SET CurrencyReq='CHF';
+ UPDATE  Reg_Person INNER JOIN Reg_Wallet ON Reg_Person.Id = Reg_Wallet.PersonId SET CurrencyReq='CHF';
   
  
 

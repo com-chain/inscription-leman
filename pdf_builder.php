@@ -1,6 +1,7 @@
 <?php
 require('fpdf/fpdf.php');
-include 'str.php';
+require_once 'str.php';
+require_once 'pdf_class.php';
 
 function getPDF($code, $mysqli, $local) {
 
@@ -18,7 +19,7 @@ function getPDF($code, $mysqli, $local) {
 
     $do_output_file = $local;
 
-
+/*
     class PDF extends FPDF
     {
     
@@ -133,6 +134,7 @@ function getPDF($code, $mysqli, $local) {
         $this->Ln();
     }
     }
+    */
 
     // Instanciation de la classe dérivée
     $pdf = new PDF($signature_handler->getLogoPath());

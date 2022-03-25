@@ -603,7 +603,7 @@ echo '
     $stmt->bind_result($cid, $code_code, $number_w);
     $stmt->execute();
     while ($stmt->fetch()){ 
-        echo'<tr><td>'.$code_code.'<form target="_blank"  id="form'.$cid.'" action="pdf_eur.php" method="post" style="display:inline;">
+        echo'<tr><td>'.$code_code.'<form target="_blank"  id="form'.$cid.'" action="pdf.php" method="post" style="display:inline;">
           <input   type="hidden"  name="code" value="'.$code_code.'" />
           <input class="buttonlt"  type="submit" value="PDF" />
         </form></td>';
