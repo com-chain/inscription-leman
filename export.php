@@ -216,34 +216,34 @@ $query = 'SELECT
     
     // code et comptes
     
-    $query = 'SELECT Code, address fROM Reg_Wallet LEFT OUTER JOIN Reg_Code ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Wallet.PersonId=?';
+    $query = 'SELECT Code, address, Currency fROM Reg_Wallet LEFT OUTER JOIN Reg_Code ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Wallet.PersonId=?';
 	          
 	          
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
-    $stmt->bind_result($code,$add);
+    $stmt->bind_result($code,$add, $w_curr);
     $stmt->execute();
     $wallets='';
     while($stmt->fetch()){
             if ($wallets!=''){
              $wallets=$wallets.', ';
             }
-            $wallets=$wallets.$code.'-'.$add;
+            $wallets=$wallets.$code.'('. $w_curr.')'.'-'.$add;
     }
     $stmt->close();
     
-    $query = 'SELECT Code fROM Reg_Code  LEFT OUTER JOIN Reg_Wallet ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Code.PersonId=?  and Reg_Wallet.CodeId IS NULL';
+    $query = 'SELECT Code, Currency fROM Reg_Code  LEFT OUTER JOIN Reg_Wallet ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Code.PersonId=?  and Reg_Wallet.CodeId IS NULL';
 	          
 	          
 	$stmt = $mysqli->prepare($query);
 	$stmt->bind_param("i",$id);
-    $stmt->bind_result($code);
+    $stmt->bind_result($code,$c_curr);
     $stmt->execute();
     while($stmt->fetch()){
             if ($wallets!=''){
              $wallets=$wallets.', ';
             }
-            $wallets=$wallets.$code;
+            $wallets=$wallets.$code.'('. $c_curr.')';
     }
     $stmt->close();
     
