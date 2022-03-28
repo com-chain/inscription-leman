@@ -216,7 +216,7 @@ $query = 'SELECT
     
     // code et comptes
     
-    $query = 'SELECT Code, address, Currency fROM Reg_Wallet LEFT OUTER JOIN Reg_Code ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Wallet.PersonId=?';
+    $query = 'SELECT Code, address, Reg_Wallet.Currency fROM Reg_Wallet LEFT OUTER JOIN Reg_Code ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Wallet.PersonId=?';
 	          
 	          
 	$stmt = $mysqli->prepare($query);
@@ -232,7 +232,7 @@ $query = 'SELECT
     }
     $stmt->close();
     
-    $query = 'SELECT Code, Currency fROM Reg_Code  LEFT OUTER JOIN Reg_Wallet ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Code.PersonId=?  and Reg_Wallet.CodeId IS NULL';
+    $query = 'SELECT Code, Reg_Code.Currency fROM Reg_Code  LEFT OUTER JOIN Reg_Wallet ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Code.PersonId=?  and Reg_Wallet.CodeId IS NULL';
 	          
 	          
 	$stmt = $mysqli->prepare($query);

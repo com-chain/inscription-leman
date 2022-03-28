@@ -300,30 +300,30 @@ $query = 'SELECT
      // Add wallet, code and history
      for ($index=1; $index<count($csv_data); $index++) {
           $pid=$csv_data[$index][0];
-          $query_2 = 'SELECT Code, address, valid_date fROM Reg_Wallet LEFT OUTER JOIN Reg_Code ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Wallet.PersonId=?';
+          $query_2 = 'SELECT Code, address, Reg_Wallet.Currency, valid_date fROM Reg_Wallet LEFT OUTER JOIN Reg_Code ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Wallet.PersonId=?';
 	      $stmt_2 = $mysqli->prepare($query_2);
 	      $stmt_2->bind_param("i",$pid);
-          $stmt_2->bind_result($code,$add, $date_valid);
+          $stmt_2->bind_result($code,$add, $w_curr, $date_valid);
           $stmt_2->execute();
           $wallets='';
           while($stmt_2->fetch()){
                     if ($wallets!=''){
                      $wallets=$wallets.', ';
                     }
-                    $wallets=$wallets.$add.'('.$date_valid.' - '.$code.')';
+                    $wallets=$wallets.$add.'('. $w_curr.')'.'('.$date_valid.' - '.$code.')';
           }
           $stmt_2->close();
           
-          $query_3 = 'SELECT Code fROM Reg_Code  LEFT OUTER JOIN Reg_Wallet ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Code.PersonId=?  and Reg_Wallet.CodeId IS NULL';
+          $query_3 = 'SELECT Code, Reg_Code.Currency  fROM Reg_Code  LEFT OUTER JOIN Reg_Wallet ON Reg_Code.Id=Reg_Wallet.CodeId WHERE Reg_Code.PersonId=?  and Reg_Wallet.CodeId IS NULL';
 	      $stmt_3 = $mysqli->prepare($query_3);
 	      $stmt_3->bind_param("i",$pid);
-          $stmt_3->bind_result($code);
+          $stmt_3->bind_result($code, $c_curr);
           $stmt_3->execute();
           while($stmt_3->fetch()){
                 if ($wallets!=''){
                  $wallets=$wallets.', ';
                 }
-                $wallets=$wallets.'('.$code.')';
+                $wallets=$wallets.'('.$code.'('. $c_curr.')'.')';
           }
           $stmt_3->close();
           $csv_data[$index][]=$wallets;
