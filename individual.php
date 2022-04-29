@@ -609,7 +609,7 @@ echo'
 <span id="ad_ch_p" class="labelWide" >	   
  Nous vous remercions d’effectuer votre versement sur le compte de Monnaie Léman: <br/> 
 	    <span class="full" >
-            Monnaie Léman Suisse - Ch. du 23-Août 1 - 1205 Genève<br/>
+            Monnaie Léman - Ch. du 23-Août 1 - 1205 Genève<br/>
             Banque Alternative Suisse - IBAN: CH22 0839 0034 3841 1010 0 - BIC: ABSOCH22 <br/>
 	    </span>	<br/> 
 </span>
@@ -624,7 +624,7 @@ IBAN: FR76 2157 0000 0120 0017 0036 226 - BIC: STFEFR21XXX<br/>
 
 </span>
 <span id="ad_fr_ep" class="labelWide" >		  
-Vous pouvez régler votre cotisation en lémans électroniques (eLEM-EUR) sur le compte de l’association (clé publique 0x7018f1347ab91b81e0846c134f97c17817fc27da): <span class="strong">eLEM-EUR <span id="cot_amount_5" >50</span></span>.
+Vous pouvez régler votre cotisation en lémans électroniques (eLEM-EUR) sur le compte de l’association (clé publique 0xec3144603e226b103ceec339e3921ea125daca81): <span class="strong">eLEM-EUR <span id="cot_amount_5" >50</span></span>.
 <br/><br/>
 
 Vous recevrez une facture dans les prochains jours.
@@ -634,7 +634,7 @@ Vous recevrez une facture dans les prochains jours.
 </span>	 
 
 <span id="ad_ch_ep" class="labelWide" >	
-Vous pouvez régler votre cotisation en lémans électroniques sur le compte de l’association (clé publique 0x15a18329381cdf1919d51d05834920585066646): <span class="strong">eLEM-CHF <span id="cot_amount_3" >50</span></span>.
+Vous pouvez régler votre cotisation en lémans électroniques sur le compte de l’association (clé publique 0x15a18329381cdf1919d51d05834920585066646f): <span class="strong">eLEM-CHF <span id="cot_amount_3" >50</span></span>.
 <br/><br/>
 
 Vous recevrez une facture dans les prochains jours.
@@ -1010,7 +1010,7 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
   </span>
   
   <span class="fitem">
-   <span class="label" id="lb_img">Copie d’une pièce d’identité valide Recto/verso*</span>
+   <span class="label" id="lb_img">Copie d’une pièce d’identité valide (Recto/verso)*</span>
   <input class="inputText" type="file" id="img" name="img" accept="application/pdf,image/*" >
   <input class="inputText" type="file" id="img2" name="img2" accept="application/pdf,image/*" >
     </span>
