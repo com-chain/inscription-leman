@@ -96,10 +96,10 @@ echo'
        var country = document.forms["form"]["country"].value;
        var currency = document.forms["form"]["chx_curr"].value;
        
-       var amount_ch='.$cotisation_i_ch.';
-       var amount_ch_changed='.chf_from_eur($cotisation_i_fr, $rate).';
-       var amount_fr='.$cotisation_i_fr.';
-       var amount_fr_changed='.eur_from_chf($cotisation_i_ch, $rateInverse).';
+       var amount_ch='.number_format($cotisation_i_ch, 2, '.', '').';
+       var amount_ch_changed='.number_format(chf_from_eur($cotisation_i_fr, $rate), 2, '.', '').';
+       var amount_fr='.number_format($cotisation_i_fr, 2, '.', '').';
+       var amount_fr_changed='.number_format(eur_from_chf($cotisation_i_ch, $rateInverse), 2, '.', '').';
        
        document.getElementById("ad_ch_p").style.display="None";
        document.getElementById("ad_fr_p").style.display="None";
@@ -193,6 +193,26 @@ echo'
              document.getElementById("ad_ch_p").style.display="inline-block";
            }
         }
+        
+        // section COnformite
+       if (currency == "CHF") {
+          document.getElementById("curr_ret").innerHTML="LEM-CHF pourront être remboursées en francs suisses";
+       } else  if (currency == "EUR") {
+          document.getElementById("curr_ret").innerHTML="LEM-EUR pourront être remboursées en euros";
+       } else  {
+          document.getElementById("curr_ret").innerHTML="LEM-CHF pourront être remboursées en francs suisses et les LEM-EUR en euros";
+       }
+       
+       let need_finma = country=="Suisse" || currency == "CHF" || currency == "BOTH";
+       
+        document.getElementById("tt_finma").style.display = need_finma ? "inline" : "none";
+        document.getElementById("conf_finma").style.display = need_finma ? "inline" : "none";
+        
+        // CGU
+        document.getElementById("cgu_ch").style.display = (currency == "CHF" || currency == "BOTH") ? "inline" : "none";
+        document.getElementById("cgu_fr").style.display = (currency == "EUR" || currency == "BOTH") ? "inline" : "none";
+        document.getElementById("cgu_both").style.display = (currency == "BOTH") ? "inline" : "none";
+ 
     }
     
     
@@ -618,13 +638,12 @@ echo'
 Nous vous remercions d’effectuer un versement de <span class="strong" id="cot_amount_4">CHF 50</span> sur le compte de Monnaie Léman: <br/> 	 
 <span class="full">
 Monnaie Léman France - 11A avenue Napoléon III - 74160 Saint-Julien-en-Genevois<br/>
-Société financière de la Nef <br/>
-IBAN: FR76 2157 0000 0120 0017 0036 226 - BIC: STFEFR21XXX<br/>
+CREDIT COOPERATIF - IBAN: FR76 4255 9100 0008 0258 5486 909 - BIC: CCOPFRPPXXX<br/>
 	  </span>
 
 </span>
 <span id="ad_fr_ep" class="labelWide" >		  
-Vous pouvez régler votre cotisation en lémans électroniques (eLEM-EUR) sur le compte de l’association (clé publique 0xec3144603e226b103ceec339e3921ea125daca81): <span class="strong">eLEM-EUR <span id="cot_amount_5" >50</span></span>.
+Vous pouvez régler votre cotisation en lémans électroniques (eLEM-EUR) sur le compte de l’association (clé publique 0x278b77b93134d1e6c5f3d41ca5e04b19ee7d57e8): <span class="strong">eLEM-EUR <span id="cot_amount_5" >50</span></span>.
 <br/><br/>
 
 Vous recevrez une facture dans les prochains jours.
@@ -723,7 +742,27 @@ echo'
 	 <a class="button" id="adh_sub" onclick="if (validateSectionAdd()){document.forms[\'form\'].submit();return false;}">Valider ma demande</a>
 </div>
 <div id="sect_fin" style="display:none">
- <h3> Conformité / compliance FINMA  </h3>
+ <h3> Conformité / compliance <span id="tt_finma">FINMA</span>  </h3>
+
+
+	   <span class="fitem">
+	   
+	   <span class="labelWide" >Je prends connaissance et je souscris aux conditions suivantes:<br/> <br/> 
+Votre argent est placé dans une banque éthique et ciblé sur des produits "durables".
+En cas d\'arrêt des activités de Monnaie Léman, les personnes détentrices de lémans  <span id="curr_ret">LEM-CHF pourront être remboursées en francs suisses</span>.<br/><br/>
+<span id="conf_finma">Conformité FINMA (applicable pour l’ouverture de comptes électroniques en Suisse):<ul>
+<li>Monnaie Léman n\'est pas surveillée par la FINMA;</li>
+<li>Les dépôts ne sont pas couverts par la garantie des dépôts.</li></ul></span>
+</span><br/>
+	 </span>
+	 <span class="fitem">
+	 <input class="inputCb"  type="checkbox" name="cond" name="cond" value="1" />
+	 <span  class="labelCb" id="lb_cond">Lu et approuvé* </span><br/>
+	 </span>
+	  </span>
+	  
+	  
+ <h3>Déclaration de la / des personne/s bénéficiaire/s et ADE</h3>
 
 <span class="fitem">
 	   <span class="labelWide" id="lb_pep">La/les personne/s ayant droit économique (ADE) est-elle / sont-elles une/des personne/s politiquement exposée/s (<a class="tooltip ait" >PEP<span class="tooltiptext">Les personnes politiquement exposées (PEP) sont des personnes physiques qui exercent une haute fonction publique ou politique ou des personnes connues pour leur être étroitement associées.</span></a>)?* </span>
@@ -742,26 +781,11 @@ echo'
 	    <option value ="0">Non</option>
 	   </select><br/>
 	 </span>
-
-	   <span class="fitem">
-	   
-	   <span class="labelWide" >Je prends connaissance et je souscris aux conditions suivantes:<br/> <br/> 
-Votre argent est placé dans une banque éthique et ciblé sur des produits "durables".
-En cas d\'arrêt des activités de Monnaie Léman, les personnes détentrices de lémans pourront être remboursées en francs suisses.<br/><br/>
-Conformité FINMA (applicable pour l’ouverture de comptes électroniques en Suisse):<ul>
-<li>Monnaie Léman n\'est pas surveillée par la FINMA;</li>
-<li>Les dépôts ne sont pas couverts par la garantie des dépôts.</li></ul>
-J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une année à partir de cette date (inscription); au-delà, mon acceptation est considérée comme tacite.</span><br/>
-	 </span>
-	 <span class="fitem">
-	 <input class="inputCb"  type="checkbox" name="cond" name="cond" value="1" />
-	 <span  class="labelCb" id="lb_cond">Lu et approuvé* </span><br/>
-	 </span>
-	  </span>
 	  
-	  <h3>Déclaration de la / des personne/s bénéficiaire/s et ayant droit économique (ADE)</h3>
 	  
-	 <span class="label"  id="lb_aed_dec">Je déclare:*</span><br/>
+	<br/>  
+<span class="fitem">	  
+	 <span class="label"  id="lb_aed_dec">Je déclare:*</span>	 </span><br/>
 	 <input class="inputCb"  type="radio" name="aed_dec" value="AED" onClick="togleAed()"/>
 	 <span  class="labelCb">être la seule personne ayant droit économique (ADE) des valeurs patrimoniales  impliquées dans sa relation avec le Léman électronique.</span><br/>
 	 
@@ -1002,7 +1026,13 @@ J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une 
  
   <span class="fitem">
 	 <input class="inputCb"  type="checkbox" name="cgu" id="cgu" value="1" />
-	 <span  class="labelCb" id="lb_cgu">J’atteste avoir pris connaissance et accepté les <a class="it ait" target="_blank" href="'.$url_cgu.'">Conditions générales d’utilisation</a>.* </span><br/>
+	 <span  class="labelCb" id="lb_cgu">J’atteste avoir pris connaissance et accepté les ';
+	 
+	 
+echo	 '<span id="cgu_ch"><a class="it ait" target="_blank" href="'.$url_cgu_ch.'">Conditions générales d’utilisation du Léman en Suisse</a></span>';
+echo     '<span id="cgu_both"> et les </span>';
+echo	 '<span id="cgu_fr"><a class="it ait" target="_blank" href="'.$url_cgu_fr.'">Conditions générales d’utilisation du Léman en France</a></span>';
+echo	 '.* </span><br/>
   </span>
   <span class="fitem">
 	 <input class="inputCb" type="checkbox" name="ce" id="ce" value="1" />

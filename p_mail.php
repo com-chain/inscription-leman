@@ -300,7 +300,27 @@ function getUnlockSubject($type, $currency) {
     }
 }
 
-function getUnlockBody($name, $type, $wallet) {
+function bank_info($currency, $is_alt) {
+    $emp_start = $is_alt?'':'<span style="color:#2f6aa6">';
+    $emp_stop = $is_alt?'':'</span>';
+    $br = $is_alt?'
+
+':'<br/><br/>';
+
+    $res ='';
+    if ($currency=='CHF' || $currency=='BOTH') {
+        $res = $res.'Pour '.$emp_start.'obtenir des e-lémans (CHF)'.$emp_stop.', prière d\'effectuer un versement sur le compte de Monnaie Léman - Ch. du 23-Août 1 - 1205 Genève à la Banque Alternative Suisse (IBAN: CH49 0839 0034 3841 1000 2, mention: "e-Léman"). Votre compte sera crédité dans les deux jours ouvrables.'.$br;
+    }
+
+    if ($currency=='EUR' || $currency=='BOTH') {
+        $res = $res.'Pour '.$emp_start.'obtenir des e-lémans (EUR)'.$emp_stop.', prière d\'effectuer un versement sur le compte de Monnaie Léman France - 11A avenue Napoléon III - 74160 Saint-Julien-en-Genevois à la Société financière de la Nef (IBAN: FR76 2157 0000 0120 0017 0036 226 - BIC: STFEFR21XXX, mention: "e-Léman"). Votre compte sera crédité dans les deux jours ouvrables.'.$br;
+    }
+
+    return $res;
+
+}
+
+function getUnlockBody($name, $type, $wallet,$currency) {
     if ($type==1) {
       return '<font face="HelveticaNeue-Light">
 
@@ -324,9 +344,7 @@ Un défraiement est facturé sur les transactions:<br/>
 - 0% d\'une entreprise à un particulier (salaire) ou entre deux particuliers.
 <br/><br/>
 Vous trouverez les <span style="color:#2f6aa6">commerces et entreprises</span> qui pourront vous accueillir et accepter vos lémans électroniques sur la <a target="_blank" href="https://monnaie-leman.org/comment-ca-marche-carte-reseau" style="color:#2f6aa6">Carte du réseau</a> de notre <a target="_blank" href="https://monnaie-leman.org" style="color:#2f6aa6">site Internet</a> (voir rubrique MOYEN DE PAIEMENT).
-<br/><br/>
-Pour <span style="color:#2f6aa6">obtenir des e-lémans</span>, prière d\'effectuer un versement sur le compte de Monnaie Léman à la Banque Alternative Suisse (IBAN: CH49 0839 0034 3841 1000 2, mention: "e-Léman"). Votre compte sera crédité dans les deux jours ouvrables.
-<br/><br/>
+<br/><br/>'.bank_info($currency, false).'
 Nous vous conseillons également d\'<a target="_blank" href="https://monnaie-leman.org/inscription/inscription.php" style="color:#2f6aa6">ouvrir un compte personnel</a> sans frais pour les particuliers ainsi vous pourrez vous verser une partie de votre salaire et faire vos achats privés.
 <br/><br/>
 Tout en vous souhaitant du plaisir avec les lémans électroniques, nous vous adressons nos salutations les plus cordiales.'.getHtmlFooter().'</font>';
@@ -336,9 +354,7 @@ Tout en vous souhaitant du plaisir avec les lémans électroniques, nous vous ad
 <span style="color:#2f6aa6" >Bonjour '.$name.'</span>,
 <br/><br/>
 Votre compte électronique <i style="color:#2f6aa6" >Biletujo</i> (Monnaie Léman)  <span style="color:#2f6aa6" >'.$wallet.'</span> est actif!
-<br/><br/>
-Pour <span style="color:#2f6aa6">obtenir des e-lémans</span>, prière d\'effectuer un versement sur le compte de Monnaie Léman à la Banque Alternative Suisse (IBAN: CH49 0839 0034 3841 1000 2, mention: "e-Léman"). Votre compte sera crédité dans les deux jours ouvrables.
-<br/><br/>
+<br/><br/>'.bank_info($currency, false).'
 Vous trouverez les <span style="color:#2f6aa6">commerces et entreprises</span> qui pourront vous accueillir et accepter vos lémans électroniques sur la <a target="_blank" href="https://monnaie-leman.org/comment-ca-marche-carte-reseau" style="color:#2f6aa6">Carte du réseau</a> de notre <a target="_blank" href="https://monnaie-leman.org" style="color:#2f6aa6">site Internet</a> (voir rubrique MOYEN DE PAIEMENT).
 <br/><br/>
 Savez-vous que vous pouvez demander de recevoir une partie de votre salaire en lémans ?<br/>
@@ -351,7 +367,7 @@ Avec nos salutations cordiales.'.getHtmlFooter().'</font>';
   
 }
 
-function getUnlockAltBody($name, $type, $wallet) {
+function getUnlockAltBody($name, $type, $wallet,$currency) {
     if ($type==1) {
       return "Bonjour ".$name.",
         
@@ -374,9 +390,7 @@ Un défraiement est facturé sur les transactions:
 
 Vous trouverez les commerces et entreprises avec qui vous pourrez échanger des lémans électroniques sur la Carte du réseau de notre site Internet (https://monnaie-leman.org voir rubrique MOYEN DE PAIEMENT).
 
-Pour obtenir des e-lémans, prière d'effectuer un versement sur le compte de Monnaie Léman à la Banque Alternative Suisse (IBAN: CH49 0839 0034 3841 1000 2, mention: \"e-Léman\"). Votre compte sera crédité dans les deux jours ouvrables.
-
-Nous vous conseillons également d'ouvrir un compte personnel sans frais pour les particuliers ainsi vous pourrez vous verser une partie de votre salaire et faire vos achats privés.
+".bank_info($currency, true)."Nous vous conseillons également d'ouvrir un compte personnel sans frais pour les particuliers ainsi vous pourrez vous verser une partie de votre salaire et faire vos achats privés.
 
 Tout en vous souhaitant du plaisir avec les lémans électroniques, nous vous adressons nos salutations les plus cordiales.".gatAltFoolter();
     } else {
@@ -384,9 +398,7 @@ Tout en vous souhaitant du plaisir avec les lémans électroniques, nous vous ad
         
 Votre compte électronique Biletujo (Monnaie Léman) ".$wallet." est actif!
 
-Pour obtenir des e-lémans, prière d'effectuer un versement sur le compte de Monnaie Léman à la Banque Alternative Suisse (IBAN: CH49 0839 0034 3841 1000 2, mention: \"e-Léman\"). Votre compte sera crédité dans les deux jours ouvrables.
-
-Vous trouverez les commerces et entreprises qui pourront vous accueillir et accepter vos lémans électroniques sur la Carte du réseau de notre site Internet (https://monnaie-leman.org voir rubrique MOYEN DE PAIEMENT).
+".bank_info($currency, true)."Vous trouverez les commerces et entreprises qui pourront vous accueillir et accepter vos lémans électroniques sur la Carte du réseau de notre site Internet (https://monnaie-leman.org voir rubrique MOYEN DE PAIEMENT).
 
 Savez-vous que vous pouvez demander de recevoir une partie de votre salaire en lémans ?
 (Nous avons préparé une lettre type si besoin: https://wallet.monnaie-leman.org/files/Lettre_Salaire.docx)
@@ -430,8 +442,8 @@ function sendUnlockingMail($to_address, $wallet, $name, $type, $currency) {
         $mail->isHTML(true);                                  // Set email format to HTML
         $mail->CharSet = 'UTF-8';
         $mail->Subject = getUnlockSubject($type, $currency);
-        $mail->Body    = getUnlockBody($name, $type, $wallet);
-        $mail->AltBody = getUnlockAltBody($name, $type, $wallet);
+        $mail->Body    = getUnlockBody($name, $type, $wallet, $currency);
+        $mail->AltBody = getUnlockAltBody($name, $type, $wallet, $currency);
 
         $mail->send();
    } catch (Exception $e) {

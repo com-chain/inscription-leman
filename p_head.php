@@ -5,6 +5,9 @@ $uploal_limit_MB=3.5;
 
 $url_charte ="https://wallet.monnaie-leman.org/files/chart.pdf";
 $url_cgu = "https://wallet.monnaie-leman.org/files/cgu.pdf";
+$url_cgu_ch = "https://wallet.monnaie-leman.org/files/2022_CGU_MonnaieLeman_CH.pdf";
+$url_cgu_fr = "https://wallet.monnaie-leman.org/files/2022_CGU_MonnaieLeman_FR.pdf";
+
 
 
 $cotisation_i_ch=50;
