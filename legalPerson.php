@@ -170,12 +170,26 @@ echo'
        
         document.getElementById("tt_finma").style.display = need_finma ? "inline" : "none";
         document.getElementById("conf_finma").style.display = need_finma ? "inline" : "none";
+        document.getElementById("cond_acc").style.display = need_finma ? "inline" : "none";
+        document.getElementById("souscris").style.display = need_finma ? "inline" : "none";
+        document.getElementById("pas_souscris").style.display = need_finma ? "none" : "inline";
+        document.getElementById("lu_app").style.display = need_finma ? "inline-block" : "none";
+        document.getElementById("cond").checked = !need_finma;
+        document.getElementById("eng_item").style.display = need_finma ? "inline-block" : "none";
+        document.getElementById("eng").checked = !need_finma;
         
         
-         // CGU
-        document.getElementById("cgu_ch").style.display = (currency == "CHF" || currency == "BOTH") ? "inline" : "none";
-        document.getElementById("cgu_fr").style.display = (currency == "EUR" || currency == "BOTH") ? "inline" : "none";
-        document.getElementById("cgu_both").style.display = (currency == "BOTH") ? "inline" : "none";
+        // CGU
+        let need_CH_CGU = country== "Suisse" || currency == "BOTH" || currency == "CHF";
+        let need_FR_CGU = country== "France" || currency == "BOTH" || currency == "EUR";
+        let need_both_CGU = need_CH_CGU && need_FR_CGU;
+        
+        document.getElementById("cgu_ch").style.display = need_CH_CGU ? "inline" : "none";
+        document.getElementById("cgu_fr").style.display = need_FR_CGU ? "inline" : "none";
+        document.getElementById("cgu_both").style.display = need_both_CGU ? "inline" : "none";
+        document.getElementById("cgu_ch_name").style.display = need_both_CGU ? "inline" : "none";
+        document.getElementById("cgu_fr_name").style.display = need_both_CGU ? "inline" : "none";
+        
  
     }
     
@@ -1047,17 +1061,21 @@ Souhaitez-vous autoriser d’autres personnes à gérer et utiliser le compte é
 
 	   <span class="fitem">
 	   
-	   <span class="labelWide" >Je prends connaissance et je souscris aux conditions suivantes:<br/> <br/> 
+	   <span class="labelWide" >Je prends connaissance <span id="souscris">et je souscris aux</span><span id="pas_souscris">des</span> conditions suivantes:<br/> <br/> 
 Votre argent est placé dans une banque éthique et ciblé sur des produits "durables".
 En cas d\'arrêt des activités de Monnaie Léman, les personnes détentrices de lémans <span id="curr_ret"> LEM-CHF pourront être remboursées en francs suisses</span>.<br/><br/>
 
 <span id="conf_finma">Conformité FINMA (applicable pour l’ouverture de comptes électroniques en Suisse):<ul>
 <li>Monnaie Léman n\'est pas surveillée par la FINMA;</li>
 <li>Les dépôts ne sont pas couverts par la garantie des dépôts.</li></ul></span>
+
+<span class="labelWide" id="cond_acc"><br/>J’accepte ces conditions. Sinon, je vous le communique dans un délai d’une année à partir de cette date '. date("d/m/Y").' au-delà, mon acceptation est considérée comme tacite.<br/></span>
+
+
 </span><br/>
 	 </span>
-	 <span class="fitem">
-	 <input class="inputCb"  type="checkbox" name="cond" name="cond" value="1" required="required"/>
+	 <span class="fitem" id="lu_app">
+	 <input class="inputCb"  type="checkbox" id="cond" name="cond" value="1" required="required"/>
 	 <span  class="labelCb" id="lb_cond">Lu et approuvé* </span><br/>
 	 </span>
 	  </span>
@@ -1329,9 +1347,9 @@ En cas d\'arrêt des activités de Monnaie Léman, les personnes détentrices de
   <span class="fitem">
 	 <input class="inputCb"  type="checkbox" name="cgu" name="cgu" value="1" required="required"/>
 	 <span  class="labelCb" id="lb_cgu">J’atteste avoir pris connaissance et accepté les ';
-echo	 '<span id="cgu_ch"><a class="it ait" target="_blank" href="'.$url_cgu_ch.'">Conditions générales d’utilisation du Léman en Suisse</a></span>';
+echo	 '<span id="cgu_ch"><a class="it ait" target="_blank" href="'.$url_cgu_ch.'">Conditions générales d’utilisation du Léman<span id="cgu_ch_name"> en Suisse</span></a></span>';
 echo     '<span id="cgu_both"> et les </span>';
-echo	 '<span id="cgu_fr"><a class="it ait" target="_blank" href="'.$url_cgu_fr.'">Conditions générales d’utilisation du Léman en France</a></span>';
+echo	 '<span id="cgu_fr"><a class="it ait" target="_blank" href="'.$url_cgu_fr.'">Conditions générales d’utilisation du Léman<span id="cgu_fr_name"> en France</span></a></span>';
 echo	 '.* </span><br/>
   </span>
   <span class="fitem">
@@ -1372,7 +1390,7 @@ echo	 '.* </span><br/>
     
     
     
-  <span class="fitem">
+  <span class="fitem" id="eng_item">
 	 <input class="inputCb" type="checkbox" name="eng" name="eng" value="1" required="required"/>
 	 <span  class="labelCb" id="lb_eng">J\'ai pris note que remplir intentionnellement ce formulaire de manière erronée est constitutif du délit de faux dans les titres au sens de l’<span class="it">Art. 251 du Code pénal suisse</span>.* </span><br/>
   </span>  
