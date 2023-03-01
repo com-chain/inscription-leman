@@ -1,0 +1,81 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+  <meta charset="UTF-8">';
+    <title>Redirection Biletujo</title>
+    <meta name="Description" content="Page de Redirection pour Biletujo">
+    <meta name="Keywords" content="Léman,MLC">
+    <meta http-equiv="Content-Type" content="text/html">
+    <meta http-equiv="Content-Language" content="fr">
+    <meta http-equiv="window-target" content="_blank">
+    <meta name="Author" content="Com-Chain">
+    <meta name="Copyright" content="Com-Chain-2020">
+
+    <meta name="revisit-after" content="1 days">
+    <meta name="Publisher" content="Monnaie Léman">
+    <meta name="Robots" content="all, index, follow">
+    <meta http-equiv="Page-Enter" content="blendTrans(Duration=1.0)">
+    <meta http-equiv="Page-Exit" content="blendTrans(Duration=1.0)">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Poppins" rel="stylesheet">
+    <link rel="stylesheet" href="css/public.css?v=1">
+    <script type="text/javascript">
+   /* if (window.location.protocol == "http:") {
+        var restOfUrl = window.location.href.substr(5);
+        window.location = "https:" + restOfUrl;
+    }*/
+    </script>
+    <script>
+        var isMobile = {
+            Android: function() {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function() {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function() {
+                return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+            },
+            Opera: function() {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function() {
+                return navigator.userAgent.match(/IEMobile/i);
+            },
+            any: function() {
+                return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+            }
+        };
+    
+        if ( isMobile.iOS() ) {
+            document.location.href = "https://apps.apple.com/be/app/biletujo/id1451184792?l=fr";
+        }
+        else if(isMobile.Android()){
+            document.location.href = "https://play.google.com/store/apps/details?id=org.comchain.wallet";
+        }
+    </script>
+  </head>
+<body>';
+
+echo '
+  <span class="fond"></span>
+  <span class="cont">
+  
+ <a class="logo" href="http://monnaie-leman.org/"><img src="css/image/logo.png" width="160px"/></a> <br/> 
+ <a href="http://monnaie-leman.org/"  class="ariane">< Retour</a> 
+  
+	<h2> TELECHARGEMENT DE BILETUJO</h2>
+Votre navigateur n'as pas été détecté comme étant un navigateur Android ou iOS. Vous pouvez:
+    <ul>
+      <li>Voire la fiche de Biletujo sur <a class="button" href="https://apps.apple.com/be/app/biletujo/id1451184792?l=fr">l'AppStore </a></li>
+      <li>Voire la fiche de Biletujo sur <a class="button" href="https://play.google.com/store/apps/details?id=org.comchain.wallet">le play store </a></li>
+      <li>Télécharger  <a class="button" href="https://com-chain.org/biletujo_v2.3.7.apk">l'apk</a> de Biletujo (.apk MD5 checksum: "35c539d26039f5504cd7482b95f84303")</li>
+      <li>Utiliser Biletujo sous forme de <a class="button" href="https://wallet.monnaie-leman.org/#select">web-app</a></li>
+    </ul>
+    
+
+   </span>
+</body>
+</html>
