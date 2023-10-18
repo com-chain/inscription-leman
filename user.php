@@ -104,7 +104,7 @@ echo'
          
  echo '        
                <h2 >Changer de mot de passe</h2>
-<span class="formNotice">Nous ne stoquons pas vos mots de passe sous une forme lisible n&eacute;anmoins nous vous recommandons fortement d\'utiliser un mot de passe sp&eacute;cifique et de ne pas le r&eacute;utiliser ailleur. </span><br/><br/>
+<span class="formNotice">Nous ne stoquons pas vos mots de passe sous une forme lisible n&eacute;anmoins nous vous recommandons fortement d\'utiliser un mot de passe sp&eacute;cifique et de ne pas le r&eacute;utiliser ailleurs. </span><br/><br/>
 <form action="./user.php#changepsw" method="post">
          <span class="fitem"><span class="labelUser">Ancien mot de passe : </span> <input type="password" name="opsw"/></span>
 	    <span class="fitem"><span class="labelUser">Nouveau mot de passe : </span> <input type="password" name="npsw"/></span>

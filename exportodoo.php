@@ -288,7 +288,7 @@
     $array_activity['TourismeLoisirs'] = "Tourisme & Loisirs";
 
 
-    $url = "https://leman-en-transition.org";
+    $url = "https://monnaie-leman.org";
     $db = "myOdooDb";
     $username = "myOdooUser";
     $password = "myOdooPassword";

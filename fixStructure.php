@@ -59,10 +59,14 @@ if ($read_id!=$id) {
     if ($read_type == 1) {
        if ($read_leg_id!=$id) {
             echo "La table Personne Légale est manquante...";
-            $query = "INSERT INTO Reg_Legal (Id, Name, Contact, LegalForm, ActivityField, ActivityDescription, EFT, CreationDate) VALUES (?,'Change Moi!', ' ', ' ', ' ', ' ', 0, '190/01/01' )";
-            $stmt = $mysqli->prepare($query);
+
+            $query = "INSERT INTO Reg_Legal (Id, Name, Contact, LegalForm, ActivityField, ActivityDescription, EFT, CreationDate) VALUES (?,'Change Moi!', ' ', ' ', ' ', ' ', 0, '1900/1/1' )";
+	    $stmt= $mysqli->prepare($query);
+	    echo $mysqli->error;
             $stmt->bind_param("i",$id);
-            $stmt->execute();
+	    $stmt->execute();
+
+            echo $mysqli->error;
             $stmt->close();	 
             echo " ...ajout de la table Personne Légale<br/>";
        } else {
@@ -76,6 +80,7 @@ if ($read_id!=$id) {
             $stmt = $mysqli->prepare($query);
             $stmt->bind_param("i",$id);
             $stmt->execute();
+            echo $mysqli->error;
             $stmt->close();	
             echo "... ajout de la table Personne individuelle<br/>";  
         } else {
