@@ -1,4 +1,5 @@
 <?php
+  exit(1);
    ob_start();
   include 'checkUser.php';
   include 'connectionFactory.php';
